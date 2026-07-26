@@ -100,7 +100,7 @@ window.__ESUERO_I18N__ = {
     f_service_opt3: "Controller / Motor", f_service_opt4: "Fahrzeugkauf", f_service_opt5: "Flottenwartung",
     f_message: "Nachricht", f_submit: "Anfrage senden",
     f_note: "Wir antworten in der Regel innerhalb eines Werktags.",
-    side_address_l: "Werkstatt", side_address_v: "Industriestrasse 14, 8005 Zürich, Schweiz",
+    side_address_l: "Werkstatt", side_address_v: "Schwerzistrasse 34, 8807 Freienbach SZ, Schweiz",
     side_phone_l: "Telefon", side_hours_l: "Öffnungszeiten", side_hours_v: "Mo–Fr 09:00–18:30, Sa 10:00–15:00",
     side_email_l: "E-Mail",
 
@@ -217,7 +217,7 @@ window.__ESUERO_I18N__ = {
     f_service_opt3: "Controller / Motor", f_service_opt4: "Vehicle Purchase", f_service_opt5: "Fleet Maintenance",
     f_message: "Message", f_submit: "Send Request",
     f_note: "We usually reply within one business day.",
-    side_address_l: "Workshop", side_address_v: "Industriestrasse 14, 8005 Zurich, Switzerland",
+    side_address_l: "Workshop", side_address_v: "Schwerzistrasse 34, 8807 Freienbach SZ, Switzerland",
     side_phone_l: "Phone", side_hours_l: "Opening Hours", side_hours_v: "Mon–Fri 09:00–18:30, Sat 10:00–15:00",
     side_email_l: "Email",
 
@@ -334,7 +334,7 @@ window.__ESUERO_I18N__ = {
     f_service_opt3: "Controller / Motore", f_service_opt4: "Acquisto Veicolo", f_service_opt5: "Manutenzione Flotte",
     f_message: "Messaggio", f_submit: "Invia Richiesta",
     f_note: "Rispondiamo solitamente entro un giorno lavorativo.",
-    side_address_l: "Officina", side_address_v: "Industriestrasse 14, 8005 Zurigo, Svizzera",
+    side_address_l: "Officina", side_address_v: "Schwerzistrasse 34, 8807 Freienbach SZ, Svizzera",
     side_phone_l: "Telefono", side_hours_l: "Orari", side_hours_v: "Lun–Ven 09:00–18:30, Sab 10:00–15:00",
     side_email_l: "Email",
 
@@ -451,7 +451,7 @@ window.__ESUERO_I18N__ = {
     f_service_opt3: "Controladora / Motor", f_service_opt4: "Compra de Vehículo", f_service_opt5: "Mantenimiento de Flotas",
     f_message: "Mensaje", f_submit: "Enviar Solicitud",
     f_note: "Normalmente respondemos en un día laborable.",
-    side_address_l: "Taller", side_address_v: "Industriestrasse 14, 8005 Zúrich, Suiza",
+    side_address_l: "Taller", side_address_v: "Schwerzistrasse 34, 8807 Freienbach SZ, Suiza",
     side_phone_l: "Teléfono", side_hours_l: "Horario", side_hours_v: "Lun–Vie 09:00–18:30, Sáb 10:00–15:00",
     side_email_l: "Correo electrónico",
 

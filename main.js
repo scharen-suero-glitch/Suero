@@ -561,7 +561,7 @@
         "Service: " + (form.querySelector('[name="service"]').value || "-") + "\n\n" +
         message
       );
-      window.location.href = "mailto:info@e-suero.ch?subject=" + subject + "&body=" + body;
+      window.location.href = "mailto:info@esuero.ch?subject=" + subject + "&body=" + body;
 
       if (status) {
         status.textContent = "Ihr E-Mail-Programm öffnet sich mit der vorbereiteten Anfrage.";

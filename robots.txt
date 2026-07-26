@@ -4,4 +4,4 @@ Disallow: /privacy.html
 Disallow: /impressum.html
 Disallow: /terms.html
 
-Sitemap: https://www.e-suero.ch/sitemap.xml
+Sitemap: https://www.esuero.ch/sitemap.xml

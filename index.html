@@ -6,6 +6,7 @@
 <title>E-Suero — Premium Elektromobilität, Werkstatt &amp; Batterie-Diagnostik</title>
 <meta name="description" content="E-Suero: Elektro-Scooter, E-Bikes und Elektromotorräder, professionelle Batterie-Diagnostik und Reparatur in der Schweiz.">
 <meta name="theme-color" content="#050505">
+<link rel="icon" href="assets/favicon.png" type="image/png">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="canonical" href="https://www.e-suero.ch/">
 
@@ -41,7 +42,10 @@
 <a class="skip-link" href="#main">Zum Inhalt springen</a>
 
 <div class="splash" aria-hidden="true">
-  <div class="splash-logo"><b>E</b>-SUERO</div>
+  <div class="splash-inner">
+    <img class="splash-mark" src="assets/logo-mark-160.png" srcset="assets/logo-mark-320.png 2x" alt="" width="48" height="48">
+    <div class="splash-logo"><b>E</b>-SUERO</div>
+  </div>
 </div>
 
 <div class="cursor-dot"></div>
@@ -51,7 +55,10 @@
 <header class="site-header">
   <div class="container">
     <a href="#top" class="logo">
-      <svg class="bolt" viewBox="0 0 24 24" fill="none"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z" fill="currentColor"/></svg>
+      <picture>
+        <source srcset="assets/logo-mark-160.webp 1x, assets/logo-mark-320.webp 2x" type="image/webp">
+        <img class="logo-mark" src="assets/logo-mark-160.png" srcset="assets/logo-mark-320.png 2x" alt="" width="28" height="28" loading="eager">
+      </picture>
       <b>E</b>-SUERO
     </a>
 
@@ -372,19 +379,43 @@
   </div>
 </section>
 
-<!-- ===================== PROCESS ===================== -->
-<section>
+<!-- ===================== PROCESS (interactive scroll timeline) ===================== -->
+<section id="process-section">
   <div class="container">
     <div class="section-head center reveal">
       <span class="eyebrow" data-i18n="process_eyebrow">Ablauf</span>
       <h2 data-i18n="process_title">Der Weg zur reparierten Energie.</h2>
     </div>
-    <div class="process-track reveal-stagger reveal">
-      <div class="process-step"><div class="dot">01</div><h4 data-i18n="pr1_t">Diagnose</h4><p data-i18n="pr1_d">Vollständige Analyse von Batterie, Controller und Motor.</p></div>
-      <div class="process-step"><div class="dot">02</div><h4 data-i18n="pr2_t">Angebot</h4><p data-i18n="pr2_d">Transparenter Kostenvoranschlag ohne versteckte Gebühren.</p></div>
-      <div class="process-step"><div class="dot">03</div><h4 data-i18n="pr3_t">Reparatur</h4><p data-i18n="pr3_d">Fachgerechte Instandsetzung durch zertifizierte Techniker.</p></div>
-      <div class="process-step"><div class="dot">04</div><h4 data-i18n="pr4_t">Test</h4><p data-i18n="pr4_d">Belastungstest unter realen Fahrbedingungen.</p></div>
-      <div class="process-step"><div class="dot">05</div><h4 data-i18n="pr5_t">Übergabe</h4><p data-i18n="pr5_d">Abholung oder Lieferung mit Garantie auf die Reparatur.</p></div>
+
+    <div class="process-pin">
+      <div class="process-rail" aria-hidden="true"><div class="process-rail-fill"></div></div>
+      <div class="process-track">
+        <div class="process-step" data-step="0">
+          <div class="dot"><span class="dot-num">01</span></div>
+          <h4 data-i18n="pr1_t">Diagnose</h4>
+          <p data-i18n="pr1_d">Vollständige Analyse von Batterie, Controller und Motor.</p>
+        </div>
+        <div class="process-step" data-step="1">
+          <div class="dot"><span class="dot-num">02</span></div>
+          <h4 data-i18n="pr2_t">Angebot</h4>
+          <p data-i18n="pr2_d">Transparenter Kostenvoranschlag ohne versteckte Gebühren.</p>
+        </div>
+        <div class="process-step" data-step="2">
+          <div class="dot"><span class="dot-num">03</span></div>
+          <h4 data-i18n="pr3_t">Reparatur</h4>
+          <p data-i18n="pr3_d">Fachgerechte Instandsetzung durch zertifizierte Techniker.</p>
+        </div>
+        <div class="process-step" data-step="3">
+          <div class="dot"><span class="dot-num">04</span></div>
+          <h4 data-i18n="pr4_t">Test</h4>
+          <p data-i18n="pr4_d">Belastungstest unter realen Fahrbedingungen.</p>
+        </div>
+        <div class="process-step" data-step="4">
+          <div class="dot"><span class="dot-num">05</span></div>
+          <h4 data-i18n="pr5_t">Übergabe</h4>
+          <p data-i18n="pr5_d">Abholung oder Lieferung mit Garantie auf die Reparatur.</p>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -611,7 +642,10 @@
     <div class="footer-top">
       <div class="footer-brand">
         <a href="#top" class="logo">
-          <svg class="bolt" viewBox="0 0 24 24" fill="none"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z" fill="currentColor"/></svg>
+          <picture>
+            <source srcset="assets/logo-mark-160.webp 1x, assets/logo-mark-320.webp 2x" type="image/webp">
+            <img class="logo-mark" src="assets/logo-mark-160.png" srcset="assets/logo-mark-320.png 2x" alt="" width="28" height="28" loading="lazy">
+          </picture>
           <b>E</b>-SUERO
         </a>
         <p data-i18n="footer_desc">Premium Elektromobilität, Werkstatt und Batterie-Diagnostik in der Schweiz.</p>
@@ -666,6 +700,8 @@
   <svg viewBox="0 0 24 24" fill="none"><path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
 </button>
 
+<script src="lib/gsap.min.js" defer></script>
+<script src="lib/ScrollTrigger.min.js" defer></script>
 <script src="i18n.js?v=20260726" defer></script>
 <script src="main.js?v=20260726" defer></script>
 </body>

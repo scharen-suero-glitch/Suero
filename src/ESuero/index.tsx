@@ -12,6 +12,7 @@ import { Scene1SurRon } from "./Scene1SurRon";
 import { Scene2Scooter } from "./Scene2Scooter";
 import { Scene3ERoller } from "./Scene3ERoller";
 import { Outro } from "./Outro";
+import { BrandBadge } from "./BrandBadge";
 import { loadFont } from "../load-font";
 
 export const SCENE_DURATION = 90; // 3s @ 30fps
@@ -55,19 +56,19 @@ export const ESuero: React.FC = () => {
     <AbsoluteFill style={{ background: "#0b0b0d" }}>
       <Sequence durationInFrames={SCENE_DURATION}>
         <CrossFade duration={FADE_DURATION}>
-          <Scene1SurRon vertical={vertical} />
+          <Scene1SurRon />
         </CrossFade>
       </Sequence>
 
       <Sequence from={SCENE_DURATION} durationInFrames={SCENE_DURATION}>
         <CrossFade duration={FADE_DURATION}>
-          <Scene2Scooter vertical={vertical} />
+          <Scene2Scooter />
         </CrossFade>
       </Sequence>
 
       <Sequence from={SCENE_DURATION * 2} durationInFrames={SCENE_DURATION}>
         <CrossFade duration={FADE_DURATION}>
-          <Scene3ERoller vertical={vertical} />
+          <Scene3ERoller />
         </CrossFade>
       </Sequence>
 
@@ -76,6 +77,8 @@ export const ESuero: React.FC = () => {
           <Outro vertical={vertical} />
         </CrossFade>
       </Sequence>
+
+      <BrandBadge hideAfter={SCENE_DURATION * 3} scale={width} />
     </AbsoluteFill>
   );
 };

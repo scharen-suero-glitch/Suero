@@ -17,12 +17,6 @@ export const Outro: React.FC<{ vertical: boolean }> = ({ vertical }) => {
     extrapolateRight: "clamp",
   });
 
-  const ctaOpacity = interpolate(frame, [26, 36], [0, 1], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-  });
-  const ctaPulse = 1 + Math.sin(frame / 6) * 0.03;
-
   const logoSize = vertical ? width * 0.14 : height * 0.15;
   const tagSize = vertical ? width * 0.045 : height * 0.05;
 
@@ -59,24 +53,7 @@ export const Outro: React.FC<{ vertical: boolean }> = ({ vertical }) => {
           textAlign: "center",
         }}
       >
-        Movilidad eléctrica para cada terreno
-      </div>
-      <div
-        style={{
-          marginTop: 34,
-          padding: "16px 40px",
-          borderRadius: 999,
-          background: ACCENT,
-          opacity: ctaOpacity,
-          transform: `scale(${ctaPulse})`,
-          fontFamily: "system-ui, sans-serif",
-          fontWeight: 700,
-          fontSize: tagSize * 0.7,
-          color: "#0b0b0d",
-          letterSpacing: 0.5,
-        }}
-      >
-        DESCÚBRELOS EN E-SUERO
+        Elektrisch. Eifach. Ohni Grenze.
       </div>
     </AbsoluteFill>
   );

@@ -1,7 +1,7 @@
 User-agent: *
 Allow: /
-Disallow: /privacy.html
-Disallow: /impressum.html
-Disallow: /terms.html
+Disallow: /legal/privacy.html
+Disallow: /legal/impressum.html
+Disallow: /legal/terms.html
 
 Sitemap: https://esuero.ch/sitemap.xml

@@ -14,7 +14,7 @@ HOW TO DEPLOY
 
 2. Open File Manager (under "Files" in the left menu).
 
-3. Open the "public_html" folder. This is the web root for esuero.ch.
+3. Open the "public_html" folder. This is the web root for e-suero.ch.
 
 4. Delete the default files if any exist (e.g. Hostinger's placeholder
    index.html, "default.php", or a sample index page). Do NOT delete
@@ -30,7 +30,7 @@ HOW TO DEPLOY
    its own subfolder, move all the files and folders up one level into
    public_html, then delete the now-empty subfolder.
 
-7. Visit https://esuero.ch to confirm the website is live.
+7. Visit https://e-suero.ch to confirm the website is live.
 
 That's it — no database, no environment variables, no build command.
 Every asset (fonts, scripts, images, icons) is self-contained inside
@@ -71,7 +71,7 @@ assets/
 BEFORE YOU GO LIVE — THINGS TO DOUBLE-CHECK
 ----------------------------------------------------
 
-- Domain: the site expects to be served at https://esuero.ch (this is
+- Domain: the site expects to be served at https://e-suero.ch (this is
   set in the canonical URL, sitemap.xml, robots.txt, and structured
   data). If the domain differs, update these references accordingly.
 
@@ -81,7 +81,7 @@ BEFORE YOU GO LIVE — THINGS TO DOUBLE-CHECK
   basic embed used here.
 
 - WhatsApp / phone / email: all point to +41 79 668 90 88 and
-  info@esuero.ch. Update these in index.html (and the legal pages) if
+  info@e-suero.ch. Update these in index.html (and the legal pages) if
   they ever change.
 
 - Contact form: the form validates input in the browser and opens the

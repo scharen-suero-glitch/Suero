@@ -92,11 +92,11 @@
 
   var CATEGORY_ORDER = ["e-scooter", "e-bike", "e-roller", "e-motorraeder"];
 
-  var CATEGORY_ICONS = {
-    "e-scooter": '<svg viewBox="0 0 24 24" fill="none"><circle cx="6" cy="19" r="2.4" stroke="#04150a" stroke-width="1.8"/><circle cx="18" cy="19" r="2.4" stroke="#04150a" stroke-width="1.8"/><path d="M6 19h8l3-8h2M15 11V6h3" stroke="#04150a" stroke-width="1.8" stroke-linecap="round"/></svg>',
-    "e-bike": '<svg viewBox="0 0 24 24" fill="none"><circle cx="5.5" cy="18" r="3" stroke="#04150a" stroke-width="1.8"/><circle cx="18.5" cy="18" r="3" stroke="#04150a" stroke-width="1.8"/><path d="M5.5 18 11 9h4l3 9M11 9 9.5 6H7" stroke="#04150a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-    "e-roller": '<svg viewBox="0 0 24 24" fill="none"><circle cx="7" cy="18" r="2.6" stroke="#04150a" stroke-width="1.8"/><circle cx="17" cy="18" r="2.6" stroke="#04150a" stroke-width="1.8"/><path d="M4 18h16M7 15l3-6h5" stroke="#04150a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-    "e-motorraeder": '<svg viewBox="0 0 24 24" fill="none"><circle cx="5.5" cy="17.5" r="3.2" stroke="#04150a" stroke-width="1.8"/><circle cx="18.5" cy="17.5" r="3.2" stroke="#04150a" stroke-width="1.8"/><path d="M5.5 17.5 10 10h6l3 7.5M10 10 8.5 7H6" stroke="#04150a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+  var CATEGORY_IMAGES = {
+    "e-scooter": "../assets/images/products/scooter-category.jpg",
+    "e-bike": "../assets/images/products/ebike-category.jpg",
+    "e-roller": "../assets/images/products/eroller-category.jpg",
+    "e-motorraeder": "../assets/images/products/moto-category.jpg"
   };
 
   var CATEGORY_DESC = {
@@ -157,7 +157,7 @@
     CATEGORY_ORDER.forEach(function (slug) {
       var cat = CATALOG[slug];
       html += '<a class="value-card catalog-card" href="#/' + slug + '">' +
-        '<div class="icn">' + CATEGORY_ICONS[slug] + "</div>" +
+        '<div class="product-media"><img src="' + CATEGORY_IMAGES[slug] + '" alt="' + esc(cat.name) + '" width="1200" height="800" loading="lazy"></div>' +
         "<h3>" + esc(cat.name) + "</h3>" +
         "<p>" + esc(CATEGORY_DESC[slug]) + "</p>" +
         "</a>";

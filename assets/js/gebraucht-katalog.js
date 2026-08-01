@@ -11,6 +11,15 @@
               m("Modellname", { condition: "like-new" })
    4. Werkstatt-Badges manuell ein-/ausschalten (optional, Standard = aus):
               m("Modellname", { condition: "good", controlled: true, approved: true })
+   5. Foto hinzufügen (optional): Bild in assets/images/products/ hochladen,
+              dann den Dateinamen eintragen:
+              m("Modellname", { image: "../assets/images/products/xiaomi-4-ultra.jpg" })
+              Das Foto erscheint in der Modell-Liste UND auf der Detailseite.
+   6. Kurzbeschreibung hinzufügen (optional, z.B. Reichweite/Leistung):
+              m("Modellname", { desc: "60 km Reichweite, 1'000 W Spitzenleistung." })
+
+   Alle Felder lassen sich beliebig kombinieren:
+   m("Modellname", { condition: "good", controlled: true, image: "...", desc: "..." })
 
    Kein Code, kein Layout muss dafür angepasst werden.
    ========================================================================== */
@@ -45,9 +54,17 @@
   var CATALOG = {
     "e-scooter": category("E-Scooter", [
       brand("Xiaomi", [
-        m("Xiaomi 4 Ultra"), m("Xiaomi 5 Pro"), m("Xiaomi 5 Max"), m("Xiaomi 5"),
-        m("Xiaomi 4 Pro Max"), m("Xiaomi 4 Pro 2nd Gen"), m("Xiaomi Elite"),
-        m("Xiaomi Mi 1S"), m("Xiaomi Mi Essential"), m("Xiaomi M365"), m("Xiaomi 4 Lite 2nd Gen")
+        m("Xiaomi 4 Ultra", { desc: "Bis zu 70 km Reichweite und 940 W Spitzenleistung — der reichweitenstärkste Scooter der Serie, mit Doppelfederung für Komfort." }),
+        m("Xiaomi 5 Pro", { desc: "60 km Reichweite, 1'000 W Spitzenleistung und Trommelbremse mit E-ABS für kraftvolles, sicheres Bremsen." }),
+        m("Xiaomi 5 Max", { desc: "60 km Reichweite und 1'000 W Spitzenleistung bei robusten 10-Zoll-Reifen — für Steigungen bis 22%." }),
+        m("Xiaomi 5", { desc: "60 km Reichweite bei 350 W Nennleistung — die ausgewogene Mitte der aktuellen Xiaomi-Generation." }),
+        m("Xiaomi 4 Pro Max", { desc: "60 km Reichweite, Doppel-Zylinder-Federung und pannensichere 10-Zoll-Reifen für den täglichen Einsatz." }),
+        m("Xiaomi 4 Pro 2nd Gen", { desc: "60 km Reichweite bei nur 19 kg Gewicht — überarbeitete Generation mit E-ABS-Bremssystem." }),
+        m("Xiaomi Elite", { desc: "45 km Reichweite mit Doppelfederung vorne — komfortabel für längere Pendelstrecken." }),
+        m("Xiaomi Mi 1S", { desc: "30 km Reichweite bei nur 12.5 kg — der bewährte Allrounder für die letzte Meile." }),
+        m("Xiaomi Mi Essential", { desc: "20 km Reichweite und 12 kg Leichtgewicht — kompakter Einsteiger-Scooter für die Stadt." }),
+        m("Xiaomi M365", { desc: "30 km Reichweite — der Klassiker, der die Elektro-Scooter-Bewegung 2016 mitbegründete." }),
+        m("Xiaomi 4 Lite 2nd Gen", { desc: "25 km Reichweite bei nur 16.2 kg — leicht, wendig und ideal für urbane Strecken." })
       ]),
       brand("Segway Ninebot", [
         m("Ninebot E22D"), m("Ninebot ES2"), m("Ninebot FDN"), m("Ninebot E2 Pro"), m("Ninebot Air T15E")
@@ -211,7 +228,9 @@
       var mSlug = slugify(mo.name);
       var condLabel = mo.condition ? CONDITIONS[mo.condition] : "";
       html += '<a class="model-card" href="#/' + catSlug + "/" + brandSlug + "/" + mSlug + '">' +
+        (mo.image ? '<div class="product-media"><img src="' + esc(mo.image) + '" alt="' + esc(mo.name) + '" width="960" height="640" loading="lazy"></div>' : "") +
         "<h3>" + esc(mo.name) + "</h3>" +
+        (mo.desc ? '<p class="model-desc">' + esc(mo.desc) + "</p>" : "") +
         (condLabel ? '<span class="badge ok">' + esc(condLabel) + "</span>" : '<span class="badge">Zustand auf Anfrage</span>') +
         "</a>";
     });
@@ -242,8 +261,11 @@
 
     root.innerHTML =
       '<div class="tilt-card catalog-detail"><div class="tilt-card-inner">' +
+      (mo.image ? '<div class="product-media"><img src="' + esc(mo.image) + '" alt="' + esc(mo.name) + '" width="960" height="640" loading="eager"></div>' : "") +
       '<span class="eyebrow">' + esc(cat.name) + "</span>" +
       "<h2>" + esc(b.name) + " — " + esc(mo.name) + "</h2>" +
+      (mo.desc ? '<p class="model-desc">' + esc(mo.desc) + "</p>" : "") +
+      '<span class="price">Preis auf Anfrage</span>' +
       '<div class="catalog-badges">' + badges + "</div>" +
       '<a href="../index.html#contact" class="btn btn-primary magnetic">Jetzt anfragen</a>' +
       "</div></div>";

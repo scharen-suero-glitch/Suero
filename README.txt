@@ -75,20 +75,39 @@ REPLACING THE PRODUCT PHOTOS
 The "Fahrzeuge" section (E-Scooter / E-Bikes / E-Motorräder / Gebraucht
 geprüft) is an auto-sliding carousel. Each card currently shows a
 placeholder graphic labeled "Foto folgt" (photo pending). To put a real
-photo of the actual vehicle you're selling, just replace the matching
-file in assets/images/products/ — same file name, your own photo:
+photo, just replace the matching file in assets/images/products/ — same
+file name, your own photo:
 
   scooter-urban-pro-x.jpg      scooter-city-cruiser.jpg
   scooter-offroad-force.jpg    ebike-trail-volt.jpg
   ebike-urban-glide.jpg        ebike-cargo-line.jpg
   moto-racer-s1.jpg            moto-cruiser-e-ride.jpg
-  moto-enduro-volt.jpg         used-zertifiziert-a.jpg
-  used-zertifiziert-b.jpg      used-trade-in.jpg
+  moto-enduro-volt.jpg         scooter-category.jpg
+  ebike-category.jpg           eroller-category.jpg
+  moto-category.jpg
 
 Tips: use a landscape photo (roughly 3:2, e.g. 1200x800px), keep the
 file name and .jpg extension exactly the same, and upload it into
 assets/images/products/ in Hostinger File Manager, overwriting the
 placeholder. No code changes needed — it appears on the site immediately.
+
+----------------------------------------------------
+MANAGING THE "GEBRAUCHT & GEPRÜFT" CATALOG
+----------------------------------------------------
+
+Clicking any of the 4 category cards in the "Gebraucht geprüft" tab
+opens verkauf/gebraucht-geprueft.html, a dedicated browsing page:
+Kategorie → Marke → Modell → Detailseite (Zustand + Werkstatt-Badges).
+
+Everything is driven by ONE plain-text file — no database, no CMS:
+
+  assets/js/gebraucht-katalog.js
+
+To add a brand, a model, set a vehicle's condition, or turn the
+"Kontrolliert" / "Geprüft" badges on or off, open that file in any text
+editor and follow the instructions in its header comment. Every change
+appears on the site immediately after upload — no other file needs to
+be touched.
 
 ----------------------------------------------------
 BEFORE YOU GO LIVE — THINGS TO DOUBLE-CHECK

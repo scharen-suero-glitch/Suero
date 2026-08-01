@@ -66,6 +66,29 @@ assets/
   fonts/             Self-hosted Inter + Space Grotesk webfonts
   icons/             Favicon, apple-touch-icon, and PWA icons
   images/            Logo mark images (PNG + WebP)
+  images/products/   Product photos for the "Fahrzeuge" carousel (see below)
+
+----------------------------------------------------
+REPLACING THE PRODUCT PHOTOS
+----------------------------------------------------
+
+The "Fahrzeuge" section (E-Scooter / E-Bikes / E-Motorräder / Gebraucht
+geprüft) is an auto-sliding carousel. Each card currently shows a
+placeholder graphic labeled "Foto folgt" (photo pending). To put a real
+photo of the actual vehicle you're selling, just replace the matching
+file in assets/images/products/ — same file name, your own photo:
+
+  scooter-urban-pro-x.jpg      scooter-city-cruiser.jpg
+  scooter-offroad-force.jpg    ebike-trail-volt.jpg
+  ebike-urban-glide.jpg        ebike-cargo-line.jpg
+  moto-racer-s1.jpg            moto-cruiser-e-ride.jpg
+  moto-enduro-volt.jpg         used-zertifiziert-a.jpg
+  used-zertifiziert-b.jpg      used-trade-in.jpg
+
+Tips: use a landscape photo (roughly 3:2, e.g. 1200x800px), keep the
+file name and .jpg extension exactly the same, and upload it into
+assets/images/products/ in Hostinger File Manager, overwriting the
+placeholder. No code changes needed — it appears on the site immediately.
 
 ----------------------------------------------------
 BEFORE YOU GO LIVE — THINGS TO DOUBLE-CHECK

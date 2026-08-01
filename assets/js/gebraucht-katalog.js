@@ -93,10 +93,10 @@
   var CATEGORY_ORDER = ["e-scooter", "e-bike", "e-roller", "e-motorraeder"];
 
   var CATEGORY_IMAGES = {
-    "e-scooter": "../assets/images/products/scooter-category.jpg",
-    "e-bike": "../assets/images/products/ebike-category.jpg",
-    "e-roller": "../assets/images/products/eroller-category.jpg",
-    "e-motorraeder": "../assets/images/products/moto-category.jpg"
+    "e-scooter": "../assets/images/products/scooter-category.jpg?v=20260801",
+    "e-bike": "../assets/images/products/ebike-category.jpg?v=20260801",
+    "e-roller": "../assets/images/products/eroller-category.jpg?v=20260801",
+    "e-motorraeder": "../assets/images/products/moto-category.jpg?v=20260801"
   };
 
   var CATEGORY_DESC = {

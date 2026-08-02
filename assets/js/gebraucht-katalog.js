@@ -13,7 +13,7 @@
               m("Modellname", { condition: "good", controlled: true, approved: true })
    5. Foto hinzufügen (optional): Bild in assets/images/products/ hochladen,
               dann den Dateinamen eintragen:
-              m("Modellname", { image: "../assets/images/products/xiaomi-4-ultra.jpg" })
+              m("Modellname", { image: "../assets/images/products/xiaomi-4-ultra.jpg?v=20260801" })
               Das Foto erscheint in der Modell-Liste UND auf der Detailseite.
    6. Kurzbeschreibung hinzufügen (optional, z.B. Reichweite/Leistung):
               m("Modellname", { desc: "60 km Reichweite, 1'000 W Spitzenleistung." })
@@ -54,17 +54,17 @@
   var CATALOG = {
     "e-scooter": category("E-Scooter", [
       brand("Xiaomi", [
-        m("Xiaomi 4 Ultra", { desc: "Bis zu 70 km Reichweite und 940 W Spitzenleistung — der reichweitenstärkste Scooter der Serie, mit Doppelfederung für Komfort." }),
-        m("Xiaomi 5 Pro", { desc: "60 km Reichweite, 1'000 W Spitzenleistung und Trommelbremse mit E-ABS für kraftvolles, sicheres Bremsen." }),
-        m("Xiaomi 5 Max", { desc: "60 km Reichweite und 1'000 W Spitzenleistung bei robusten 10-Zoll-Reifen — für Steigungen bis 22%." }),
-        m("Xiaomi 5", { desc: "60 km Reichweite bei 350 W Nennleistung — die ausgewogene Mitte der aktuellen Xiaomi-Generation." }),
-        m("Xiaomi 4 Pro Max", { desc: "60 km Reichweite, Doppel-Zylinder-Federung und pannensichere 10-Zoll-Reifen für den täglichen Einsatz." }),
-        m("Xiaomi 4 Pro 2nd Gen", { desc: "60 km Reichweite bei nur 19 kg Gewicht — überarbeitete Generation mit E-ABS-Bremssystem." }),
-        m("Xiaomi Elite", { desc: "45 km Reichweite mit Doppelfederung vorne — komfortabel für längere Pendelstrecken." }),
-        m("Xiaomi Mi 1S", { desc: "30 km Reichweite bei nur 12.5 kg — der bewährte Allrounder für die letzte Meile." }),
-        m("Xiaomi Mi Essential", { desc: "20 km Reichweite und 12 kg Leichtgewicht — kompakter Einsteiger-Scooter für die Stadt." }),
-        m("Xiaomi M365", { desc: "30 km Reichweite — der Klassiker, der die Elektro-Scooter-Bewegung 2016 mitbegründete." }),
-        m("Xiaomi 4 Lite 2nd Gen", { desc: "25 km Reichweite bei nur 16.2 kg — leicht, wendig und ideal für urbane Strecken." })
+        m("Xiaomi 4 Ultra", { image: "../assets/images/products/xiaomi-4-ultra.jpg?v=20260801", desc: "Bis zu 70 km Reichweite und 940 W Spitzenleistung — der reichweitenstärkste Scooter der Serie, mit Doppelfederung für Komfort." }),
+        m("Xiaomi 5 Pro", { image: "../assets/images/products/xiaomi-5-pro.jpg?v=20260801", desc: "60 km Reichweite, 1'000 W Spitzenleistung und Trommelbremse mit E-ABS für kraftvolles, sicheres Bremsen." }),
+        m("Xiaomi 5 Max", { image: "../assets/images/products/xiaomi-5-max.jpg?v=20260801", desc: "60 km Reichweite und 1'000 W Spitzenleistung bei robusten 10-Zoll-Reifen — für Steigungen bis 22%." }),
+        m("Xiaomi 5", { image: "../assets/images/products/xiaomi-5.jpg?v=20260801", desc: "60 km Reichweite bei 350 W Nennleistung — die ausgewogene Mitte der aktuellen Xiaomi-Generation." }),
+        m("Xiaomi 4 Pro Max", { image: "../assets/images/products/xiaomi-4-pro-max.jpg?v=20260801", desc: "60 km Reichweite, Doppel-Zylinder-Federung und pannensichere 10-Zoll-Reifen für den täglichen Einsatz." }),
+        m("Xiaomi 4 Pro 2nd Gen", { image: "../assets/images/products/xiaomi-4-pro-2nd-gen.jpg?v=20260801", desc: "60 km Reichweite bei nur 19 kg Gewicht — überarbeitete Generation mit E-ABS-Bremssystem." }),
+        m("Xiaomi Elite", { image: "../assets/images/products/xiaomi-elite.jpg?v=20260801", desc: "45 km Reichweite mit Doppelfederung vorne — komfortabel für längere Pendelstrecken." }),
+        m("Xiaomi Mi 1S", { image: "../assets/images/products/xiaomi-mi-1s.jpg?v=20260801", desc: "30 km Reichweite bei nur 12.5 kg — der bewährte Allrounder für die letzte Meile." }),
+        m("Xiaomi Mi Essential", { image: "../assets/images/products/xiaomi-mi-essential.jpg?v=20260801", desc: "20 km Reichweite und 12 kg Leichtgewicht — kompakter Einsteiger-Scooter für die Stadt." }),
+        m("Xiaomi M365", { image: "../assets/images/products/xiaomi-m365.jpg?v=20260801", desc: "30 km Reichweite — der Klassiker, der die Elektro-Scooter-Bewegung 2016 mitbegründete." }),
+        m("Xiaomi 4 Lite 2nd Gen", { image: "../assets/images/products/xiaomi-4-lite-2nd-gen.jpg?v=20260801", desc: "25 km Reichweite bei nur 16.2 kg — leicht, wendig und ideal für urbane Strecken." })
       ]),
       brand("Segway Ninebot", [
         m("Ninebot E22D"), m("Ninebot ES2"), m("Ninebot FDN"), m("Ninebot E2 Pro"), m("Ninebot Air T15E")

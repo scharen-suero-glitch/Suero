@@ -128,6 +128,9 @@
   var eyebrowEl = document.getElementById("catalog-eyebrow");
   var titleEl = document.getElementById("catalog-title");
   var subEl = document.getElementById("catalog-sub");
+  var metaDescEl = document.querySelector('meta[name="description"]');
+  var ogTitleEl = document.querySelector('meta[property="og:title"]');
+  var ogDescEl = document.querySelector('meta[property="og:description"]');
   if (!root) return;
 
   function esc(str) {
@@ -152,10 +155,19 @@
     return matches[0] || null;
   }
 
-  function setHead(eyebrow, title, sub) {
+  function setHead(eyebrow, title, sub, seoTitle, seoDesc) {
     if (eyebrowEl) eyebrowEl.textContent = eyebrow;
     if (titleEl) titleEl.textContent = title;
     if (subEl) subEl.textContent = sub;
+    if (seoTitle) {
+      document.title = seoTitle;
+      window.__PAGE_META__ = { title: seoTitle, desc: seoDesc };
+      if (ogTitleEl) ogTitleEl.setAttribute("content", seoTitle);
+    }
+    if (seoDesc) {
+      if (metaDescEl) metaDescEl.setAttribute("content", seoDesc);
+      if (ogDescEl) ogDescEl.setAttribute("content", seoDesc);
+    }
   }
 
   function setCrumbs(items) {
@@ -169,7 +181,9 @@
 
   function renderCategories() {
     setCrumbs([{ label: "Gebraucht & Geprüft", href: "#/" }]);
-    setHead("Verkauf", "Gebraucht & Geprüft", "Sorgfältig geprüfte Gebrauchtfahrzeuge aus unserer Werkstatt in Freienbach — nach Kategorie wählen.");
+    setHead("Verkauf", "Gebraucht & Geprüft", "Sorgfältig geprüfte Gebrauchtfahrzeuge aus unserer Werkstatt in Freienbach — nach Kategorie wählen.",
+      "Gebrauchte E-Fahrzeuge kaufen Freienbach SZ | E-Suero",
+      "Geprüfte Gebraucht-Elektrofahrzeuge von E-Suero in Freienbach SZ: E-Scooter, E-Bikes, E-Roller und Elektromotorräder nach Marke und Modell kaufen.");
     var html = '<div class="value-grid reveal-stagger is-visible">';
     CATEGORY_ORDER.forEach(function (slug) {
       var cat = CATALOG[slug];
@@ -190,7 +204,9 @@
       { label: "Gebraucht & Geprüft", href: "#/" },
       { label: cat.name, href: "#/" + catSlug }
     ]);
-    setHead("Gebraucht & Geprüft", cat.name, "Marke wählen.");
+    setHead("Gebraucht & Geprüft", cat.name, "Marke wählen.",
+      cat.name + " gebraucht kaufen Freienbach SZ | E-Suero",
+      "Gebrauchte " + cat.name + " geprüft und einsatzbereit bei E-Suero in Freienbach SZ — Marke wählen und passendes Modell finden.");
 
     if (!cat.brands.length) {
       root.innerHTML = '<div class="catalog-empty"><p>Diese Kategorie wird in Kürze mit Marken und Modellen befüllt. Bitte kontaktieren Sie uns direkt für aktuelle ' + esc(cat.name) + '-Angebote.</p>' +
@@ -221,7 +237,9 @@
       { label: cat.name, href: "#/" + catSlug },
       { label: b.name, href: "#/" + catSlug + "/" + brandSlug }
     ]);
-    setHead(cat.name, b.name, "Modell wählen.");
+    setHead(cat.name, b.name, "Modell wählen.",
+      b.name + " " + cat.name + " gebraucht kaufen | E-Suero Freienbach SZ",
+      "Geprüfte gebrauchte " + b.name + " " + cat.name + " bei E-Suero in Freienbach SZ — alle verfügbaren Modelle im Überblick.");
 
     var html = '<div class="model-grid is-visible">';
     b.models.forEach(function (mo) {
@@ -252,7 +270,11 @@
       { label: b.name, href: "#/" + catSlug + "/" + brandSlug },
       { label: mo.name, href: "#/" + catSlug + "/" + brandSlug + "/" + modelSlug }
     ]);
-    setHead(cat.name + " · " + b.name, mo.name, "");
+    var detailDesc = (mo.desc ? mo.desc + " " : "") + "Geprüft und einsatzbereit — gebraucht kaufen bei E-Suero in Freienbach SZ.";
+    var fullModelName = mo.name.toLowerCase().indexOf(b.name.toLowerCase()) === 0 ? mo.name : b.name + " " + mo.name;
+    setHead(cat.name + " · " + b.name, mo.name, "",
+      fullModelName + " gebraucht kaufen Freienbach SZ | E-Suero",
+      detailDesc);
 
     var condLabel = mo.condition ? CONDITIONS[mo.condition] : "Auf Anfrage";
     var badges = '<span class="badge ok">Zustand: ' + esc(condLabel) + "</span>";

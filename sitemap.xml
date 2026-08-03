@@ -57,7 +57,7 @@
   </url>
   <url>
     <loc>https://e-suero.ch/fahrzeuge/e-roller.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
 </urlset>

@@ -95,6 +95,11 @@ $params = [
     // checkout where the visitor already typed their email/phone still gets
     // captured and reported — see cancel.php.
     'cancel_url' => SITE_URL . '/stripe/cancel.php?session_id={CHECKOUT_SESSION_ID}',
+    // Stripe's default session lifetime is 24h. Shortened to 2h so that an
+    // abandoned checkout (tab closed, browser back button — anything that
+    // doesn't go through cancel_url) gets reported by webhook.php the same
+    // day instead of a day later. Minimum allowed by Stripe is 30 minutes.
+    'expires_at' => time() + 7200,
 ];
 
 $response = stripeRequest('/checkout/sessions', $params);

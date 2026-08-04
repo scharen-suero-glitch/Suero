@@ -23,6 +23,7 @@ if ($configured && $sessionId !== '') {
         $name = $session['customer_details']['name'] ?? ($session['customer']['name'] ?? '');
         if ($email !== '' || $phone !== '') {
             $lead = [
+                'session_id' => $sessionId,
                 'name' => $session['metadata']['product_name'] ?? 'E-Suero Fahrzeug',
                 'customer_name' => $name,
                 'email' => $email,
@@ -47,9 +48,13 @@ function stripeGet($path) {
 }
 
 function logLead($lead) {
+    // session_id is included so webhook.php can recognize this session was
+    // already reported here (via Stripe's own "← Zurück" link) and skip its
+    // own duplicate notification when the session later expires.
     $line = sprintf(
-        "[%s] ABGEBROCHEN | %s | %s <%s / %s>\n",
+        "[%s] ABGEBROCHEN | %s | %s | %s <%s / %s>\n",
         date('Y-m-d H:i:s'),
+        $lead['session_id'],
         $lead['name'],
         $lead['customer_name'] ?: '(kein Name)',
         $lead['email'] ?: '(keine E-Mail)',

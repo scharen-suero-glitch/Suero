@@ -58,7 +58,7 @@ $orderMetadata = [
 
 $params = [
     'mode' => 'payment',
-    'ui_mode' => 'embedded',
+    'ui_mode' => 'embedded_page',
     // No payment_method_types set on purpose: Stripe automatically offers every
     // method enabled in the Dashboard (card today; TWINT, Apple Pay, Google Pay,
     // Klarna, PayPal tomorrow) with zero code changes here.

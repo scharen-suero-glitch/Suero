@@ -13,11 +13,14 @@ $sessionId = isset($_GET['session_id']) ? preg_replace('/[^a-zA-Z0-9_]/', '', $_
 $lead = null;
 
 if ($configured && $sessionId !== '') {
-    $session = stripeGet("/checkout/sessions/{$sessionId}");
+    $session = stripeGet("/checkout/sessions/{$sessionId}?expand[]=customer");
     if ($session && !isset($session['error'])) {
-        $email = $session['customer_details']['email'] ?? '';
-        $phone = $session['customer_details']['phone'] ?? '';
-        $name = $session['customer_details']['name'] ?? '';
+        // Stripe sometimes commits a typed phone/email to the Customer object
+        // slightly before it shows up in customer_details (e.g. if the visitor
+        // leaves right after typing, before the field fully syncs) — check both.
+        $email = $session['customer_details']['email'] ?? ($session['customer']['email'] ?? '');
+        $phone = $session['customer_details']['phone'] ?? ($session['customer']['phone'] ?? '');
+        $name = $session['customer_details']['name'] ?? ($session['customer']['name'] ?? '');
         if ($email !== '' || $phone !== '') {
             $lead = [
                 'name' => $session['metadata']['product_name'] ?? 'E-Suero Fahrzeug',

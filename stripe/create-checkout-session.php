@@ -58,7 +58,12 @@ $orderMetadata = [
 
 $params = [
     'mode' => 'payment',
-    'ui_mode' => 'embedded_page',
+    // Hosted Stripe Checkout (no ui_mode set): the visitor is redirected to
+    // Stripe's own polished, mobile-optimized payment page and returns to
+    // success.php afterwards. Chosen over an embedded/iframe checkout after
+    // that mode's ui_mode value changed server-side (Stripe API update) and
+    // proved unreliable to size correctly inside a modal — this is Stripe's
+    // most battle-tested integration path.
     // No payment_method_types set on purpose: Stripe automatically offers every
     // method enabled in the Dashboard (card today; TWINT, Apple Pay, Google Pay,
     // Klarna, PayPal tomorrow) with zero code changes here.
@@ -81,7 +86,8 @@ $params = [
     // Collects the customer's email as part of Checkout and attaches a Customer
     // record to the payment, so an order always has contact info to follow up on.
     'customer_creation' => 'always',
-    'return_url' => SITE_URL . '/stripe/success.php?session_id={CHECKOUT_SESSION_ID}',
+    'success_url' => SITE_URL . '/stripe/success.php?session_id={CHECKOUT_SESSION_ID}',
+    'cancel_url' => SITE_URL . '/index.html#products',
 ];
 
 $response = stripeRequest('/checkout/sessions', $params);
@@ -93,7 +99,7 @@ if (isset($response['error'])) {
     exit;
 }
 
-echo json_encode(['clientSecret' => $response['client_secret']]);
+echo json_encode(['url' => $response['url']]);
 exit;
 
 /**

@@ -91,7 +91,7 @@ function notifyAdmin($order) {
 <meta name="theme-color" content="#050505">
 <link rel="icon" href="../assets/icons/favicon.png" type="image/png">
 <link rel="stylesheet" href="../assets/fonts/fonts.css?v=20260808">
-<link rel="stylesheet" href="../styles.css?v=20260810">
+<link rel="stylesheet" href="../styles.css?v=20260815">
 </head>
 <body>
 <main id="main" style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:2rem">

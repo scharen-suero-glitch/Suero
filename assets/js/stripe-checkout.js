@@ -70,8 +70,10 @@
       ev.preventDefault();
       var card = btn.closest("[data-buy-name]");
       if (!card) return;
+      var baseName = card.getAttribute("data-buy-name") || "";
+      var variant = card.getAttribute("data-buy-variant") || "";
       openCheckout({
-        name: card.getAttribute("data-buy-name") || "",
+        name: variant ? baseName + " – " + variant : baseName,
         price: parseInt(card.getAttribute("data-buy-price"), 10) || parsePriceToRappen(card.querySelector(".price") && card.querySelector(".price").textContent),
         image: card.getAttribute("data-buy-img") || "",
         slug: card.getAttribute("data-buy-slug") || "",

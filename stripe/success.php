@@ -2,14 +2,12 @@
 /**
  * E-Suero — post-payment confirmation page.
  *
- * Uses the SAME secret key already configured in create-checkout-session.php —
- * no separate webhook signing secret needed. On load it asks Stripe directly
- * "is this session actually paid?" instead of trusting the redirect alone,
- * then logs the order locally and best-effort emails the shop.
+ * Uses the SAME secret key already configured in config.php — no separate
+ * webhook signing secret needed. On load it asks Stripe directly "is this
+ * session actually paid?" instead of trusting the redirect alone, then logs
+ * the order locally and best-effort emails the shop.
  */
-define('STRIPE_SECRET_KEY', 'sk_live_REPLACE_WITH_YOUR_STRIPE_SECRET_KEY');
-define('STRIPE_API_BASE', 'https://api.stripe.com/v1');
-define('ADMIN_EMAIL', 'info@e-suero.ch');
+require __DIR__ . '/config.php';
 
 $configured = strpos(STRIPE_SECRET_KEY, 'REPLACE_WITH') === false;
 $sessionId = isset($_GET['session_id']) ? preg_replace('/[^a-zA-Z0-9_]/', '', $_GET['session_id']) : '';

@@ -1,17 +1,10 @@
 <?php
 /**
  * E-Suero — Stripe Embedded Checkout session endpoint.
- *
- * SETUP (do this once, directly on the server — never via chat/AI):
- * 1. Log in to https://dashboard.stripe.com/apikeys
- * 2. Copy your SECRET key (starts with sk_live_... or sk_test_...)
- * 3. Replace the placeholder below with that key.
- * 4. Never commit the real secret key to git or share it anywhere else.
+ * Configuration (incl. the secret key placeholder) lives in config.php —
+ * that is the only file you need to edit.
  */
-define('STRIPE_SECRET_KEY', 'sk_live_REPLACE_WITH_YOUR_STRIPE_SECRET_KEY');
-
-define('STRIPE_API_BASE', 'https://api.stripe.com/v1');
-define('SITE_URL', 'https://e-suero.ch');
+require __DIR__ . '/config.php';
 
 header('Content-Type: application/json; charset=utf-8');
 

@@ -182,6 +182,11 @@ function httpBuildQueryDeep($params, $prefix = '') {
         if (is_array($value)) {
             $pairs[] = httpBuildQueryDeep($value, $formKey);
         } else {
+            // PHP casts true/false to "1"/"" — Stripe's API requires the literal
+            // strings "true"/"false" for boolean params (e.g. phone_number_collection[enabled]).
+            if (is_bool($value)) {
+                $value = $value ? 'true' : 'false';
+            }
             $pairs[] = rawurlencode($formKey) . '=' . rawurlencode((string) $value);
         }
     }

@@ -86,8 +86,15 @@ $params = [
     // Collects the customer's email as part of Checkout and attaches a Customer
     // record to the payment, so an order always has contact info to follow up on.
     'customer_creation' => 'always',
+    // Also ask for a phone number during Checkout — this business follows up by
+    // phone/WhatsApp, so a second contact channel beyond email is valuable even
+    // for orders that don't complete.
+    'phone_number_collection' => ['enabled' => true],
     'success_url' => SITE_URL . '/stripe/success.php?session_id={CHECKOUT_SESSION_ID}',
-    'cancel_url' => SITE_URL . '/index.html#products',
+    // Sent back to cancel.php (not straight to the homepage) so an abandoned
+    // checkout where the visitor already typed their email/phone still gets
+    // captured and reported — see cancel.php.
+    'cancel_url' => SITE_URL . '/stripe/cancel.php?session_id={CHECKOUT_SESSION_ID}',
 ];
 
 $response = stripeRequest('/checkout/sessions', $params);
@@ -99,8 +106,32 @@ if (isset($response['error'])) {
     exit;
 }
 
+// Real-time purchase-intent signal: fire the moment someone reaches Stripe's
+// payment page, whether or not they go on to actually pay. Lets staff follow
+// up proactively on serious interest, not just completed orders.
+notifyIntent($name, $priceRappen);
+
 echo json_encode(['url' => $response['url']]);
 exit;
+
+/**
+ * Best-effort admin notification the instant a checkout is started. No
+ * customer contact info exists yet at this point (that's collected on
+ * Stripe's own page) — this is purely a "someone is looking at buying X"
+ * signal, sent via the same real ADMIN_EMAIL mailbox as every other notice.
+ */
+function notifyIntent($name, $priceRappen) {
+    $amount = number_format($priceRappen / 100, 2, '.', "'");
+    $subject = "👀 Kaufversuch gestartet: {$name}";
+    $body = "Jemand hat gerade \"Jetzt kaufen\" angeklickt auf e-suero.ch\n\n" .
+        "Produkt: {$name}\n" .
+        "Preis: CHF {$amount}\n" .
+        "Zeit: " . date('Y-m-d H:i:s') . "\n\n" .
+        "Dies bestätigt nicht, dass die Zahlung abgeschlossen wurde — nur, dass jemand zur Stripe-Zahlungsseite weitergeleitet wurde.\n" .
+        "Eine Bestätigung mit Kundendaten folgt separat, sobald die Zahlung abgeschlossen ist (oder falls die Person ihre Kontaktdaten eingegeben, aber abgebrochen hat).";
+    $headers = "From: " . ADMIN_EMAIL . "\r\nContent-Type: text/plain; charset=UTF-8";
+    @mail(ADMIN_EMAIL, $subject, $body, $headers);
+}
 
 /**
  * Best-effort local error log (never exposed to the client). Silently no-ops

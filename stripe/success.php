@@ -64,14 +64,20 @@ function notifyAdmin($order) {
     // Best-effort via PHP's built-in mail() — works out of the box on most shared
     // hosting (incl. Hostinger) without SMTP credentials. If the host blocks it,
     // the order is still safely recorded in orders.log above.
-    $subject = "Neue Bestellung: {$order['name']}";
+    // The From: address must be a real mailbox on the sending domain (ADMIN_EMAIL
+    // itself is the safest choice) — an invented address is a common reason these
+    // land in spam or get silently dropped by the mail server.
+    $subject = "✅ Neue Bestellung: {$order['name']}";
     $body = "Neue Bestellung über e-suero.ch\n\n" .
         "Produkt: {$order['name']}\n" .
         "Betrag: {$order['amount']} {$order['currency']}\n" .
         "Kunde: " . ($order['customer_name'] ?: '(kein Name)') . "\n" .
         "E-Mail: " . ($order['email'] ?: '(keine E-Mail)') . "\n" .
         "Stripe Session: {$order['id']}\n";
-    $headers = "From: bestellungen@e-suero.ch\r\nContent-Type: text/plain; charset=UTF-8";
+    $headers = "From: " . ADMIN_EMAIL . "\r\nContent-Type: text/plain; charset=UTF-8";
+    if ($order['email']) {
+        $headers .= "\r\nReply-To: " . $order['email'];
+    }
     @mail(ADMIN_EMAIL, $subject, $body, $headers);
 }
 ?>

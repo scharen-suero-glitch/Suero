@@ -57,6 +57,12 @@ if ($image !== '' && strpos($image, SITE_URL) === 0) {
     $productData['images'] = [$image];
 }
 
+$orderMetadata = [
+    'product_slug' => $slug !== '' ? $slug : 'unknown',
+    'product_name' => $name,
+    'source' => 'e-suero.ch',
+];
+
 $params = [
     'mode' => 'payment',
     'ui_mode' => 'embedded',
@@ -71,19 +77,46 @@ $params = [
             'product_data' => $productData,
         ],
     ]],
-    'return_url' => SITE_URL . '/stripe/success.html?session_id={CHECKOUT_SESSION_ID}' . ($slug ? '&product=' . $slug : ''),
+    // Order-on-demand business model: capture who bought what directly on the
+    // Checkout Session and the PaymentIntent, so it's visible in the Stripe
+    // Dashboard and in stripe/success.php without needing a webhook/database.
+    'metadata' => $orderMetadata,
+    'payment_intent_data' => [
+        'metadata' => $orderMetadata,
+        'description' => "E-Suero Bestellung: {$name}",
+    ],
+    // Collects the customer's email as part of Checkout and attaches a Customer
+    // record to the payment, so an order always has contact info to follow up on.
+    'customer_creation' => 'always',
+    'return_url' => SITE_URL . '/stripe/success.php?session_id={CHECKOUT_SESSION_ID}',
 ];
 
 $response = stripeRequest('/checkout/sessions', $params);
 
 if (isset($response['error'])) {
+    logStripeError('create-checkout-session', $response['error'], ['name' => $name, 'price' => $priceRappen, 'slug' => $slug]);
     http_response_code(502);
-    echo json_encode(['error' => 'Zahlung konnte nicht gestartet werden. Bitte versuchen Sie es erneut.']);
+    echo json_encode(['error' => 'Zahlung konnte nicht gestartet werden. Bitte versuchen Sie es erneut oder kontaktieren Sie uns direkt.']);
     exit;
 }
 
 echo json_encode(['clientSecret' => $response['client_secret']]);
 exit;
+
+/**
+ * Best-effort local error log (never exposed to the client). Silently no-ops
+ * if the directory isn't writable — logging must never break checkout.
+ */
+function logStripeError($context, $error, $extra = []) {
+    $line = sprintf(
+        "[%s] %s: %s | %s\n",
+        date('Y-m-d H:i:s'),
+        $context,
+        is_string($error) ? $error : json_encode($error),
+        json_encode($extra)
+    );
+    @file_put_contents(__DIR__ . '/error.log', $line, FILE_APPEND | LOCK_EX);
+}
 
 /**
  * Minimal dependency-free Stripe REST call (no Composer/SDK required on shared hosting).

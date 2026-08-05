@@ -19,6 +19,7 @@ ErrorDocument 404 /index.html
 # MIME types
 <IfModule mod_mime.c>
   AddType font/woff2 .woff2
+  AddType image/webp .webp
 </IfModule>
 <Files "manifest.json">
   <IfModule mod_headers.c>
@@ -32,18 +33,29 @@ ErrorDocument 404 /index.html
 </IfModule>
 
 # Caching
+# Every CSS/JS/image reference on the site carries a ?v=YYYYMMDD cache-busting
+# query string (see master_catalog.py / the <link>/<script> tags), so it's
+# safe to cache these for a full year: a future content change always ships
+# with a new version number, forcing a fresh fetch — nothing here can ever
+# go stale in a visitor's cache by accident.
 <IfModule mod_expires.c>
   ExpiresActive On
-  ExpiresByType text/css "access plus 30 days"
-  ExpiresByType application/javascript "access plus 30 days"
-  ExpiresByType image/svg+xml "access plus 30 days"
-  ExpiresByType image/webp "access plus 30 days"
-  ExpiresByType image/png "access plus 30 days"
-  ExpiresByType image/jpeg "access plus 30 days"
-  ExpiresByType image/x-icon "access plus 30 days"
+  ExpiresByType text/css "access plus 1 year"
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType image/x-icon "access plus 1 year"
   ExpiresByType font/woff2 "access plus 1 year"
   ExpiresByType application/manifest+json "access plus 7 days"
   ExpiresByType text/html "access plus 0 seconds"
+</IfModule>
+
+<IfModule mod_headers.c>
+  <FilesMatch "\.(css|js|jpg|jpeg|png|webp|svg|woff2)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
 </IfModule>
 
 # Security headers

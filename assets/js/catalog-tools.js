@@ -246,7 +246,12 @@
 
   function buildToolbar(container) {
     var toolbar = document.createElement("div");
-    toolbar.className = "catalog-toolbar reveal";
+    // No ".reveal" class: this toolbar is created after main.js's scroll-reveal
+    // observer already ran its one-time setup, so it would never be observed
+    // and would stay permanently invisible (opacity:0) while still reserving
+    // its full height — leaving a large empty gap at the top of any product
+    // panel switched to after page load (every panel except the default one).
+    toolbar.className = "catalog-toolbar";
     toolbar.innerHTML =
       '<input type="search" class="catalog-search" placeholder="Suche nach Marke, Modell, Reichweite …" aria-label="Fahrzeuge durchsuchen">' +
       '<select class="catalog-filter" data-filter="speed" aria-label="Höchstgeschwindigkeit filtern">' +

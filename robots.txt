@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /legal/privacy.html
+Disallow: /legal/impressum.html
+Disallow: /legal/terms.html
+
+Sitemap: https://e-suero.ch/sitemap.xml

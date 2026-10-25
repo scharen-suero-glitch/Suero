@@ -45,6 +45,37 @@ if ($priceRappen > 5000000) {
     exit;
 }
 
+// Server-side price whitelist: never trust unit_amount as sent by the
+// browser on its own. A visitor could open devtools and rewrite the
+// fetch body before it reaches us, so for every product we *can* verify
+// (currently E-Roller — see stripe/catalog-eroller.php) we look the price
+// up ourselves and reject anything that doesn't match a real, published
+// price for that slug. Other categories don't have a catalog file yet,
+// so they fall through unchecked for now (same behaviour as before) —
+// extend the $priceCatalogs list below as each category gets one.
+$priceCatalogs = [
+    __DIR__ . '/catalog-eroller.php',
+];
+$knownProduct = null;
+foreach ($priceCatalogs as $catalogFile) {
+    if (!is_file($catalogFile)) continue;
+    $catalog = require $catalogFile;
+    if (isset($catalog[$slug])) {
+        $knownProduct = $catalog[$slug];
+        break;
+    }
+}
+if ($knownProduct !== null) {
+    if (!in_array($priceRappen, $knownProduct['prices'], true)) {
+        logStripeError('create-checkout-session', 'price mismatch for known product', [
+            'slug' => $slug, 'submitted_price' => $priceRappen, 'valid_prices' => $knownProduct['prices'],
+        ]);
+        http_response_code(400);
+        echo json_encode(['error' => 'Preis konnte nicht bestätigt werden. Bitte laden Sie die Seite neu und versuchen Sie es erneut.']);
+        exit;
+    }
+}
+
 $productData = ['name' => $name];
 if ($image !== '' && strpos($image, SITE_URL) === 0) {
     $productData['images'] = [$image];

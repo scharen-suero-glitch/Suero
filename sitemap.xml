@@ -36,6 +36,11 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://e-suero.ch/verkauf/index.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
     <loc>https://e-suero.ch/verkauf/gebraucht-geprueft.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -64,5 +69,60 @@
     <loc>https://e-suero.ch/fahrzeuge/e-roller.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://e-suero.ch/fahrzeuge/e-roller/tsc-next-one-nx1-7i.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://e-suero.ch/fahrzeuge/e-roller/tsc-next-one-nx1-7i-45.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://e-suero.ch/fahrzeuge/e-roller/next-nx1.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://e-suero.ch/fahrzeuge/e-roller/cityflizzer-tsc.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://e-suero.ch/fahrzeuge/e-roller/next-nx-plus.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://e-suero.ch/fahrzeuge/e-roller/chopper-6-0-pro.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://e-suero.ch/fahrzeuge/e-roller/fatbob-pro.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://e-suero.ch/fahrzeuge/e-roller/next-nx-plus-45.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://e-suero.ch/fahrzeuge/e-roller/next-nx1-45.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://e-suero.ch/fahrzeuge/e-roller/fantic-issimo-city-escooter-l1.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://e-suero.ch/fahrzeuge/e-roller/chopper-6-0-pro-45.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
 </urlset>

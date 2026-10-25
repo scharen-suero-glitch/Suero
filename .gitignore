@@ -3,3 +3,4 @@ stripe/*.log
 .DS_Store
 __MACOSX/
 verkauf/*.log
+__pycache__/

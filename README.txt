@@ -168,8 +168,8 @@ PENDIENTE — LO QUE TODAVÍA NO ESTÁ TERMINADO
   City Cruiser, Offroad Force) — NO son datos reales, hace falta que me
   proporciones el catálogo real antes de publicarlos como venta.
 
-- E-Minicar: falta la foto real del producto y el precio real (ahora
-  mismo muestra "Preis auf Anfrage").
+- E-Minicar: la foto real ya está publicada. Sigue faltando el precio
+  real (ahora mismo muestra "Preis auf Anfrage").
 
 - Portada de la sección de venta (verkauf/index.html): ya usa tu imagen
   real, pero si cambias esa imagen más adelante, solo hace falta

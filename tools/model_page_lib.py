@@ -452,11 +452,12 @@ def build_page(p, category, products):
         og_image = f"{SITE}/assets/images/logo-mark-320.png"
     a1 = is_a1(p)
     speed = sd.get("Höchstgeschwindigkeit", "")
-    title = f"{p['name']} kaufen Freienbach SZ | {speed} {category['name']} — E-Suero"
+    title = p.get("seo_title") or f"{p['name']} kaufen Freienbach SZ | {speed} {category['name']} — E-Suero"
     price_phrase = chf(p['price_rappen']) + "." if has_price else "Preis auf Anfrage."
-    description = (f"{p['name']} bei E-Suero in Freienbach SZ: {speed}, {p['voltage']}, "
-                    f"{price_phrase} {'Kat. A1' if a1 else ''} "
-                    f"Beratung, Probefahrt und Kauf direkt beim Fachhändler.").replace("  ", " ")
+    description = p.get("meta_description") or (
+        f"{p['name']} bei E-Suero in Freienbach SZ: {speed}, {p['voltage']}, "
+        f"{price_phrase} {'Kat. A1' if a1 else ''} "
+        f"Beratung, Probefahrt und Kauf direkt beim Fachhändler.").replace("  ", " ")
 
     benefits = []
     fs_lower = sd.get("Führerschein", "").lower()
@@ -578,7 +579,7 @@ def build_page(p, category, products):
         badge0=esc(p["badges"][0]),
         voltage=esc(p["voltage"]), colors_line=colors_line,
         variant_select=variant_select, price_label=esc(price_label),
-        needs_text=needs_text(p, category),
+        needs_text=esc(p["lead_text"]) if p.get("lead_text") else needs_text(p, category),
         benefits=benefits_html,
         buy_button=buy_button,
         marketing_section=marketing_section,

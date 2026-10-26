@@ -18,6 +18,9 @@ PRODUCTS = [
         "price_rappen": None,
         "variants": [],
         "no_photo": True,
+        "seo_title": "NEXT ONE TSC e-Minicar 25 km/h kaufen | E-Suero Freienbach",
+        "meta_description": "NEXT ONE TSC e-Minicar 25 km/h Lithium Edition bei E-Suero Freienbach: Lithium-Akku, Hill Assist, bis 140 km Reichweite laut Hersteller. Preis auf Anfrage — persönliche Beratung vor Ort.",
+        "lead_text": "Geschlossenes Elektrofahrzeug mit Lithium-Akku statt Blei-Akku, Hill Assist und Komfort-Ausstattung ab Werk — für Wetterschutz im Alltag ohne grossen Aufwand.",
         "marketing_intro": (
             "Ob zum Einkaufen, für einen Besuch bei Freunden oder für die täglichen Wege: Der "
             "NEXT ONE TSC e-Minicar mit 25 km/h verbindet einfache Bedienung mit moderner "

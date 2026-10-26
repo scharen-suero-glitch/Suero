@@ -78,6 +78,8 @@ PRODUCTS = [
             ("eminicar-detail-cockpit.jpg", "Cockpit mit Digitalanzeige"),
             ("eminicar-detail-heck-offen.jpg", "Heckansicht mit geöffneten Türen"),
             ("eminicar-detail-ladeanschluss.jpg", "Ladeanschluss"),
+            ("eminicar-detail-scheibenwischer.jpg", "Scheibenwischer"),
+            ("eminicar-detail-spoiler.jpg", "Heckspoiler"),
         ],
         "spec": [
             ("Garantie", "2 Jahre"),
@@ -151,6 +153,8 @@ PRODUCTS = [
             ("eminicar-detail-cockpit.jpg", "Cockpit mit Digitalanzeige"),
             ("eminicar-detail-heck-offen.jpg", "Heckansicht mit geöffneten Türen"),
             ("eminicar-detail-ladeanschluss.jpg", "Ladeanschluss"),
+            ("eminicar-detail-scheibenwischer.jpg", "Scheibenwischer"),
+            ("eminicar-detail-spoiler.jpg", "Heckspoiler"),
         ],
         "spec": [
             ("Garantie", "2 Jahre"),

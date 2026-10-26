@@ -93,8 +93,14 @@ campo `spec` existente del mismo producto.
   reales de interior/detalle (Stauraum, Türverkleidung, Cockpit, Heckansicht mit geöffneten
   Türen, Ladeanschluss), recibidas como archivos adjuntos reales. Dos fotos más (detalle de
   limpiaparabrisas y de spoiler trasero) se pegaron directamente en el chat en el mismo turno y,
-  igual que antes, no quedaron guardadas como archivo — no publicadas, pendientes de reenvío
-  como adjunto.
+  igual que antes, no quedaron guardadas como archivo — reenviadas poco después como adjuntos
+  reales y ya publicadas (ver entrada siguiente).
+
+## Actualización 2026-10-26 (sesión posterior 3): limpiaparabrisas y spoiler, reenviados
+
+- Las 2 fotos que faltaban (Scheibenwischer/limpiaparabrisas, Heckspoiler) llegaron como archivos
+  adjuntos reales esta vez — añadidas a la galería "Innenraum & Details" de ambas fichas de
+  E-Minicar (ahora 7 fotos en cada una).
 - Nuevo campo de catálogo `gallery_imgs` y sección correspondiente en
   `tools/model_page_lib.py` — reutilizable para cualquier producto futuro que tenga fotos de
   detalle, no solo E-Minicar.

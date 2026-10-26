@@ -10,20 +10,20 @@ fahrzeuge/e-roller/<slug>.html).
 """
 
 CATEGORIES = [
-    ("E-Roller", "fahrzeuge/e-roller.html"),
-    ("E-Motorräder", "fahrzeuge/e-motorraeder.html"),
-    ("E-Scooter", "fahrzeuge/e-scooter.html"),
-    ("E-Bike", "fahrzeuge/e-bike.html"),
-    ("E-Minicar", "fahrzeuge/e-minicar.html"),
+    ("E-Roller", "fahrzeuge/e-roller.html", "nav_e_roller"),
+    ("E-Motorräder", "fahrzeuge/e-motorraeder.html", "nav_e_motorraeder"),
+    ("E-Scooter", "fahrzeuge/e-scooter.html", "nav_e_scooter"),
+    ("E-Bike", "fahrzeuge/e-bike.html", "nav_e_bike"),
+    ("E-Minicar", "fahrzeuge/e-minicar.html", "nav_e_minicar"),
 ]
 
 
 def nav_links(base, current_href=None):
     links = []
-    for name, href in CATEGORIES:
+    for name, href, i18n_key in CATEGORIES:
         full = base + href
         active = ' aria-current="page"' if href == current_href else ""
-        links.append(f'<a href="{full}"{active}>{name}</a>')
+        links.append(f'<a href="{full}"{active} data-i18n="{i18n_key}">{name}</a>')
     return "\n      ".join(links)
 
 
@@ -40,7 +40,7 @@ def header_html(base, cta_href, current_href=None):
 
     <nav class="nav-desktop" aria-label="Fahrzeug-Kategorien">
       {nav_links(base, current_href)}
-      <a href="{base}leistungen/werkstatt.html" class="nav-werkstatt-link">Werkstatt</a>
+      <a href="{base}leistungen/werkstatt.html" class="nav-werkstatt-link" data-i18n="nav_werkstatt_short">Werkstatt</a>
     </nav>
 
     <div class="header-actions">
@@ -64,19 +64,19 @@ def header_html(base, cta_href, current_href=None):
 
 def mobile_nav_html(base, cta_href, current_href=None):
     cat_links = "\n  ".join(
-        f'<a href="{base}{href}">{name}</a>' for name, href in CATEGORIES
+        f'<a href="{base}{href}" data-i18n="{i18n_key}">{name}</a>' for name, href, i18n_key in CATEGORIES
     )
     return f"""<div class="mobile-nav">
-  <a href="{base}verkauf/index.html">Alle Fahrzeuge</a>
+  <a href="{base}verkauf/index.html" data-i18n="nav_all_vehicles">Alle Fahrzeuge</a>
   {cat_links}
-  <a href="{base}leistungen/werkstatt.html">Werkstatt</a>
+  <a href="{base}leistungen/werkstatt.html" data-i18n="nav_werkstatt_short">Werkstatt</a>
   <a href="{cta_href}" data-reason="probefahrt" class="btn btn-primary" data-i18n="nav_cta_probefahrt">Probefahrt anfragen</a>
 </div>"""
 
 
 def footer_html(base):
     cat_links = "\n        ".join(
-        f'<a href="{base}{href}">{name}</a>' for name, href in CATEGORIES
+        f'<a href="{base}{href}" data-i18n="{i18n_key}">{name}</a>' for name, href, i18n_key in CATEGORIES
     )
     return f"""<footer class="site-footer">
   <div class="container">
@@ -89,7 +89,7 @@ def footer_html(base):
           </picture>
           <b>E</b>-SUERO
         </a>
-        <p>Premium Elektrofahrzeuge in Freienbach SZ — E-Roller, E-Motorräder, E-Scooter, E-Bike und E-Minicar.</p>
+        <p data-i18n="footer_sales_desc">Premium Elektrofahrzeuge in Freienbach SZ — E-Roller, E-Motorräder, E-Scooter, E-Bike und E-Minicar.</p>
         <p class="footer-nap">
           Schwerzistrasse 34, 8807 Freienbach SZ<br>
           <a href="tel:+41796689088">+41 79 668 90 88</a> · <a href="mailto:info@e-suero.ch">info@e-suero.ch</a>
@@ -101,28 +101,28 @@ def footer_html(base):
         </div>
       </div>
       <div class="footer-col">
-        <h3>Fahrzeuge</h3>
+        <h3 data-i18n="footer_vehicles_h">Fahrzeuge</h3>
         {cat_links}
       </div>
       <div class="footer-col">
-        <h3>Kauf</h3>
-        <a href="{base}verkauf/index.html">Alle Fahrzeuge</a>
-        <a href="{base}verkauf/bestell-lieferprozess.html">Bestell- &amp; Lieferprozess</a>
-        <a href="{base}verkauf/gebraucht-geprueft.html">Geprüft gebraucht</a>
+        <h3 data-i18n="footer_buy_h">Kauf</h3>
+        <a href="{base}verkauf/index.html" data-i18n="nav_all_vehicles">Alle Fahrzeuge</a>
+        <a href="{base}verkauf/bestell-lieferprozess.html" data-i18n="footer_order_delivery">Bestell- &amp; Lieferprozess</a>
+        <a href="{base}verkauf/gebraucht-geprueft.html" data-i18n="used_catalog_link">Geprüft gebraucht</a>
       </div>
       <div class="footer-col">
-        <h3>Rechtliches</h3>
-        <a href="{base}legal/privacy.html">Datenschutz</a>
-        <a href="{base}legal/impressum.html">Impressum</a>
-        <a href="{base}legal/terms.html">AGB</a>
+        <h3 data-i18n="footer_col3_h">Rechtliches</h3>
+        <a href="{base}legal/privacy.html" data-i18n="fc3_1">Datenschutz</a>
+        <a href="{base}legal/impressum.html" data-i18n="fc3_2">Impressum</a>
+        <a href="{base}legal/terms.html" data-i18n="fc3_3">AGB</a>
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© <span id="year">2026</span> E-Suero. Alle Rechte vorbehalten.</span>
+      <span>© <span id="year">2026</span> E-Suero. <span data-i18n="footer_rights">Alle Rechte vorbehalten.</span></span>
       <div class="legal-links">
-        <a href="{base}legal/privacy.html">Datenschutz</a>
-        <a href="{base}legal/impressum.html">Impressum</a>
-        <a href="{base}legal/terms.html">AGB</a>
+        <a href="{base}legal/privacy.html" data-i18n="fc3_1">Datenschutz</a>
+        <a href="{base}legal/impressum.html" data-i18n="fc3_2">Impressum</a>
+        <a href="{base}legal/terms.html" data-i18n="fc3_3">AGB</a>
       </div>
     </div>
   </div>

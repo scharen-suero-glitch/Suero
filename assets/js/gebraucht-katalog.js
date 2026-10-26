@@ -139,6 +139,50 @@
     });
   }
 
+  var CAT_NAME_KEY = {
+    "E-Scooter": "nav_e_scooter",
+    "E-Bike": "nav_e_bike",
+    "E-Roller": "nav_e_roller",
+    "E-Motorräder": "nav_e_motorraeder"
+  };
+
+  function currentLang() {
+    try {
+      var l = localStorage.getItem("esuero_lang");
+      if (["de", "en", "it", "es"].indexOf(l) > -1) return l;
+    } catch (e) {}
+    return "de";
+  }
+
+  function t(key, fallback) {
+    var dict = (window.__ESUERO_I18N__ || {})[currentLang()] || {};
+    return dict[key] !== undefined ? dict[key] : fallback;
+  }
+
+  function catName(cat) {
+    var key = CAT_NAME_KEY[cat.name];
+    return key ? t(key, cat.name) : cat.name;
+  }
+
+  function condLabelFor(condition) {
+    if (!condition) return "";
+    var key = { "like-new": "cond_like_new", "very-good": "cond_very_good", "good": "cond_good", "fair": "cond_fair" }[condition];
+    return key ? t(key, CONDITIONS[condition]) : CONDITIONS[condition];
+  }
+
+  function applyI18nScoped(el) {
+    el.querySelectorAll("[data-i18n]").forEach(function (node) {
+      var key = node.getAttribute("data-i18n");
+      var val = t(key, undefined);
+      if (val !== undefined) node.textContent = val;
+    });
+    el.querySelectorAll("[data-i18n-html]").forEach(function (node) {
+      var key = node.getAttribute("data-i18n-html");
+      var val = t(key, undefined);
+      if (val !== undefined) node.innerHTML = val;
+    });
+  }
+
   function findCategory(catSlug) {
     return CATALOG[catSlug] || null;
   }
@@ -180,8 +224,8 @@
   }
 
   function renderCategories() {
-    setCrumbs([{ label: "Gebraucht & Geprüft", href: "#/" }]);
-    setHead("Verkauf", "Gebraucht & Geprüft", "Sorgfältig geprüfte Gebrauchtfahrzeuge aus unserer Werkstatt in Freienbach — nach Kategorie wählen.",
+    setCrumbs([{ label: t("used_catalog_title", "Gebraucht & Geprüft"), href: "#/" }]);
+    setHead(t("used_sales_eyebrow", "Verkauf"), t("used_catalog_title", "Gebraucht & Geprüft"), t("used_home_sub", "Sorgfältig geprüfte Gebrauchtfahrzeuge aus unserer Werkstatt in Freienbach — nach Kategorie wählen."),
       "Gebrauchte E-Fahrzeuge kaufen Freienbach SZ | E-Suero",
       "Geprüfte Gebraucht-Elektrofahrzeuge von E-Suero in Freienbach SZ: E-Scooter, E-Bikes, E-Roller und Elektromotorräder nach Marke und Modell kaufen.");
     var html = '<div class="value-grid reveal-stagger is-visible">';
@@ -189,8 +233,8 @@
       var cat = CATALOG[slug];
       html += '<a class="value-card catalog-card" href="#/' + slug + '">' +
         '<div class="product-media"><img src="' + CATEGORY_IMAGES[slug] + '" alt="' + esc(cat.name) + '" width="1200" height="800" loading="lazy"></div>' +
-        "<h3>" + esc(cat.name) + "</h3>" +
-        "<p>" + esc(CATEGORY_DESC[slug]) + "</p>" +
+        "<h3>" + esc(catName(cat)) + "</h3>" +
+        "<p>" + esc(t("cat_desc_" + slug, CATEGORY_DESC[slug])) + "</p>" +
         "</a>";
     });
     html += "</div>";
@@ -200,17 +244,19 @@
   function renderBrands(catSlug) {
     var cat = findCategory(catSlug);
     if (!cat) { renderCategories(); return; }
+    var catLabel = catName(cat);
     setCrumbs([
-      { label: "Gebraucht & Geprüft", href: "#/" },
-      { label: cat.name, href: "#/" + catSlug }
+      { label: t("used_catalog_title", "Gebraucht & Geprüft"), href: "#/" },
+      { label: catLabel, href: "#/" + catSlug }
     ]);
-    setHead("Gebraucht & Geprüft", cat.name, "Marke wählen.",
+    setHead(t("used_catalog_title", "Gebraucht & Geprüft"), catLabel, t("used_pick_brand", "Marke wählen."),
       cat.name + " gebraucht kaufen Freienbach SZ | E-Suero",
       "Gebrauchte " + cat.name + " geprüft und einsatzbereit bei E-Suero in Freienbach SZ — Marke wählen und passendes Modell finden.");
 
     if (!cat.brands.length) {
-      root.innerHTML = '<div class="catalog-empty"><p>Diese Kategorie wird in Kürze mit Marken und Modellen befüllt. Bitte kontaktieren Sie uns direkt für aktuelle ' + esc(cat.name) + '-Angebote.</p>' +
-        '<a href="../index.html#contact" class="btn btn-ghost btn-sm">Kontakt aufnehmen</a></div>';
+      var emptyMsg = t("used_cat_empty", "Diese Kategorie wird in Kürze mit Marken und Modellen befüllt. Bitte kontaktieren Sie uns direkt für aktuelle %CAT%-Angebote.").replace("%CAT%", esc(catLabel));
+      root.innerHTML = '<div class="catalog-empty"><p>' + emptyMsg + '</p>' +
+        '<a href="../index.html#contact" class="btn btn-ghost btn-sm">' + esc(t("used_contact_cta", "Kontakt aufnehmen")) + '</a></div>';
       return;
     }
 
@@ -220,10 +266,10 @@
       var count = b.models.length;
       html += '<a class="brand-card" href="#/' + catSlug + "/" + bSlug + '">' +
         "<h3>" + esc(b.name) + "</h3>" +
-        '<span class="brand-card-count">' + count + (count === 1 ? " Modell" : " Modelle") + "</span>" +
+        '<span class="brand-card-count">' + count + " " + esc(count === 1 ? t("used_model_singular", "Modell") : t("used_model_plural", "Modelle")) + "</span>" +
         "</a>";
     });
-    html += '</div><p class="catalog-note">+ Weitere Marken folgen in Kürze.</p>';
+    html += '</div><p class="catalog-note">+ ' + esc(t("used_more_brands", "Weitere Marken folgen in Kürze.")) + '</p>';
     root.innerHTML = html;
   }
 
@@ -232,24 +278,26 @@
     if (!cat) { renderCategories(); return; }
     var b = findBrand(cat, brandSlug);
     if (!b) { renderBrands(catSlug); return; }
+    var catLabel = catName(cat);
     setCrumbs([
-      { label: "Gebraucht & Geprüft", href: "#/" },
-      { label: cat.name, href: "#/" + catSlug },
+      { label: t("used_catalog_title", "Gebraucht & Geprüft"), href: "#/" },
+      { label: catLabel, href: "#/" + catSlug },
       { label: b.name, href: "#/" + catSlug + "/" + brandSlug }
     ]);
-    setHead(cat.name, b.name, "Modell wählen.",
+    setHead(catLabel, b.name, t("used_pick_model", "Modell wählen."),
       b.name + " " + cat.name + " gebraucht kaufen | E-Suero Freienbach SZ",
       "Geprüfte gebrauchte " + b.name + " " + cat.name + " bei E-Suero in Freienbach SZ — alle verfügbaren Modelle im Überblick.");
 
     var html = '<div class="model-grid is-visible">';
     b.models.forEach(function (mo) {
       var mSlug = slugify(mo.name);
-      var condLabel = mo.condition ? CONDITIONS[mo.condition] : "";
+      var condLabel = condLabelFor(mo.condition);
+      var desc = mo.desc ? t("xiaomi_desc_" + mo.name, mo.desc) : "";
       html += '<a class="model-card" href="#/' + catSlug + "/" + brandSlug + "/" + mSlug + '">' +
         (mo.image ? '<div class="product-media"><img src="' + esc(mo.image) + '" alt="' + esc(mo.name) + '" width="960" height="640" loading="lazy"></div>' : "") +
         "<h3>" + esc(mo.name) + "</h3>" +
-        (mo.desc ? '<p class="model-desc">' + esc(mo.desc) + "</p>" : "") +
-        (condLabel ? '<span class="badge ok">' + esc(condLabel) + "</span>" : '<span class="badge">Zustand auf Anfrage</span>') +
+        (desc ? '<p class="model-desc">' + esc(desc) + "</p>" : "") +
+        (condLabel ? '<span class="badge ok">' + esc(condLabel) + "</span>" : '<span class="badge">' + esc(t("used_cond_inquiry", "Zustand auf Anfrage")) + "</span>") +
         "</a>";
     });
     html += "</div>";
@@ -264,34 +312,37 @@
     var mo = findModel(b, modelSlug);
     if (!mo) { renderModels(catSlug, brandSlug); return; }
 
+    var catLabel = catName(cat);
     setCrumbs([
-      { label: "Gebraucht & Geprüft", href: "#/" },
-      { label: cat.name, href: "#/" + catSlug },
+      { label: t("used_catalog_title", "Gebraucht & Geprüft"), href: "#/" },
+      { label: catLabel, href: "#/" + catSlug },
       { label: b.name, href: "#/" + catSlug + "/" + brandSlug },
       { label: mo.name, href: "#/" + catSlug + "/" + brandSlug + "/" + modelSlug }
     ]);
-    var detailDesc = (mo.desc ? mo.desc + " " : "") + "Geprüft und einsatzbereit — gebraucht kaufen bei E-Suero in Freienbach SZ.";
+    var desc = mo.desc ? t("xiaomi_desc_" + mo.name, mo.desc) : "";
+    var detailDesc = (desc ? desc + " " : "") + "Geprüft und einsatzbereit — gebraucht kaufen bei E-Suero in Freienbach SZ.";
     var fullModelName = mo.name.toLowerCase().indexOf(b.name.toLowerCase()) === 0 ? mo.name : b.name + " " + mo.name;
-    setHead(cat.name + " · " + b.name, mo.name, "",
+    setHead(catLabel + " · " + b.name, mo.name, "",
       fullModelName + " gebraucht kaufen Freienbach SZ | E-Suero",
       detailDesc);
 
-    var condLabel = mo.condition ? CONDITIONS[mo.condition] : "Auf Anfrage";
-    var badges = '<span class="badge ok">Zustand: ' + esc(condLabel) + "</span>";
-    if (mo.controlled) badges += '<span class="badge ok">✓ Kontrolliert</span>';
-    if (mo.approved) badges += '<span class="badge ok">✓ Geprüft</span>';
+    var condLabel = mo.condition ? condLabelFor(mo.condition) : t("used_cond_onrequest", "Auf Anfrage");
+    var badges = '<span class="badge ok">' + esc(t("used_cond_prefix", "Zustand:")) + " " + esc(condLabel) + "</span>";
+    if (mo.controlled) badges += '<span class="badge ok">✓ ' + esc(t("used_badge_controlled", "Kontrolliert")) + "</span>";
+    if (mo.approved) badges += '<span class="badge ok">✓ ' + esc(t("used_badge_approved", "Geprüft")) + "</span>";
 
     root.innerHTML =
       '<div class="tilt-card catalog-detail"><div class="tilt-card-inner">' +
       (mo.image ? '<div class="product-media"><img src="' + esc(mo.image) + '" alt="' + esc(mo.name) + '" width="960" height="640" loading="eager"></div>' : "") +
-      '<span class="eyebrow">' + esc(cat.name) + "</span>" +
+      '<span class="eyebrow">' + esc(catLabel) + "</span>" +
       "<h2>" + esc(b.name) + " — " + esc(mo.name) + "</h2>" +
-      (mo.desc ? '<p class="model-desc">' + esc(mo.desc) + "</p>" : "") +
-      '<span class="price">Preis auf Anfrage</span>' +
+      (desc ? '<p class="model-desc">' + esc(desc) + "</p>" : "") +
+      '<span class="price">' + esc(t("p_u3_p", "Preis auf Anfrage")) + "</span>" +
       '<div class="catalog-badges">' + badges + "</div>" +
-      '<a href="../index.html#contact" class="btn btn-primary magnetic">Jetzt anfragen</a>' +
+      '<a href="../index.html#contact" class="btn btn-primary magnetic">' + esc(t("request_now", "Jetzt anfragen")) + "</a>" +
       trustBlockHtml() +
       "</div></div>";
+    applyI18nScoped(root);
   }
 
   function trustBlockHtml() {
@@ -299,15 +350,15 @@
       '<div class="trust-block-head">' +
       '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14.7 6.3a3 3 0 0 0-4.24 4.24L4 17v3h3l6.46-6.46a3 3 0 0 0 4.24-4.24l-2.3-2.3-1.4 1.4 1.4 1.4-1.06 1.06-1.4-1.4 1.4-1.4-2.3-2.3Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>' +
       "<div>" +
-      "<h3>Auch nach dem Kauf für Sie da.</h3>" +
-      "<p>Bei E-Suero haben Sie einen persönlichen Ansprechpartner und eine eigene Werkstatt in Freienbach. Ob Wartung, Reparatur oder Fragen zu Ihrem Fahrzeug: Wir unterstützen Sie auch nach der Übergabe.</p>" +
+      '<h3 data-i18n="trust_title">Auch nach dem Kauf für Sie da.</h3>' +
+      '<p data-i18n="trust_body">Bei E-Suero haben Sie einen persönlichen Ansprechpartner und eine eigene Werkstatt in Freienbach. Ob Wartung, Reparatur oder Fragen zu Ihrem Fahrzeug: Wir unterstützen Sie auch nach der Übergabe.</p>' +
       "</div></div>" +
       '<ul class="trust-block-list">' +
-      '<li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12.5l4.5 4.5L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Eigene Werkstatt in Freienbach</li>' +
-      '<li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12.5l4.5 4.5L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Persönlicher Ansprechpartner</li>' +
-      '<li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12.5l4.5 4.5L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Wartung und Reparatur vor Ort</li>' +
+      '<li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12.5l4.5 4.5L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="trust_item_workshop">Eigene Werkstatt in Freienbach</span></li>' +
+      '<li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12.5l4.5 4.5L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="trust_item_contact">Persönlicher Ansprechpartner</span></li>' +
+      '<li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12.5l4.5 4.5L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="trust_item_onsite">Wartung und Reparatur vor Ort</span></li>' +
       "</ul>" +
-      '<a href="../leistungen/werkstatt.html" class="trust-block-link">Unsere Werkstatt kennenlernen →</a>' +
+      '<a href="../leistungen/werkstatt.html" class="trust-block-link" data-i18n="trust_link">Unsere Werkstatt kennenlernen →</a>' +
       "</div>";
   }
 
@@ -328,4 +379,5 @@
 
   window.addEventListener("hashchange", routeOnNavigation);
   document.addEventListener("DOMContentLoaded", render);
+  document.addEventListener("esuero:langchange", render);
 })();

@@ -23,6 +23,15 @@ def esc(s):
     return html.escape(str(s), quote=True)
 
 
+NAME_I18N_KEY = {
+    "E-Roller": "nav_e_roller",
+    "E-Motorräder": "nav_e_motorraeder",
+    "E-Scooter": "nav_e_scooter",
+    "E-Bike": "nav_e_bike",
+    "E-Minicar": "nav_e_minicar",
+}
+
+
 def is_a1(p):
     return "Kat. A1" in p["badges"]
 
@@ -67,16 +76,16 @@ def trust_block_html(base):
           <div class="trust-block-head">
             <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14.7 6.3a3 3 0 0 0-4.24 4.24L4 17v3h3l6.46-6.46a3 3 0 0 0 4.24-4.24l-2.3-2.3-1.4 1.4 1.4 1.4-1.06 1.06-1.4-1.4 1.4-1.4-2.3-2.3Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
             <div>
-              <h3>Auch nach dem Kauf für Sie da.</h3>
-              <p>Bei E-Suero haben Sie einen persönlichen Ansprechpartner und eine eigene Werkstatt in Freienbach. Ob Wartung, Reparatur oder Fragen zu Ihrem Fahrzeug: Wir unterstützen Sie auch nach der Übergabe.</p>
+              <h3 data-i18n="trust_title">Auch nach dem Kauf für Sie da.</h3>
+              <p data-i18n="trust_body">Bei E-Suero haben Sie einen persönlichen Ansprechpartner und eine eigene Werkstatt in Freienbach. Ob Wartung, Reparatur oder Fragen zu Ihrem Fahrzeug: Wir unterstützen Sie auch nach der Übergabe.</p>
             </div>
           </div>
           <ul class="trust-block-list">
-            <li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12.5l4.5 4.5L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Eigene Werkstatt in Freienbach</li>
-            <li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12.5l4.5 4.5L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Persönlicher Ansprechpartner</li>
-            <li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12.5l4.5 4.5L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Wartung und Reparatur vor Ort</li>
+            <li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12.5l4.5 4.5L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="trust_item_workshop">Eigene Werkstatt in Freienbach</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12.5l4.5 4.5L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="trust_item_contact">Persönlicher Ansprechpartner</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12.5l4.5 4.5L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="trust_item_onsite">Wartung und Reparatur vor Ort</span></li>
           </ul>
-          <a href="{base}leistungen/werkstatt.html" class="trust-block-link">Unsere Werkstatt kennenlernen →</a>
+          <a href="{base}leistungen/werkstatt.html" class="trust-block-link" data-i18n="trust_link">Unsere Werkstatt kennenlernen →</a>
         </div>"""
 
 
@@ -114,8 +123,102 @@ def color_swatches_html(p, img_base=None):
     return "".join(out)
 
 
+SPEC_LABEL_KEYS = {
+    'Höchstgeschwindigkeit': 'spec_top_speed',
+    'Führerschein': 'spec_license',
+    'Akkukapazität / Typ': 'spec_battery_cap',
+    'Reichweite (pro Akkuladung)': 'spec_range',
+    'Gewicht': 'spec_weight',
+    'Ladezeit': 'spec_charge_time',
+    'Nutzlast': 'spec_payload',
+    'Kontrollschild / Fahrzeugausweis': 'spec_plate',
+    'Akkuleistung': 'spec_voltage',
+    'Garantie': 'spec_warranty',
+    'Optionales Zubehör': 'spec_accessories',
+    'USB-Schnittstelle': 'spec_usb',
+    'Alarmanlage': 'spec_alarm',
+    'Länge / Breite / Höhe': 'spec_dimensions',
+    'Fernbedienung (Keyless Drive)': 'spec_remote',
+    'Motorleistung': 'spec_motor_power',
+    'Bremse vorne / hinten': 'spec_brakes',
+    'Maximale Steigung': 'spec_max_incline',
+    'Typengenehmigung': 'spec_type_approval',
+    'Rückwärtsgang': 'spec_reverse',
+    'Plätze': 'spec_seats',
+    'Motor Nenn- / Spitzenleistung': 'spec_motor_power_peak',
+    'Typengeprüft in CH': 'spec_ch_tested',
+    'Motor': 'spec_motor',
+    'Batterie': 'spec_battery',
+    'Rahmen': 'spec_frame',
+    'Schaltung': 'spec_gears',
+    'Bremsen': 'spec_brakes_generic',
+    'Reifen': 'spec_tires',
+    'Kontrollschild': 'spec_plate_short',
+    'Herstellergarantie': 'spec_mfr_warranty',
+    'Display': 'spec_display',
+    'Gabel': 'spec_fork',
+    'Frontlicht': 'spec_front_light',
+    'Rücklicht': 'spec_rear_light',
+    'Felgen': 'spec_rims',
+    'Bremsen / System': 'spec_brake_system',
+    'Carplay Display (Apple & Android)': 'spec_carplay',
+    'Bremse vorne und hinten': 'spec_brakes_fr_und',
+    'Bereifung vorne': 'spec_tire_front',
+    'Bereifung hinten': 'spec_tire_rear',
+    'Länge / Breite / Sitzhöhe': 'spec_dim_seat',
+    'Alarmanlage / Bluetooth': 'spec_alarm_bt',
+    'Bereifung': 'spec_tires_generic',
+    'Reichweite': 'spec_range_short',
+    'Federung': 'spec_suspension',
+    'Farben & Zubehör': 'spec_colors_accessories',
+    'Fertigung': 'spec_manufacturing',
+    'Bremsen vorne und hinten': 'spec_brakes_fr_und2',
+    'Bordelektronik': 'spec_electronics',
+    'Alarmanlage & Hill Assist': 'spec_alarm_hillassist',
+    'Elektrische Fensterheber': 'spec_power_windows',
+    'Parksensoren & Rückfahrkamera': 'spec_parking_sensors',
+    'Zubehör': 'spec_accessories_short',
+}
+
+
+DD_VALUE_KEYS = {
+    "Serienmässig": "dd_standard",
+    "Nicht erforderlich": "dd_not_required",
+    "Erforderlich": "dd_required",
+    "Nicht verfügbar": "dd_not_available",
+    "Ja": "dd_yes",
+    "Ab 16 Jahren nicht erforderlich": "dd_none_from_16",
+    "Kat. A1 ab 15 Jahren (Unterkategorie)": "dd_a1_15_sub",
+    "Kat. A1 ab 16 Jahren": "dd_a1_16",
+    "Konfigurierbar": "dd_configurable",
+    "2 Jahre": "dd_warranty_2y",
+    "3 Jahre": "dd_warranty_3y",
+    "5 Std.": "dd_charge_5h",
+    "4–5 Std.": "dd_charge_45h",
+    "4 Std. (75% nach 2 Std.)": "dd_charge_4h75",
+    "Scheibenbremsen": "dd_disc_brakes",
+    "Zusatzakku": "dd_spare_battery",
+    "Winterreifen": "dd_winter_tyres",
+    "Zusatzakku / Winterreifen": "dd_spare_batt_wintertyres",
+    "Zusatzakku / Winterreifen / Topcase / Handyhalter": "dd_accessories_combo1",
+    "Zusatzakku / Winterreifen / Handyhalter": "dd_accessories_combo2",
+}
+
+
+def dt_html(label):
+    key = SPEC_LABEL_KEYS.get(label)
+    attr = f' data-i18n="{key}"' if key else ""
+    return f"<dt{attr}>{esc(label)}</dt>"
+
+
+def dd_html(value):
+    key = DD_VALUE_KEYS.get(value)
+    attr = f' data-i18n="{key}"' if key else ""
+    return f"<dd{attr}>{esc(value)}</dd>"
+
+
 def spec_table_html(p):
-    rows = "".join(f"<dt>{esc(k)}</dt><dd>{esc(v)}</dd>" for k, v in p["spec"])
+    rows = "".join(f"{dt_html(k)}{dd_html(v)}" for k, v in p["spec"])
     return f'<dl class="spec-list">{rows}</dl>'
 
 
@@ -256,10 +359,10 @@ def card_html(p, category, img_base=None, link_dir=None):
     media = media_html(p, category, "product-media", f'{category["name"]} kaufen Freienbach SZ', img_base=card_img_base)
     if has_price:
         buy_attrs = f'data-buy-name="{esc(p["name"])}" data-buy-price="{p["price_rappen"]}" data-buy-img="{SITE}/assets/images/products/{p["color_imgs"][p["colors"][0]]}" data-buy-slug="{p["slug"]}" '
-        buy_btn = '<button type="button" class="btn btn-primary btn-sm magnetic" data-buy-btn>Jetzt kaufen</button>'
+        buy_btn = '<button type="button" class="btn btn-primary btn-sm magnetic" data-buy-btn data-i18n="buy_now">Jetzt kaufen</button>'
     else:
         buy_attrs = ""
-        buy_btn = f'<a href="{link_base}/{p["slug"]}.html#modell-kontakt" data-reason="angebot" class="btn btn-primary btn-sm magnetic">Angebot anfragen</a>'
+        buy_btn = f'<a href="{link_base}/{p["slug"]}.html#modell-kontakt" data-reason="angebot" class="btn btn-primary btn-sm magnetic" data-i18n="cta_angebot">Angebot anfragen</a>'
     return (
         f'<div class="tilt-card"><div class="tilt-card-inner" id="p-{p["id"][2:]}" {buy_attrs}>'
         f'{media}'
@@ -271,7 +374,7 @@ def card_html(p, category, img_base=None, link_dir=None):
         f'{price_block_html(p)}'
         f'<div style="display:flex;gap:.6rem;margin-top:1.1rem;flex-wrap:wrap">'
         f'{buy_btn}'
-        f'<a href="{link_base}/{p["slug"]}.html" class="btn btn-ghost btn-sm magnetic">Modell ansehen</a>'
+        f'<a href="{link_base}/{p["slug"]}.html" class="btn btn-ghost btn-sm magnetic" data-i18n="view_model">Modell ansehen</a>'
         f'</div></div></div>'
     )
 
@@ -331,8 +434,8 @@ PAGE_TMPL = """<!doctype html>
   <div class="container">
     <nav aria-label="Breadcrumb" class="breadcrumb">
       <a href="../../index.html">E-Suero</a> ›
-      <a href="../../verkauf/index.html">Alle Fahrzeuge</a> ›
-      <a href="../../{landing}">{category_name}</a> ›
+      <a href="../../verkauf/index.html" data-i18n="nav_all_vehicles">Alle Fahrzeuge</a> ›
+      <a href="../../{landing}" data-i18n="{category_i18n_key}">{category_name}</a> ›
       <span aria-current="page">{name}</span>
     </nav>
 
@@ -347,15 +450,15 @@ PAGE_TMPL = """<!doctype html>
         <p class="model-desc" style="font-size:1rem">{voltage}{colors_line}</p>
         {variant_select}
         {price_block}
-        <p style="color:var(--c-mute);max-width:56ch">{needs_text}</p>
+        {needs_text}
         <div style="margin:1.2rem 0">
           {benefits}
         </div>
-        <p class="delivery-note"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span>Verfügbarkeit beim Lieferanten · Bearbeitung: 0–3 Werktage · <a href="../../verkauf/bestell-lieferprozess.html">Mehr zu Lieferung &amp; Abholung</a></span></p>
+        <p class="delivery-note"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span data-i18n-html="model_delivery_note_html">Verfügbarkeit beim Lieferanten · Bearbeitung: 0–3 Werktage · <a href="../../verkauf/bestell-lieferprozess.html">Mehr zu Lieferung &amp; Abholung</a></span></p>
         <div style="display:flex;gap:.8rem;margin-top:1.4rem;flex-wrap:wrap">
           {buy_button}
-          <a href="#modell-kontakt" data-reason="probefahrt" class="btn btn-ghost magnetic">Probefahrt anfragen</a>
-          <a href="#" class="btn btn-ghost magnetic" data-wa-model="{name_attr}" target="_blank" rel="noopener">Auf WhatsApp fragen</a>
+          <a href="#modell-kontakt" data-reason="probefahrt" class="btn btn-ghost magnetic" data-i18n="nav_cta_probefahrt">Probefahrt anfragen</a>
+          <a href="#" class="btn btn-ghost magnetic" data-wa-model="{name_attr}" target="_blank" rel="noopener" data-i18n="cta_whatsapp_ask">Auf WhatsApp fragen</a>
         </div>
         {trust_block}
       </div>
@@ -370,8 +473,8 @@ PAGE_TMPL = """<!doctype html>
 <section class="section-tight">
   <div class="container">
     <div class="section-head">
-      <span class="eyebrow">Praktische Angaben</span>
-      <h2>Was Sie vor dem Kauf wissen sollten.</h2>
+      <span class="eyebrow" data-i18n="model_practical_eyebrow">Praktische Angaben</span>
+      <h2 data-i18n="model_practical_h">Was Sie vor dem Kauf wissen sollten.</h2>
     </div>
     <dl class="spec-list reveal">
       {practical_rows}
@@ -382,8 +485,8 @@ PAGE_TMPL = """<!doctype html>
 <section class="section-tight">
   <div class="container">
     <div class="section-head">
-      <span class="eyebrow">Unterschiede</span>
-      <h2>Im Vergleich zu anderen Modellen.</h2>
+      <span class="eyebrow" data-i18n="model_diff_eyebrow">Unterschiede</span>
+      <h2 data-i18n="model_diff_h">Im Vergleich zu anderen Modellen.</h2>
     </div>
     <p class="reveal" style="color:var(--c-mute);max-width:72ch">{differences}</p>
   </div>
@@ -392,8 +495,8 @@ PAGE_TMPL = """<!doctype html>
 <section class="section-tight">
   <div class="container">
     <div class="section-head">
-      <span class="eyebrow">Technische Daten</span>
-      <h2>Vollständige Spezifikationen.</h2>
+      <span class="eyebrow" data-i18n="model_specs_eyebrow">Technische Daten</span>
+      <h2 data-i18n="model_specs_h">Vollständige Spezifikationen.</h2>
     </div>
     {full_spec}
     {footnotes}
@@ -403,7 +506,7 @@ PAGE_TMPL = """<!doctype html>
 <section id="faq" class="section-tight">
   <div class="container">
     <div class="section-head">
-      <span class="eyebrow">FAQ</span>
+      <span class="eyebrow" data-i18n="faq_eyebrow">FAQ</span>
       <h2>Fragen zum {name}.</h2>
     </div>
     <div class="faq-list reveal">
@@ -415,64 +518,64 @@ PAGE_TMPL = """<!doctype html>
 <section id="modell-kontakt" class="section-tight">
   <div class="container contact-wrap">
     <div>
-      <span class="eyebrow">Kontakt</span>
+      <span class="eyebrow" data-i18n="contact_eyebrow_short">Kontakt</span>
       <h2>Anfrage zum {name}.</h2>
-      <p style="color:var(--c-mute);margin-top:1rem">Beratung, Probefahrt oder ein persönliches Angebot — wir melden uns in der Regel innerhalb eines Werktags.</p>
+      <p style="color:var(--c-mute);margin-top:1rem" data-i18n="model_contact_intro">Beratung, Probefahrt oder ein persönliches Angebot — wir melden uns in der Regel innerhalb eines Werktags.</p>
       <form data-sales-form data-model="{name_attr}" class="contact-form" style="margin-top:1.6rem" novalidate>
         <input type="text" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;top:-9999px" aria-hidden="true">
         <div class="field" data-field="model-display" hidden>
-          <label>Modell</label>
+          <label data-i18n="f_model_label">Modell</label>
           <input type="text" disabled>
         </div>
         <div class="form-row">
           <div class="field">
-            <label for="sf-name-{slug}">Name</label>
+            <label for="sf-name-{slug}" data-i18n="f_name">Name</label>
             <input id="sf-name-{slug}" name="name" type="text" required>
           </div>
           <div class="field">
-            <label for="sf-reason-{slug}">Anliegen</label>
+            <label for="sf-reason-{slug}" data-i18n="f_reason_label">Anliegen</label>
             <select id="sf-reason-{slug}" name="reason">
-              <option value="beratung">Beratung</option>
-              <option value="probefahrt">Probefahrt</option>
-              <option value="angebot">Angebot</option>
+              <option value="beratung" data-i18n="f_reason_opt_beratung">Beratung</option>
+              <option value="probefahrt" data-i18n="f_reason_opt_probefahrt">Probefahrt</option>
+              <option value="angebot" data-i18n="f_reason_opt_angebot">Angebot</option>
             </select>
           </div>
         </div>
         <div class="form-row">
           <div class="field">
-            <label for="sf-phone-{slug}">Telefon</label>
+            <label for="sf-phone-{slug}" data-i18n="side_phone_l">Telefon</label>
             <input id="sf-phone-{slug}" name="phone" type="tel">
           </div>
           <div class="field">
-            <label for="sf-email-{slug}">E-Mail</label>
+            <label for="sf-email-{slug}" data-i18n="side_email_l">E-Mail</label>
             <input id="sf-email-{slug}" name="email" type="email">
           </div>
         </div>
         <div class="field" data-field="preferred_date" hidden>
-          <label for="sf-date-{slug}">Wunschtermin (optional)</label>
+          <label for="sf-date-{slug}" data-i18n="f_preferred_date_label">Wunschtermin (optional)</label>
           <input id="sf-date-{slug}" name="preferred_date" type="date">
         </div>
         <div class="field">
-          <label for="sf-message-{slug}">Nachricht (optional)</label>
+          <label for="sf-message-{slug}" data-i18n="f_message_optional">Nachricht (optional)</label>
           <textarea id="sf-message-{slug}" name="message"></textarea>
         </div>
-        <button type="submit" class="btn btn-primary magnetic">Anfrage senden</button>
+        <button type="submit" class="btn btn-primary magnetic" data-i18n="f_submit">Anfrage senden</button>
         <p class="form-status" role="status"></p>
-        <p class="form-note">Bitte Telefon oder E-Mail angeben. Eine Probefahrt-Anfrage ist noch keine bestätigte Terminbuchung.</p>
+        <p class="form-note" data-i18n="model_form_note">Bitte Telefon oder E-Mail angeben. Eine Probefahrt-Anfrage ist noch keine bestätigte Terminbuchung.</p>
       </form>
     </div>
     <div class="contact-side">
       <div class="contact-card reveal">
         <svg viewBox="0 0 24 24" fill="none"><path d="M12 21s7-6.6 7-12a7 7 0 1 0-14 0c0 5.4 7 12 7 12Z" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="9" r="2.5" stroke="currentColor" stroke-width="1.6"/></svg>
-        <div><b>Showroom</b><span>Schwerzistrasse 34, 8807 Freienbach SZ, Schweiz</span></div>
+        <div><b data-i18n="showroom_label">Showroom</b><span data-i18n="side_address_v">Schwerzistrasse 34, 8807 Freienbach SZ, Schweiz</span></div>
       </div>
       <div class="contact-card reveal">
         <svg viewBox="0 0 24 24" fill="none"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.98.36 1.94.7 2.86a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.22-1.27a2 2 0 0 1 2.11-.45c.92.34 1.88.57 2.86.7A2 2 0 0 1 22 16.92Z" stroke="currentColor" stroke-width="1.6"/></svg>
-        <div><b>Telefon</b><a href="tel:+41796689088">+41 79 668 90 88</a></div>
+        <div><b data-i18n="side_phone_l">Telefon</b><a href="tel:+41796689088">+41 79 668 90 88</a></div>
       </div>
       <div class="contact-card reveal">
         <svg viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4z" stroke="currentColor" stroke-width="1.6"/><path d="m4 6 8 7 8-7" stroke="currentColor" stroke-width="1.6"/></svg>
-        <div><b>E-Mail</b><a href="mailto:info@e-suero.ch">info@e-suero.ch</a></div>
+        <div><b data-i18n="side_email_l">E-Mail</b><a href="mailto:info@e-suero.ch">info@e-suero.ch</a></div>
       </div>
     </div>
   </div>
@@ -482,17 +585,17 @@ PAGE_TMPL = """<!doctype html>
 
 {footer}
 
-<a class="whatsapp-btn" href="https://wa.me/41796689088" target="_blank" rel="noopener" aria-label="Auf WhatsApp schreiben">
+<a class="whatsapp-btn" href="https://wa.me/41796689088" target="_blank" rel="noopener" data-i18n-aria="wa_label" aria-label="Auf WhatsApp schreiben">
   <svg viewBox="0 0 24 24" fill="none"><path d="M4 20l1.4-4.2A8 8 0 1 1 9 19l-5 1Z" stroke="currentColor" stroke-width="1.6"/></svg>
 </a>
-<button class="back-to-top" type="button" aria-label="Nach oben">
+<button class="back-to-top" type="button" data-i18n-aria="top_label" aria-label="Nach oben">
   <svg viewBox="0 0 24 24" fill="none"><path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
 </button>
 
 <script src="../../lib/gsap.min.js" defer></script>
 <script src="../../lib/ScrollTrigger.min.js" defer></script>
-<script src="../../i18n.js?v=20260819" defer></script>
-<script src="../../main.js?v=20260819" defer></script>
+<script src="../../i18n.js?v=20261101" defer></script>
+<script src="../../main.js?v=20261101" defer></script>
 <script src="../../assets/js/stripe-checkout.js?v=20260815" defer></script>
 <script src="../../assets/js/sales-form.js?v=20261029" defer></script>
 </body>
@@ -547,7 +650,7 @@ def build_page(p, category, products):
         )
         variant_select = f'<div class="variant-select" role="radiogroup" aria-label="Variante wählen">{chips}</div>'
 
-    practical_rows = "".join(f"<dt>{esc(k)}</dt><dd>{esc(v)}</dd>" for k, v in practical_info_rows(p))
+    practical_rows = "".join(f"{dt_html(k)}{dd_html(v)}" for k, v in practical_info_rows(p))
 
     faq_html_parts = []
     for i, (q, a) in enumerate(faq_items(p, category)):
@@ -605,9 +708,9 @@ def build_page(p, category, products):
         disclaimer = f'<p style="color:var(--c-mute-2);font-size:.82rem;margin-top:1rem">{esc(p.get("range_disclaimer",""))}</p>' if p.get("range_disclaimer") else ""
         marketing_section = (
             '<section class="section-tight"><div class="container">'
-            '<div class="section-head"><span class="eyebrow">Über dieses Modell</span>'
-            f'<h2>{esc(p.get("marketing_intro", ""))}</h2></div>'
-            f'<p class="reveal" style="color:var(--c-mute);max-width:72ch">{esc(p["marketing_body"])}</p>'
+            '<div class="section-head"><span class="eyebrow" data-i18n="model_about_eyebrow">Über dieses Modell</span>'
+            f'<h2 data-i18n="product_{p["slug"]}_intro">{esc(p.get("marketing_intro", ""))}</h2></div>'
+            f'<p class="reveal" style="color:var(--c-mute);max-width:72ch" data-i18n="product_{p["slug"]}_body">{esc(p["marketing_body"])}</p>'
             f'{disclaimer}'
             '</div></section>'
         )
@@ -629,12 +732,12 @@ def build_page(p, category, products):
         items = "".join(f'<p style="color:var(--c-mute-2);font-size:.78rem;margin-top:.4rem">{esc(f)}</p>' for f in p["footnotes"])
         footnotes = f'<div style="margin-top:1rem">{items}</div>'
     if has_price:
-        buy_button = '<button type="button" class="btn btn-primary magnetic" data-buy-btn>Jetzt kaufen</button>'
+        buy_button = '<button type="button" class="btn btn-primary magnetic" data-buy-btn data-i18n="buy_now">Jetzt kaufen</button>'
         buy_price_rappen = p["variants"][0]["price_rappen"] if p["variants"] else p["price_rappen"]
         buy_attrs = (f' data-buy-name="{esc(p["name"])}" data-buy-price="{buy_price_rappen}" '
                      f'data-buy-img="{SITE}/assets/images/products/{main_img}" data-buy-slug="{p["slug"]}"')
     else:
-        buy_button = '<a href="#modell-kontakt" data-reason="angebot" class="btn btn-primary magnetic">Angebot anfragen</a>'
+        buy_button = '<a href="#modell-kontakt" data-reason="angebot" class="btn btn-primary magnetic" data-i18n="cta_angebot">Angebot anfragen</a>'
         buy_attrs = ""
 
     html_out = PAGE_TMPL.format(
@@ -644,6 +747,7 @@ def build_page(p, category, products):
         jsonld=jsonld,
         header=header, mobile_nav=mobile_nav, footer=footer,
         landing=category["landing"], category_name=esc(category["name"]),
+        category_i18n_key=NAME_I18N_KEY.get(category["name"], ""),
         name=esc(p["name"]), name_attr=esc(p["name"]), buy_attrs=buy_attrs,
         IMG_BASE=IMG_BASE, media_block=media_block,
         swatches=color_swatches_html(p),
@@ -651,7 +755,11 @@ def build_page(p, category, products):
         voltage=esc(p["voltage"]), colors_line=colors_line,
         variant_select=variant_select,
         price_block=price_block_html(p, extra_style="font-size:2rem;display:block;margin:.6rem 0 1rem"),
-        needs_text=esc(p["lead_text"]) if p.get("lead_text") else needs_text(p, category),
+        needs_text=(
+            f'<p style="color:var(--c-mute);max-width:56ch" data-i18n="product_{p["slug"]}_lead">{esc(p["lead_text"])}</p>'
+            if p.get("lead_text") else
+            f'<p style="color:var(--c-mute);max-width:56ch">{needs_text(p, category)}</p>'
+        ),
         benefits=benefits_html,
         buy_button=buy_button,
         trust_block=trust_block_html("../../"),

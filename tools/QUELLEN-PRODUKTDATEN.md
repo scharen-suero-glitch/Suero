@@ -174,6 +174,46 @@ por texto, un primer intento insertó el enlace también en el pie de página (f
 duplicándolo en 3 sitios en vez de 2 en varias páginas. Detectado inmediatamente revisando el
 diff antes de continuar, y corregido a mano en los 6 archivos afectados antes de seguir.
 
+## Actualización 2026-10-26 (sesión posterior 6): traducciones EN/IT/ES en toda la sección de ventas
+
+El dueño reportó que el selector de idioma (DE/EN/IT/ES) no traducía nada en `verkauf/`,
+`fahrzeuge/*` ni en las fichas de producto — solo un par de botones cambiaban de idioma, el
+resto del texto se quedaba siempre en alemán. Confirmado: esa sección del sitio nunca tuvo
+etiquetas `data-i18n`, a diferencia de `index.html` (la portada), que sí las tenía desde antes.
+
+Se conectó y tradujo (alemán → inglés/italiano/español) prácticamente todo el texto visible de
+esa sección:
+- Menú, pie de página, desplegable de idioma, migas de pan, botones de compra/Probefahrt,
+  bloque de confianza, formularios de contacto — en `tools/sales_chrome.py` y
+  `tools/model_page_lib.py` (plantilla compartida), así que se aplica automáticamente a las 13
+  fichas de producto y a cualquier ficha futura generada con el mismo sistema.
+- Las ~54 etiquetas técnicas repetidas en las tablas de especificaciones (Höchstgeschwindigkeit,
+  Garantie, Akkuleistung, etc.) y ~20 valores de estado comunes (Serienmässig, Nicht
+  erforderlich, "2 Jahre", etc.) — detectadas automáticamente y etiquetadas en todo el sitio.
+- Todo el contenido propio de `verkauf/index.html` (hero, categorías, FAQ, proceso de compra,
+  showroom, formulario) y de las 5 páginas de categoría (héroe, introducción, CTA de usados).
+- Los textos de marketing de los 13 productos (lead/intro/cuerpo) y las 15 fichas de
+  `gebraucht-katalog.js` (4 categorías de usados + 11 modelos Xiaomi) — el texto en alemán
+  (ya aprobado en rondas anteriores) se envió a traducir sin cambiar ni un dato técnico, número
+  o afirmación; solo cambia el idioma.
+- `gebraucht-katalog.js` (el catálogo de usados, una sola página con rutas por hash) ahora
+  vuelve a dibujarse automáticamente al cambiar de idioma sin recargar la página.
+
+**Importante**: las traducciones a inglés/italiano/español fueron generadas por IA a partir del
+texto alemán ya aprobado — no son traducciones humanas certificadas. Si se van a usar para
+marketing oficial o en países donde el error de traducción tiene consecuencia legal, recomiendo
+que alguien con el idioma nativo las revise antes de publicarlas de forma definitiva. Los datos
+técnicos, precios y garantías no se modificaron en ningún idioma — solo el texto que los rodea.
+
+**Pendiente, fuera de esta ronda**: las frases dinámicas que el generador construye por
+producto (comparación "Im Vergleich zu anderen Modellen", preguntas frecuentes por modelo,
+el texto de "Was Sie vor dem Kauf wissen sollten" cuando no hay `lead_text` propio) siguen
+armándose en alemán en el momento de generar la página, no vía `data-i18n` — traducirlas
+requeriría reescribir esas funciones para generar las tres variantes de idioma, que no se hizo
+en esta ronda. Las fichas fictícias de E-Scooter (Urban Pro X, City Cruiser, Offroad Force,
+pendientes de confirmación de datos reales) también se tradujeron en el texto corto, por
+consistencia, pero siguen siendo datos ficticios.
+
 ## Siguiente paso recomendado
 
 Cuando `thescootercompany.ch` vuelva a ser accesible (desde este entorno o

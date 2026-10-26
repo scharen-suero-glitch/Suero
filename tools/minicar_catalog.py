@@ -9,12 +9,13 @@ baked into the image — flagged to the owner as a style mismatch, kept as
 supplied since they're the only real photos available.
 
 Colors: the owner named 6 colors (Rot Burgund, Dunkelblau, Antrazit,
-Schwarz Glanz, Hellblau, Weiss) but only sent real, usable photo files for
-3 of them (Rot Burgund, Dunkelblau, Hellblau) — two more (Antrazit,
-Schwarz Glanz) were pasted inline in chat and never landed as a real file
-in this environment (same limitation hit earlier with the first photo),
-and Weiss was never sent at all. Only the 3 confirmed colors are listed
-below — do not add the other 3 until real image files arrive.
+Schwarz Glanz, Hellblau, Weiss). 5 now have real, usable photo files
+(Rot Burgund, Dunkelblau, Hellblau added 2026-10-26; Antrazit and
+Schwarz Glanz added later the same day as real file attachments — an
+earlier attempt to send them pasted inline in chat never landed as a
+real file in this environment, same limitation hit with the first
+photo). Only Weiss remains unsent — do not add it until a real image
+file arrives.
 
 Pricing (2026-10-26): owner states list price was CHF 11'990.00, now
 CHF 9'990.00 (CHF 2'000.00 off) for both models below — not independently
@@ -37,13 +38,18 @@ PRODUCTS = [
         "name": "NEXT ONE TSC e-Minicar 25 km/h Lithium Edition",
         "badges": ["25 km/h", "Führerschein laut Lieferant: Kat. M"],
         "voltage": "60 Volt",
-        "colors": ["Rot Burgund", "Dunkelblau", "Hellblau"],
+        "colors": ["Rot Burgund", "Dunkelblau", "Antrazit", "Schwarz Glanz", "Hellblau"],
         "color_imgs": {
             "Rot Burgund": "eminicar-next-one-tsc-rot-burgund.jpg",
             "Dunkelblau": "eminicar-next-one-tsc-dunkelblau.jpg",
+            "Antrazit": "eminicar-next-one-tsc-antrazit.jpg",
+            "Schwarz Glanz": "eminicar-next-one-tsc-schwarz-glanz.jpg",
             "Hellblau": "eminicar-next-one-tsc-hellblau.jpg",
         },
-        "color_hex": {"Rot Burgund": "#7a1a24", "Dunkelblau": "#1c3a5e", "Hellblau": "#a9c6de"},
+        "color_hex": {
+            "Rot Burgund": "#7a1a24", "Dunkelblau": "#1c3a5e", "Antrazit": "#4b4e52",
+            "Schwarz Glanz": "#0d0d0d", "Hellblau": "#a9c6de",
+        },
         "price_rappen": 999000,
         "price_before_rappen": 1199000,
         "variants": [],
@@ -99,13 +105,18 @@ PRODUCTS = [
         "name": "NEXT ONE TSC e-Minicar 10/20 km/h Lithium Edition",
         "badges": ["10/20 km/h", "Führerschein laut Lieferant: Nicht erforderlich"],
         "voltage": "60 Volt",
-        "colors": ["Rot Burgund", "Dunkelblau", "Hellblau"],
+        "colors": ["Rot Burgund", "Dunkelblau", "Antrazit", "Schwarz Glanz", "Hellblau"],
         "color_imgs": {
             "Rot Burgund": "eminicar-next-one-tsc-rot-burgund.jpg",
             "Dunkelblau": "eminicar-next-one-tsc-dunkelblau.jpg",
+            "Antrazit": "eminicar-next-one-tsc-antrazit.jpg",
+            "Schwarz Glanz": "eminicar-next-one-tsc-schwarz-glanz.jpg",
             "Hellblau": "eminicar-next-one-tsc-hellblau.jpg",
         },
-        "color_hex": {"Rot Burgund": "#7a1a24", "Dunkelblau": "#1c3a5e", "Hellblau": "#a9c6de"},
+        "color_hex": {
+            "Rot Burgund": "#7a1a24", "Dunkelblau": "#1c3a5e", "Antrazit": "#4b4e52",
+            "Schwarz Glanz": "#0d0d0d", "Hellblau": "#a9c6de",
+        },
         "price_rappen": 999000,
         "variants": [],
         "seo_title": "NEXT ONE TSC e-Minicar 10/20 km/h kaufen | E-Suero Freienbach",

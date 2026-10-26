@@ -40,6 +40,7 @@ def header_html(base, cta_href, current_href=None):
 
     <nav class="nav-desktop" aria-label="Fahrzeug-Kategorien">
       {nav_links(base, current_href)}
+      <a href="{base}leistungen/werkstatt.html" class="nav-werkstatt-link">Werkstatt</a>
     </nav>
 
     <div class="header-actions">
@@ -52,7 +53,7 @@ def header_html(base, cta_href, current_href=None):
           <button type="button" data-lang="es">Español</button>
         </div>
       </div>
-      <a href="{cta_href}" class="btn btn-primary btn-sm magnetic" data-i18n="nav_cta_probefahrt">Probefahrt anfragen</a>
+      <a href="{cta_href}" data-reason="probefahrt" class="btn btn-primary btn-sm magnetic" data-i18n="nav_cta_probefahrt">Probefahrt anfragen</a>
       <button class="burger" type="button" aria-label="Menü öffnen" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
@@ -68,7 +69,8 @@ def mobile_nav_html(base, cta_href, current_href=None):
     return f"""<div class="mobile-nav">
   <a href="{base}verkauf/index.html">Alle Fahrzeuge</a>
   {cat_links}
-  <a href="{cta_href}" class="btn btn-primary" data-i18n="nav_cta_probefahrt">Probefahrt anfragen</a>
+  <a href="{base}leistungen/werkstatt.html">Werkstatt</a>
+  <a href="{cta_href}" data-reason="probefahrt" class="btn btn-primary" data-i18n="nav_cta_probefahrt">Probefahrt anfragen</a>
 </div>"""
 
 

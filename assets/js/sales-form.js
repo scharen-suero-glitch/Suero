@@ -102,6 +102,21 @@
     el.className = "form-status" + (kind ? " " + kind : "");
   }
 
+  function wireReasonLinks() {
+    document.querySelectorAll("a[data-reason]").forEach(function (link) {
+      link.addEventListener("click", function () {
+        var hash = link.getAttribute("href") || "";
+        if (hash.charAt(0) !== "#") return;
+        var target = document.querySelector(hash);
+        if (!target) return;
+        var select = qs(target, '[name="reason"]');
+        if (!select) return;
+        select.value = link.getAttribute("data-reason");
+        select.dispatchEvent(new Event("change"));
+      });
+    });
+  }
+
   function wireWhatsapp() {
     document.querySelectorAll("[data-wa-model]").forEach(function (link) {
       var model = link.getAttribute("data-wa-model") || "";
@@ -112,6 +127,7 @@
 
   document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll("[data-sales-form]").forEach(wireForm);
+    wireReasonLinks();
     wireWhatsapp();
   });
 })();

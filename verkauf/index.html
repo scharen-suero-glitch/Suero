@@ -28,7 +28,7 @@
 <link rel="preload" href="../assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../assets/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="../assets/fonts/fonts.css?v=20260808">
-<link rel="stylesheet" href="../styles.css?v=20261028">
+<link rel="stylesheet" href="../styles.css?v=20261029">
 <script type="application/ld+json">
 [
   {
@@ -78,6 +78,7 @@
       <a href="../fahrzeuge/e-scooter.html">E-Scooter</a>
       <a href="../fahrzeuge/e-bike.html">E-Bike</a>
       <a href="../fahrzeuge/e-minicar.html">E-Minicar</a>
+    <a href="../leistungen/werkstatt.html" class="nav-werkstatt-link">Werkstatt</a>
     </nav>
 
     <div class="header-actions">
@@ -90,7 +91,7 @@
           <button type="button" data-lang="es">Español</button>
         </div>
       </div>
-      <a href="#verkauf-kontakt" class="btn btn-primary btn-sm magnetic" data-i18n="nav_cta_probefahrt">Probefahrt anfragen</a>
+      <a href="#verkauf-kontakt" data-reason="probefahrt" class="btn btn-primary btn-sm magnetic" data-i18n="nav_cta_probefahrt">Probefahrt anfragen</a>
       <button class="burger" type="button" aria-label="Menü öffnen" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
@@ -105,7 +106,8 @@
   <a href="../fahrzeuge/e-scooter.html">E-Scooter</a>
   <a href="../fahrzeuge/e-bike.html">E-Bike</a>
   <a href="../fahrzeuge/e-minicar.html">E-Minicar</a>
-  <a href="#verkauf-kontakt" class="btn btn-primary" data-i18n="nav_cta_probefahrt">Probefahrt anfragen</a>
+  <a href="../leistungen/werkstatt.html">Werkstatt</a>
+  <a href="#verkauf-kontakt" data-reason="probefahrt" class="btn btn-primary" data-i18n="nav_cta_probefahrt">Probefahrt anfragen</a>
 </div>
 
 <main id="main">
@@ -126,7 +128,7 @@
 
     <div class="hero-ctas-row reveal">
       <a href="../fahrzeuge/e-roller.html" class="btn btn-primary magnetic">E-Roller entdecken</a>
-      <a href="#verkauf-kontakt" class="btn btn-ghost magnetic">Probefahrt anfragen</a>
+      <a href="#verkauf-kontakt" data-reason="probefahrt" class="btn btn-ghost magnetic">Probefahrt anfragen</a>
     </div>
 
     <div class="hero-heading reveal">
@@ -427,6 +429,6 @@
 <script src="../lib/ScrollTrigger.min.js" defer></script>
 <script src="../i18n.js?v=20260819" defer></script>
 <script src="../main.js?v=20260819" defer></script>
-<script src="../assets/js/sales-form.js?v=20261025" defer></script>
+<script src="../assets/js/sales-form.js?v=20261029" defer></script>
 </body>
 </html>

@@ -147,8 +147,8 @@ def find_sibling(p, products):
     return None
 
 
-def find_price_neighbor(p, products):
-    others = [q for q in products if q["slug"] != p["slug"]]
+def find_price_neighbor(p, products, exclude_slugs=()):
+    others = [q for q in products if q["slug"] != p["slug"] and q["slug"] not in exclude_slugs]
     if not others:
         return None
     return min(others, key=lambda q: abs(q["price_rappen"] - p["price_rappen"]))
@@ -170,7 +170,7 @@ def differences_text(p, products):
                 f"Kat.-A1-Zulassung bis {dict(sib['spec']).get('Höchstgeschwindigkeit')} — dafür mit "
                 f"Kontrollschild-Pflicht."
             )
-    neighbor = find_price_neighbor(p, products)
+    neighbor = find_price_neighbor(p, products, exclude_slugs={sib["slug"]} if sib else set())
     if neighbor:
         nb_sd = spec_dict(neighbor)
         price_diff = neighbor["price_rappen"] - p["price_rappen"]
@@ -238,7 +238,7 @@ def card_html(p, category, img_base=None, link_dir=None):
         buy_btn = '<button type="button" class="btn btn-primary btn-sm magnetic" data-buy-btn>Jetzt kaufen</button>'
     else:
         buy_attrs = ""
-        buy_btn = f'<a href="{link_base}/{p["slug"]}.html#modell-kontakt" class="btn btn-primary btn-sm magnetic">Angebot anfragen</a>'
+        buy_btn = f'<a href="{link_base}/{p["slug"]}.html#modell-kontakt" data-reason="angebot" class="btn btn-primary btn-sm magnetic">Angebot anfragen</a>'
     return (
         f'<div class="tilt-card"><div class="tilt-card-inner" id="p-{p["id"][2:]}" {buy_attrs}>'
         f'{media}'
@@ -285,7 +285,7 @@ PAGE_TMPL = """<!doctype html>
 <link rel="preload" href="../../assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../../assets/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="../../assets/fonts/fonts.css?v=20260808">
-<link rel="stylesheet" href="../../styles.css?v=20261028">
+<link rel="stylesheet" href="../../styles.css?v=20261029">
 <script type="application/ld+json">
 {jsonld}
 </script>
@@ -333,7 +333,7 @@ PAGE_TMPL = """<!doctype html>
         <p class="delivery-note"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span>Verfügbarkeit beim Lieferanten · Bearbeitung: 0–3 Werktage · <a href="../../verkauf/bestell-lieferprozess.html">Mehr zu Lieferung &amp; Abholung</a></span></p>
         <div style="display:flex;gap:.8rem;margin-top:1.4rem;flex-wrap:wrap">
           {buy_button}
-          <a href="#modell-kontakt" class="btn btn-ghost magnetic">Probefahrt anfragen</a>
+          <a href="#modell-kontakt" data-reason="probefahrt" class="btn btn-ghost magnetic">Probefahrt anfragen</a>
           <a href="#" class="btn btn-ghost magnetic" data-wa-model="{name_attr}" target="_blank" rel="noopener">Auf WhatsApp fragen</a>
         </div>
       </div>
@@ -472,7 +472,7 @@ PAGE_TMPL = """<!doctype html>
 <script src="../../i18n.js?v=20260819" defer></script>
 <script src="../../main.js?v=20260819" defer></script>
 <script src="../../assets/js/stripe-checkout.js?v=20260815" defer></script>
-<script src="../../assets/js/sales-form.js?v=20261025" defer></script>
+<script src="../../assets/js/sales-form.js?v=20261029" defer></script>
 </body>
 </html>
 """
@@ -612,7 +612,7 @@ def build_page(p, category, products):
         buy_attrs = (f' data-buy-name="{esc(p["name"])}" data-buy-price="{buy_price_rappen}" '
                      f'data-buy-img="{SITE}/assets/images/products/{main_img}" data-buy-slug="{p["slug"]}"')
     else:
-        buy_button = '<a href="#modell-kontakt" class="btn btn-primary magnetic">Angebot anfragen</a>'
+        buy_button = '<a href="#modell-kontakt" data-reason="angebot" class="btn btn-primary magnetic">Angebot anfragen</a>'
         buy_attrs = ""
 
     html_out = PAGE_TMPL.format(

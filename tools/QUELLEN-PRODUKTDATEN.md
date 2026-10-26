@@ -127,6 +127,53 @@ el placeholder pendientes de actualizar — ninguna encontrada.
 generarse también desde páginas fuera de `fahrzeuge/` (como la portada, que está en la raíz del
 sitio) sin romper las rutas relativas.
 
+## Actualización 2026-10-26 (sesión posterior 5): lista de 6 bugs reportada por el dueño
+
+El dueño pegó una tabla con 6 problemas encontrados en el sitio ya desplegado (aparentemente de
+un revisor externo). Cada uno se verificó contra el código antes de tocar nada:
+
+1. **Botón "Produkte entdecken" de la portada llevaba al catálogo antiguo (`#products`
+   dentro de `index.html`), no a la nueva página de ventas.** Confirmado en el código.
+   Corregido: ahora enlaza a `verkauf/index.html`.
+2. **Ficha del TSC Next One NX1 7i: 3 años de garantía y batería de 20 Ah.** Verificado:
+   estos valores existen en `tools/eroller_catalog.py` desde antes de esta sesión (ronda
+   anterior del proyecto, no datos inventados ahora). **No se modificaron** — no hay forma de
+   reverificarlos contra el proveedor (acceso bloqueado, ver arriba). **Pendiente: el dueño
+   debe confirmar personalmente que la garantía de 3 años y los 20 Ah corresponden a la unidad
+   de venta normal y no a una unidad de demostración con condiciones distintas.**
+3. **"Probefahrt anfragen" llevaba al formulario pero dejaba seleccionado "Beratung".**
+   Confirmado: el `<select>` nunca tenía ninguna opción marcada por defecto. Corregido: todos
+   los enlaces "Probefahrt anfragen" ahora llevan un atributo que selecciona automáticamente
+   "Probefahrt" al hacer clic (y "Angebot anfragen" selecciona "Angebot"), vía un pequeño script
+   nuevo en `assets/js/sales-form.js`. Funciona en fichas de modelo y en `verkauf/index.html`
+   (mismo página). Los botones "Probefahrt anfragen" del menú de las páginas de categoría
+   (E-Roller, E-Scooter, E-Bike, E-Motorräder) que saltan a `verkauf/index.html` en otra página
+   siguen sin poder preseleccionar automáticamente, porque ese salto es entre páginas distintas
+   y no hay forma fiable de pasar la intención sin rediseñar ese flujo — no incluido en esta
+   ronda por quedar fuera de lo reportado.
+4. **En la comparación del NX1 7i se recomendaba dos veces el mismo modelo de 45 km/h.**
+   Confirmado y causa encontrada: la función que elige "el modelo con el precio más parecido"
+   no excluía al modelo que ya se había recomendado como variante de velocidad — cuando ambos
+   coincidían en precio, salía dos veces el mismo. Corregido en `tools/model_page_lib.py`
+   (`find_price_neighbor` ahora excluye explícitamente al modelo ya recomendado). Verificado:
+   la ficha del NX1 7i ahora recomienda el "NX1 7i 45 km/h" (variante de velocidad) y el
+   "Next NX1" (modelo de precio parecido) — dos modelos distintos.
+5. **"Zurück zu Fahrzeugen" en E-Roller volvía al catálogo antiguo de la portada
+   (`index.html#products`).** Confirmado. Corregido — y, por consistencia, también en las otras
+   tres páginas de categoría que tenían exactamente el mismo enlace antiguo (E-Scooter, E-Bike,
+   E-Motorräder): todas llevan ahora a `verkauf/index.html`.
+6. **Falta un acceso directo a "Werkstatt" desde el menú comercial.** Añadido un enlace
+   "Werkstatt" en el menú de escritorio y en el menú móvil de todas las páginas de venta
+   (`verkauf/index.html`, las 5 páginas de categoría, y todas las fichas de modelo individuales
+   vía `tools/sales_chrome.py`), separado visualmente de las categorías de vehículos. La
+   separación original entre venta y taller se mantiene — esto es solo un atajo, no se mezclaron
+   los menús.
+
+Nota técnica: al automatizar la inserción del enlace "Werkstatt" con una búsqueda y reemplazo
+por texto, un primer intento insertó el enlace también en el pie de página (footer) por error,
+duplicándolo en 3 sitios en vez de 2 en varias páginas. Detectado inmediatamente revisando el
+diff antes de continuar, y corregido a mano en los 6 archivos afectados antes de seguir.
+
 ## Siguiente paso recomendado
 
 Cuando `thescootercompany.ch` vuelva a ser accesible (desde este entorno o

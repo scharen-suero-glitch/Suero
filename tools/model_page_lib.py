@@ -35,9 +35,12 @@ def chf(rappen):
     return "CHF {:,.2f}".format(rappen / 100).replace(",", "'")
 
 
-def media_html(p, category, css_class, alt_suffix):
+def media_html(p, category, css_class, alt_suffix, img_base=None):
     """Real product photo, or an honest placeholder if none exists yet —
-    never a stock/representative image standing in for the real vehicle."""
+    never a stock/representative image standing in for the real vehicle.
+    img_base defaults to the model-page depth (../../); pass "../" when
+    rendering on a one-level-deep category landing page instead."""
+    base = img_base if img_base is not None else IMG_BASE
     if p.get("no_photo"):
         return (
             f'<div class="{css_class} photo-pending">'
@@ -46,12 +49,13 @@ def media_html(p, category, css_class, alt_suffix):
             f'</div>'
         )
     main_img = p["color_imgs"][p["colors"][0]]
-    return f'<div class="{css_class}"><img src="{IMG_BASE}{main_img}?v=20260812" alt="E-Suero {esc(p["name"])} {esc(alt_suffix)}" width="960" height="640" loading="lazy"></div>'
+    return f'<div class="{css_class}"><img src="{base}{main_img}?v=20260812" alt="E-Suero {esc(p["name"])} {esc(alt_suffix)}" width="960" height="640" loading="lazy"></div>'
 
 
-def color_swatches_html(p):
+def color_swatches_html(p, img_base=None):
     if not p.get("colors"):
         return ""
+    base = img_base if img_base is not None else IMG_BASE
     out = []
     for i, c in enumerate(p["colors"]):
         img = p["color_imgs"][c]
@@ -60,7 +64,7 @@ def color_swatches_html(p):
         extra_border = ';border-color:#3a3f3d' if hexv.lower() in ("#f2f2f2",) else ''
         out.append(
             f'<button type="button" class="color-dot{is_active}" style="background:{hexv}{extra_border}" '
-            f'data-img="{IMG_BASE}{img}?v=20260812" aria-label="{esc(c)}"></button>'
+            f'data-img="{base}{img}?v=20260812" aria-label="{esc(c)}"></button>'
         )
     return "".join(out)
 
@@ -196,7 +200,8 @@ def card_html(p, category):
     has_price = bool(p.get("price_rappen"))
     price_label = p["variants"][0]["price_label"] if p["variants"] else (chf(p["price_rappen"]) if has_price else "Preis auf Anfrage")
     colors_line = f' · Farben: {esc(", ".join(p["colors"]))}' if p.get("colors") else ""
-    media = media_html(p, category, "product-media", f'{category["name"]} kaufen Freienbach SZ')
+    card_img_base = "../assets/images/products/"
+    media = media_html(p, category, "product-media", f'{category["name"]} kaufen Freienbach SZ', img_base=card_img_base)
     if has_price:
         buy_attrs = f'data-buy-name="{esc(p["name"])}" data-buy-price="{p["price_rappen"]}" data-buy-img="{SITE}/assets/images/products/{p["color_imgs"][p["colors"][0]]}" data-buy-slug="{p["slug"]}" '
         buy_btn = '<button type="button" class="btn btn-primary btn-sm magnetic" data-buy-btn>Jetzt kaufen</button>'
@@ -206,7 +211,7 @@ def card_html(p, category):
     return (
         f'<div class="tilt-card"><div class="tilt-card-inner" id="p-{p["id"][2:]}" {buy_attrs}>'
         f'{media}'
-        f'<div class="color-swatches">{color_swatches_html(p)}</div>'
+        f'<div class="color-swatches">{color_swatches_html(p, img_base=card_img_base)}</div>'
         f'<div class="catalog-badges" style="margin-bottom:.9rem">{badges_html}</div>'
         f'<h3><a href="{category["dir"]}/{p["slug"]}.html">{esc(p["name"])}</a></h3>'
         f'<p class="model-desc">{esc(p["voltage"])}{colors_line}</p>'
@@ -249,7 +254,7 @@ PAGE_TMPL = """<!doctype html>
 <link rel="preload" href="../../assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../../assets/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="../../assets/fonts/fonts.css?v=20260808">
-<link rel="stylesheet" href="../../styles.css?v=20261025">
+<link rel="stylesheet" href="../../styles.css?v=20261026">
 <script type="application/ld+json">
 {jsonld}
 </script>

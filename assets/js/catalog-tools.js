@@ -265,7 +265,7 @@
         '<option value="frei">Nicht erforderlich</option>' +
         '<option value="a1">Kat. A1</option>' +
       "</select>" +
-      '<p class="catalog-empty" hidden>Keine Fahrzeuge gefunden. Bitte Suche oder Filter anpassen.</p>';
+      '<p class="catalog-filter-empty" hidden>Keine Fahrzeuge gefunden. Bitte Suche oder Filter anpassen.</p>';
     container.parentNode.insertBefore(toolbar, container);
     return toolbar;
   }
@@ -274,7 +274,7 @@
     var search = toolbar.querySelector(".catalog-search");
     var speedSel = toolbar.querySelector('[data-filter="speed"]');
     var licenseSel = toolbar.querySelector('[data-filter="license"]');
-    var emptyMsg = toolbar.querySelector(".catalog-empty");
+    var emptyMsg = toolbar.querySelector(".catalog-filter-empty");
 
     function applyFilters() {
       var q = search.value.trim().toLowerCase();

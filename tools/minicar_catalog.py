@@ -1,9 +1,15 @@
 # -*- coding: utf-8 -*-
 """Canonical E-Minicar product data. No price was provided for this model,
 so the site shows "Preis auf Anfrage" and an "Angebot anfragen" CTA instead
-of a direct-buy button — never an invented number. No real product photo
-is available yet either (flagged with no_photo=True) — the site shows an
-honest placeholder instead of a stock image standing in for the real car."""
+of a direct-buy button — never an invented number.
+
+Real product photo (eminicar-next-one-tsc-rot.jpg) supplied by the site
+owner on 2026-10-26: resized to the site's standard 1200x800, otherwise
+unaltered. Note: unlike every other product photo on the site (plain white
+studio background, no text), this one has a grey studio background and
+"E-SUERO / www.e-suero.ch / NEXT ONE e-Minicar" baked into the image —
+flagged to the owner as a style mismatch, kept as supplied since it's the
+only real photo available."""
 
 PRODUCTS = [
     {
@@ -12,12 +18,11 @@ PRODUCTS = [
         "name": "NEXT ONE TSC e-Minicar 25 km/h Lithium Edition",
         "badges": ["25 km/h", "Führerschein laut Lieferant: Kat. M"],
         "voltage": "60 Volt",
-        "colors": [],
-        "color_imgs": {},
-        "color_hex": {},
+        "colors": ["Rot"],
+        "color_imgs": {"Rot": "eminicar-next-one-tsc-rot.jpg"},
+        "color_hex": {"Rot": "#9b1c1c"},
         "price_rappen": None,
         "variants": [],
-        "no_photo": True,
         "seo_title": "NEXT ONE TSC e-Minicar 25 km/h kaufen | E-Suero Freienbach",
         "meta_description": "NEXT ONE TSC e-Minicar 25 km/h Lithium Edition bei E-Suero Freienbach: Lithium-Akku, Hill Assist, bis 140 km Reichweite laut Hersteller. Preis auf Anfrage — persönliche Beratung vor Ort.",
         "lead_text": "Geschlossenes Elektrofahrzeug mit Lithium-Akku statt Blei-Akku, Hill Assist und Komfort-Ausstattung ab Werk — für Wetterschutz im Alltag ohne grossen Aufwand.",

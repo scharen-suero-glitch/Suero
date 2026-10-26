@@ -285,7 +285,7 @@ PAGE_TMPL = """<!doctype html>
 <link rel="preload" href="../../assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../../assets/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="../../assets/fonts/fonts.css?v=20260808">
-<link rel="stylesheet" href="../../styles.css?v=20261029">
+<link rel="stylesheet" href="../../styles.css?v=20261030">
 <script type="application/ld+json">
 {jsonld}
 </script>

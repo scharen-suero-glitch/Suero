@@ -59,6 +59,27 @@ def price_block_html(p, extra_style=""):
     return f'<span class="price"{style_attr}>{esc(price_label)}</span>'
 
 
+def trust_block_html(base):
+    """Post-purchase trust block, reused on every vehicle detail page
+    (new and used) via model_page_lib.build_page() / gebraucht-katalog.js's
+    equivalent. `base` is the relative path back to the site root."""
+    return f"""<div class="trust-block reveal">
+          <div class="trust-block-head">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14.7 6.3a3 3 0 0 0-4.24 4.24L4 17v3h3l6.46-6.46a3 3 0 0 0 4.24-4.24l-2.3-2.3-1.4 1.4 1.4 1.4-1.06 1.06-1.4-1.4 1.4-1.4-2.3-2.3Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+            <div>
+              <h3>Auch nach dem Kauf für Sie da.</h3>
+              <p>Bei E-Suero haben Sie einen persönlichen Ansprechpartner und eine eigene Werkstatt in Freienbach. Ob Wartung, Reparatur oder Fragen zu Ihrem Fahrzeug: Wir unterstützen Sie auch nach der Übergabe.</p>
+            </div>
+          </div>
+          <ul class="trust-block-list">
+            <li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12.5l4.5 4.5L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Eigene Werkstatt in Freienbach</li>
+            <li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12.5l4.5 4.5L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Persönlicher Ansprechpartner</li>
+            <li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12.5l4.5 4.5L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Wartung und Reparatur vor Ort</li>
+          </ul>
+          <a href="{base}leistungen/werkstatt.html" class="trust-block-link">Unsere Werkstatt kennenlernen →</a>
+        </div>"""
+
+
 def media_html(p, category, css_class, alt_suffix, img_base=None):
     """Real product photo, or an honest placeholder if none exists yet —
     never a stock/representative image standing in for the real vehicle.
@@ -285,7 +306,7 @@ PAGE_TMPL = """<!doctype html>
 <link rel="preload" href="../../assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../../assets/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="../../assets/fonts/fonts.css?v=20260808">
-<link rel="stylesheet" href="../../styles.css?v=20261030">
+<link rel="stylesheet" href="../../styles.css?v=20261031">
 <script type="application/ld+json">
 {jsonld}
 </script>
@@ -336,6 +357,7 @@ PAGE_TMPL = """<!doctype html>
           <a href="#modell-kontakt" data-reason="probefahrt" class="btn btn-ghost magnetic">Probefahrt anfragen</a>
           <a href="#" class="btn btn-ghost magnetic" data-wa-model="{name_attr}" target="_blank" rel="noopener">Auf WhatsApp fragen</a>
         </div>
+        {trust_block}
       </div>
     </div>
   </div>
@@ -632,6 +654,7 @@ def build_page(p, category, products):
         needs_text=esc(p["lead_text"]) if p.get("lead_text") else needs_text(p, category),
         benefits=benefits_html,
         buy_button=buy_button,
+        trust_block=trust_block_html("../../"),
         marketing_section=marketing_section,
         gallery_section=gallery_section,
         practical_rows=practical_rows,

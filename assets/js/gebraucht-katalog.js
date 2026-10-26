@@ -290,7 +290,25 @@
       '<span class="price">Preis auf Anfrage</span>' +
       '<div class="catalog-badges">' + badges + "</div>" +
       '<a href="../index.html#contact" class="btn btn-primary magnetic">Jetzt anfragen</a>' +
+      trustBlockHtml() +
       "</div></div>";
+  }
+
+  function trustBlockHtml() {
+    return '<div class="trust-block reveal">' +
+      '<div class="trust-block-head">' +
+      '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14.7 6.3a3 3 0 0 0-4.24 4.24L4 17v3h3l6.46-6.46a3 3 0 0 0 4.24-4.24l-2.3-2.3-1.4 1.4 1.4 1.4-1.06 1.06-1.4-1.4 1.4-1.4-2.3-2.3Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>' +
+      "<div>" +
+      "<h3>Auch nach dem Kauf für Sie da.</h3>" +
+      "<p>Bei E-Suero haben Sie einen persönlichen Ansprechpartner und eine eigene Werkstatt in Freienbach. Ob Wartung, Reparatur oder Fragen zu Ihrem Fahrzeug: Wir unterstützen Sie auch nach der Übergabe.</p>" +
+      "</div></div>" +
+      '<ul class="trust-block-list">' +
+      '<li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12.5l4.5 4.5L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Eigene Werkstatt in Freienbach</li>' +
+      '<li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12.5l4.5 4.5L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Persönlicher Ansprechpartner</li>' +
+      '<li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12.5l4.5 4.5L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Wartung und Reparatur vor Ort</li>' +
+      "</ul>" +
+      '<a href="../leistungen/werkstatt.html" class="trust-block-link">Unsere Werkstatt kennenlernen →</a>' +
+      "</div>";
   }
 
   function render() {

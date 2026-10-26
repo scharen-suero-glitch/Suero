@@ -1,15 +1,34 @@
 # -*- coding: utf-8 -*-
-"""Canonical E-Minicar product data. No price was provided for this model,
-so the site shows "Preis auf Anfrage" and an "Angebot anfragen" CTA instead
-of a direct-buy button — never an invented number.
+"""Canonical E-Minicar product data.
 
-Real product photo (eminicar-next-one-tsc-rot.jpg) supplied by the site
-owner on 2026-10-26: resized to the site's standard 1200x800, otherwise
-unaltered. Note: unlike every other product photo on the site (plain white
-studio background, no text), this one has a grey studio background and
-"E-SUERO / www.e-suero.ch / NEXT ONE e-Minicar" baked into the image —
-flagged to the owner as a style mismatch, kept as supplied since it's the
-only real photo available."""
+Real product photos supplied by the site owner, resized to the site's
+standard 1200x800, otherwise unaltered. Note: unlike every other product
+photo on the site (plain white studio background, no text), these have a
+grey studio background and "E-SUERO / www.e-suero.ch / NEXT ONE e-Minicar"
+baked into the image — flagged to the owner as a style mismatch, kept as
+supplied since they're the only real photos available.
+
+Colors: the owner named 6 colors (Rot Burgund, Dunkelblau, Antrazit,
+Schwarz Glanz, Hellblau, Weiss) but only sent real, usable photo files for
+3 of them (Rot Burgund, Dunkelblau, Hellblau) — two more (Antrazit,
+Schwarz Glanz) were pasted inline in chat and never landed as a real file
+in this environment (same limitation hit earlier with the first photo),
+and Weiss was never sent at all. Only the 3 confirmed colors are listed
+below — do not add the other 3 until real image files arrive.
+
+Pricing (2026-10-26): owner states list price was CHF 11'990.00, now
+CHF 9'990.00 (CHF 2'000.00 off) for both models below — not independently
+verified against the supplier, taken as given since it's E-Suero's own
+commercial/selling price, not a technical claim.
+
+Second model (10/20 km/h) added 2026-10-26: owner-supplied spec sheet.
+FLAGGED CONTRADICTION, not resolved here — owner states Motorleistung
+"1500 Watt" for this model, but also pasted the Swiss vehicle-category
+description "«Leicht-Motorfahrräder» bis 500 Watt Motorleistung oder
+max. 25 km/h" in the same message. These two figures don't match; the
+500-Watt figure may be a regulatory class cap rather than this specific
+motor's rating, but that is a guess — needs owner confirmation before
+any classification label built on it is published anywhere."""
 
 PRODUCTS = [
     {
@@ -18,13 +37,18 @@ PRODUCTS = [
         "name": "NEXT ONE TSC e-Minicar 25 km/h Lithium Edition",
         "badges": ["25 km/h", "Führerschein laut Lieferant: Kat. M"],
         "voltage": "60 Volt",
-        "colors": ["Rot"],
-        "color_imgs": {"Rot": "eminicar-next-one-tsc-rot.jpg"},
-        "color_hex": {"Rot": "#9b1c1c"},
-        "price_rappen": None,
+        "colors": ["Rot Burgund", "Dunkelblau", "Hellblau"],
+        "color_imgs": {
+            "Rot Burgund": "eminicar-next-one-tsc-rot-burgund.jpg",
+            "Dunkelblau": "eminicar-next-one-tsc-dunkelblau.jpg",
+            "Hellblau": "eminicar-next-one-tsc-hellblau.jpg",
+        },
+        "color_hex": {"Rot Burgund": "#7a1a24", "Dunkelblau": "#1c3a5e", "Hellblau": "#a9c6de"},
+        "price_rappen": 999000,
+        "price_before_rappen": 1199000,
         "variants": [],
         "seo_title": "NEXT ONE TSC e-Minicar 25 km/h kaufen | E-Suero Freienbach",
-        "meta_description": "NEXT ONE TSC e-Minicar 25 km/h Lithium Edition bei E-Suero Freienbach: Lithium-Akku, Hill Assist, bis 140 km Reichweite laut Hersteller. Preis auf Anfrage — persönliche Beratung vor Ort.",
+        "meta_description": "NEXT ONE TSC e-Minicar 25 km/h Lithium Edition bei E-Suero Freienbach: Lithium-Akku, Hill Assist, bis 140 km Reichweite laut Hersteller. Jetzt CHF 9'990.00 statt CHF 11'990.00.",
         "lead_text": "Geschlossenes Elektrofahrzeug mit Lithium-Akku statt Blei-Akku, Hill Assist und Komfort-Ausstattung ab Werk — für Wetterschutz im Alltag ohne grossen Aufwand.",
         "marketing_intro": (
             "Ob zum Einkaufen, für einen Besuch bei Freunden oder für die täglichen Wege: Der "
@@ -48,8 +72,8 @@ PRODUCTS = [
             ("Höchstgeschwindigkeit", "25 km/h"),
             ("Motorleistung", "2000 Watt"),
             ("Akkukapazität / Typ", "104 Ah / Lithium"),
-            ("Akkuspannung", "60 Volt"),
-            ("Ladezeit", "6 Std. mit Schnellladegerät*"),
+            ("Akkuleistung", "60 Volt"),
+            ("Ladezeit", "6 Std. mit 10-Ah-Schnellladegerät*"),
             ("Maximale Steigung", "20 Grad"),
             ("Gewicht", "199 kg"),
             ("Nutzlast", "250 kg"),
@@ -64,9 +88,76 @@ PRODUCTS = [
             ("Zubehör", "Winterreifen"),
         ],
         "footnotes": [
-            "* Ladezeit mit dem mitgelieferten/empfohlenen Schnellladegerät; Angabe des Lieferanten.",
+            "* Ladezeit mit dem mitgelieferten/empfohlenen 10-Ah-Schnellladegerät; Angabe des Lieferanten.",
             "** Führerschein- und Zulassungsanforderungen gemäss Angabe des Lieferanten — bitte vor dem "
             "Kauf persönlich mit uns bestätigen, da dies je nach Kanton und aktueller Gesetzgebung abweichen kann.",
+        ],
+    },
+    {
+        "id": "p-next-one-tsc-e-minicar-10-20",
+        "slug": "next-one-tsc-e-minicar-10-20",
+        "name": "NEXT ONE TSC e-Minicar 10/20 km/h Lithium Edition",
+        "badges": ["10/20 km/h", "Führerschein laut Lieferant: Nicht erforderlich"],
+        "voltage": "60 Volt",
+        "colors": ["Rot Burgund", "Dunkelblau", "Hellblau"],
+        "color_imgs": {
+            "Rot Burgund": "eminicar-next-one-tsc-rot-burgund.jpg",
+            "Dunkelblau": "eminicar-next-one-tsc-dunkelblau.jpg",
+            "Hellblau": "eminicar-next-one-tsc-hellblau.jpg",
+        },
+        "color_hex": {"Rot Burgund": "#7a1a24", "Dunkelblau": "#1c3a5e", "Hellblau": "#a9c6de"},
+        "price_rappen": 999000,
+        "variants": [],
+        "seo_title": "NEXT ONE TSC e-Minicar 10/20 km/h kaufen | E-Suero Freienbach",
+        "meta_description": "NEXT ONE TSC e-Minicar 10/20 km/h Lithium Edition bei E-Suero Freienbach: Lithium-Akku, Hill Assist, bis 150 km Reichweite laut Hersteller, führerscheinfrei. CHF 9'990.00.",
+        "lead_text": "Die langsamere Zulassungsvariante des NEXT ONE TSC e-Minicar — laut Lieferant ohne Führerausweis-Pflicht, mit bis zu 150 km Reichweite.",
+        "marketing_intro": (
+            "Dieselbe Karosserie, eine andere Zulassung: Der NEXT ONE TSC e-Minicar mit 10/20 km/h "
+            "richtet sich an alle, die laut Lieferant ohne Führerausweis unterwegs sein möchten."
+        ),
+        "marketing_body": (
+            "Technisch teilt sich dieses Modell den Lithium-Akku, den Hill Assist und die "
+            "Komfort-Ausstattung mit der 25-km/h-Ausführung, unterscheidet sich aber bei "
+            "Höchstgeschwindigkeit (10 oder 20 km/h), Motorleistung und Nutzlast. Laut Lieferant "
+            "ist dieses Modell ab 16 Jahren ohne Führerausweis und ohne Kontrollschild zugelassen — "
+            "wir empfehlen, die genaue Einstufung vor dem Kauf persönlich mit uns zu bestätigen, da "
+            "sie je nach Kanton abweichen kann."
+        ),
+        "range_disclaimer": (
+            "Bis zu 150 km Reichweite laut Hersteller: abhängig von Ausführung, Temperatur, "
+            "Fahrweise, Zuladung und Strecke."
+        ),
+        "spec": [
+            ("Garantie", "2 Jahre"),
+            ("Reichweite (pro Akkuladung)", "bis 150 km"),
+            ("Höchstgeschwindigkeit", "10 oder 20 km/h"),
+            ("Motorleistung", "1500 Watt†"),
+            ("Akkukapazität / Typ", "104 Ah / Lithium"),
+            ("Akkuleistung", "60 Volt"),
+            ("Ladezeit", "6 Std. mit 10-Ah-Schnellladegerät*"),
+            ("Maximale Steigung", "20 Grad"),
+            ("Gewicht", "199 kg"),
+            ("Nutzlast", "181 kg"),
+            ("Länge / Breite / Höhe", "2120 / 970 / 1150 mm"),
+            ("Bremsen vorne und hinten", "Hydraulische Scheibenbremsen"),
+            ("Bordelektronik", "Bluetooth-MP3-Radio, Freisprechanlage"),
+            ("Alarmanlage & Hill Assist", "Serienmässig"),
+            ("Elektrische Fensterheber", "Serienmässig"),
+            ("Parksensoren & Rückfahrkamera", "Serienmässig"),
+            ("Führerschein", "Laut Lieferant ab 16 Jahren nicht erforderlich"),
+            ("Kontrollschild / Fahrzeugausweis", "Laut Lieferant nicht erforderlich"),
+            ("Optionales Zubehör", "Winterreifen"),
+        ],
+        "footnotes": [
+            "* Ladezeit mit dem mitgelieferten/empfohlenen 10-Ah-Schnellladegerät; Angabe des Lieferanten.",
+            "† Angabe des Lieferanten noch zu bestätigen: die mitgelieferte Fahrzeug-Kategorie-"
+            "Beschreibung spricht von „Leicht-Motorfahrräder bis 500 Watt Motorleistung oder max. "
+            "25 km/h“, während die Motorleistung dieses Modells mit 1500 Watt angegeben wurde. Diese "
+            "beiden Angaben widersprechen sich — bitte vor Veröffentlichung einer Zulassungsklasse "
+            "beim Lieferanten klären.",
+            "Führerschein- und Zulassungsanforderungen gemäss Angabe des Lieferanten — bitte vor dem "
+            "Kauf persönlich mit uns bestätigen, da dies je nach Kanton und aktueller Gesetzgebung "
+            "abweichen kann.",
         ],
     },
 ]

@@ -41,3 +41,6 @@
 .hero-heading{max-width:720px;margin-bottom:clamp(2.4rem,6vw,3.6rem)}
 .hero-heading h1{font-size:clamp(1.9rem,4.2vw,2.7rem)}
 .hero-heading p{color:var(--c-mute);margin-top:.9rem;font-size:1.05rem;max-width:58ch}
+.price-sale{display:block}
+.price-old{display:inline-block;text-decoration:line-through;color:var(--c-mute-2);font-size:.82em;margin-right:.6rem;font-family:var(--font-head)}
+.price-save{display:inline-block;margin-left:.7rem;font-size:.62em;color:var(--c-primary);background:rgba(0,255,102,.1);padding:.3rem .7rem;border-radius:999px;vertical-align:middle;font-family:var(--font-body);letter-spacing:.01em}

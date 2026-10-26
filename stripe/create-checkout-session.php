@@ -48,13 +48,15 @@ if ($priceRappen > 5000000) {
 // Server-side price whitelist: never trust unit_amount as sent by the
 // browser on its own. A visitor could open devtools and rewrite the
 // fetch body before it reaches us, so for every product we *can* verify
-// (currently E-Roller — see stripe/catalog-eroller.php) we look the price
-// up ourselves and reject anything that doesn't match a real, published
-// price for that slug. Other categories don't have a catalog file yet,
-// so they fall through unchecked for now (same behaviour as before) —
-// extend the $priceCatalogs list below as each category gets one.
+// (E-Roller and E-Minicar — see stripe/catalog-eroller.php and
+// stripe/catalog-minicar.php) we look the price up ourselves and reject
+// anything that doesn't match a real, published price for that slug.
+// Other categories don't have a catalog file yet, so they fall through
+// unchecked for now (same behaviour as before) — extend the
+// $priceCatalogs list below as each category gets one.
 $priceCatalogs = [
     __DIR__ . '/catalog-eroller.php',
+    __DIR__ . '/catalog-minicar.php',
 ];
 $knownProduct = null;
 foreach ($priceCatalogs as $catalogFile) {

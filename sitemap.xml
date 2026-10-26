@@ -81,6 +81,11 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://e-suero.ch/fahrzeuge/e-minicar/next-one-tsc-e-minicar-10-20.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://e-suero.ch/fahrzeuge/e-roller/tsc-next-one-nx1-7i.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>

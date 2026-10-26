@@ -35,6 +35,30 @@ def chf(rappen):
     return "CHF {:,.2f}".format(rappen / 100).replace(",", "'")
 
 
+def price_block_html(p, extra_style=""):
+    """Price display, incl. optional before/after sale price
+    (p["price_before_rappen"]) — never invented, only rendered when the
+    catalog explicitly sets it."""
+    style_attr = f' style="{extra_style}"' if extra_style else ""
+    has_price = bool(p.get("price_rappen"))
+    if not has_price:
+        return f'<span class="price"{style_attr}>Preis auf Anfrage</span>'
+    if p.get("variants"):
+        return f'<span class="price"{style_attr}>{esc(p["variants"][0]["price_label"])}</span>'
+    price_label = chf(p["price_rappen"])
+    before = p.get("price_before_rappen")
+    if before and before > p["price_rappen"]:
+        save = before - p["price_rappen"]
+        return (
+            f'<span class="price-sale"{style_attr}>'
+            f'<span class="price-old">{esc(chf(before))}</span>'
+            f'<span class="price">{esc(price_label)}</span>'
+            f'<span class="price-save">Sie sparen {esc(chf(save))}</span>'
+            f'</span>'
+        )
+    return f'<span class="price"{style_attr}>{esc(price_label)}</span>'
+
+
 def media_html(p, category, css_class, alt_suffix, img_base=None):
     """Real product photo, or an honest placeholder if none exists yet —
     never a stock/representative image standing in for the real vehicle.
@@ -150,10 +174,14 @@ def differences_text(p, products):
     if neighbor:
         nb_sd = spec_dict(neighbor)
         price_diff = neighbor["price_rappen"] - p["price_rappen"]
-        diff_word = "günstiger" if price_diff > 0 else "teurer"
+        if price_diff == 0:
+            price_phrase = "zum gleichen Preis"
+        else:
+            diff_word = "günstiger" if price_diff > 0 else "teurer"
+            price_phrase = f"{abs(price_diff)//100:.0f} CHF {diff_word}"
         parts.append(
             f"Preislich nahe liegt auch <strong>{esc(neighbor['name'])}</strong> ({chf(neighbor['price_rappen'])}, "
-            f"{abs(price_diff)//100 if abs(price_diff)>=100 else 0:.0f} CHF {diff_word}) mit "
+            f"{price_phrase}) mit "
             f"{esc(nb_sd.get('Höchstgeschwindigkeit','–'))} und {esc(neighbor['voltage'])}."
         )
     if not parts:
@@ -198,7 +226,6 @@ def card_html(p, category):
         )
         variants_html = f'<div class="variant-select" role="radiogroup" aria-label="Variante wählen">{chips}</div>'
     has_price = bool(p.get("price_rappen"))
-    price_label = p["variants"][0]["price_label"] if p["variants"] else (chf(p["price_rappen"]) if has_price else "Preis auf Anfrage")
     colors_line = f' · Farben: {esc(", ".join(p["colors"]))}' if p.get("colors") else ""
     card_img_base = "../assets/images/products/"
     media = media_html(p, category, "product-media", f'{category["name"]} kaufen Freienbach SZ', img_base=card_img_base)
@@ -216,7 +243,7 @@ def card_html(p, category):
         f'<h3><a href="{category["dir"]}/{p["slug"]}.html">{esc(p["name"])}</a></h3>'
         f'<p class="model-desc">{esc(p["voltage"])}{colors_line}</p>'
         f'{variants_html}'
-        f'<span class="price">{esc(price_label)}</span>'
+        f'{price_block_html(p)}'
         f'<div style="display:flex;gap:.6rem;margin-top:1.1rem;flex-wrap:wrap">'
         f'{buy_btn}'
         f'<a href="{category["dir"]}/{p["slug"]}.html" class="btn btn-ghost btn-sm magnetic">Modell ansehen</a>'
@@ -254,7 +281,7 @@ PAGE_TMPL = """<!doctype html>
 <link rel="preload" href="../../assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../../assets/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="../../assets/fonts/fonts.css?v=20260808">
-<link rel="stylesheet" href="../../styles.css?v=20261026">
+<link rel="stylesheet" href="../../styles.css?v=20261027">
 <script type="application/ld+json">
 {jsonld}
 </script>
@@ -294,7 +321,7 @@ PAGE_TMPL = """<!doctype html>
         <h1>{name}</h1>
         <p class="model-desc" style="font-size:1rem">{voltage}{colors_line}</p>
         {variant_select}
-        <span class="price" style="font-size:2rem;display:block;margin:.6rem 0 1rem">{price_label}</span>
+        {price_block}
         <p style="color:var(--c-mute);max-width:56ch">{needs_text}</p>
         <div style="margin:1.2rem 0">
           {benefits}
@@ -483,7 +510,6 @@ def build_page(p, category, products):
     ) + "</ul>"
 
     variant_select = ""
-    price_label = chf(p["price_rappen"]) if has_price else "Preis auf Anfrage"
     if p["variants"]:
         chips = "".join(
             f'<button type="button" class="variant-chip{" is-active" if i==0 else ""}" '
@@ -492,7 +518,6 @@ def build_page(p, category, products):
             for i, v in enumerate(p["variants"])
         )
         variant_select = f'<div class="variant-select" role="radiogroup" aria-label="Variante wählen">{chips}</div>'
-        price_label = p["variants"][0]["price_label"]
 
     practical_rows = "".join(f"<dt>{esc(k)}</dt><dd>{esc(v)}</dd>" for k, v in practical_info_rows(p))
 
@@ -583,7 +608,8 @@ def build_page(p, category, products):
         swatches=color_swatches_html(p),
         badge0=esc(p["badges"][0]),
         voltage=esc(p["voltage"]), colors_line=colors_line,
-        variant_select=variant_select, price_label=esc(price_label),
+        variant_select=variant_select,
+        price_block=price_block_html(p, extra_style="font-size:2rem;display:block;margin:.6rem 0 1rem"),
         needs_text=esc(p["lead_text"]) if p.get("lead_text") else needs_text(p, category),
         benefits=benefits_html,
         buy_button=buy_button,

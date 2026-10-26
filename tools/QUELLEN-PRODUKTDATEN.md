@@ -56,7 +56,31 @@ campo `spec` existente del mismo producto.
 | next-nx1-45 | No accesible | Ninguno nuevo — specs sin cambios |
 | fantic-issimo-city-escooter-l1 | No accesible | El nuevo texto menciona que Fantic es un fabricante italiano — hecho de marca de conocimiento general, no verificado contra el proveedor esta ronda. No afecta specs del vehículo. |
 | chopper-6-0-pro-45 | No accesible | Ninguno nuevo — specs sin cambios |
-| next-one-tsc-e-minicar (E-Minicar) | No accesible | Sigue pendiente: foto real del producto y precio real (ver tareas anteriores). Specs sin cambios. |
+| next-one-tsc-e-minicar (E-Minicar, 25 km/h) | No accesible | Precio y foto ya resueltos (2026-10-26, ver abajo). |
+| next-one-tsc-e-minicar-10-20 (E-Minicar, 10/20 km/h) | No accesible | **Nuevo modelo, creado 2026-10-26 a partir de datos dados por el dueño — nunca verificado contra el proveedor.** Ver contradicción de Motorleistung abajo. |
+
+## Actualización 2026-10-26 (sesión posterior): fotos, precio y segundo modelo de E-Minicar
+
+- **Colores con foto real añadidos**: Rot Burgund, Dunkelblau, Hellblau — archivos recibidos como
+  adjuntos reales. El dueño mencionó 3 colores más (Antrazit, Schwarz Glanz, Weiss): Antrazit y
+  Schwarz Glanz se pegaron directamente en el chat pero, igual que la primera vez con la foto roja,
+  no quedaron guardados como archivo en este entorno; Weiss nunca se envió. **No publicados —
+  pendientes de recibir como archivo adjunto real.**
+- **Precio añadido**: el dueño indica que el precio de lista era CHF 11'990.00 y ahora es
+  CHF 9'990.00 (ahorro de CHF 2'000.00) para ambos modelos de E-Minicar. Dato comercial propio de
+  E-Suero, no una afirmación técnica — tomado tal cual, sin verificar contra el proveedor.
+- **Segundo modelo creado**: "NEXT ONE TSC e-Minicar 10/20 km/h Lithium Edition"
+  (slug `next-one-tsc-e-minicar-10-20`), a partir de la ficha de datos que dio el dueño en el chat.
+  **Contradicción sin resolver, marcada con nota † en la página**: el dueño dio "Motorleistung:
+  1500 Watt" para este modelo, pero en el mismo mensaje pegó el texto de clasificación vehicular
+  suiza "«Leicht-Motorfahrräder» bis 500 Watt Motorleistung oder max. 25 km/h". Esas dos cifras no
+  coinciden. No elegí una por mi cuenta — publiqué los 1500 Watt (el dato específico del producto)
+  con una nota al pie pidiendo confirmación, y no usé la frase de clasificación como badge o hecho
+  confirmado en ningún lugar de la página.
+- Añadido `stripe/catalog-minicar.php` (lista blanca de precios de Stripe para E-Minicar, generada
+  con el nuevo `tools/gen_stripe_catalogs.py`) y registrado en
+  `stripe/create-checkout-session.php`, ya que ambos modelos de Minicar ahora tienen botón de
+  compra real con Stripe (antes mostraban "Preis auf Anfrage" y no lo necesitaban).
 
 ## Siguiente paso recomendado
 

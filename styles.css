@@ -44,3 +44,6 @@
 .price-sale{display:block}
 .price-old{display:inline-block;text-decoration:line-through;color:var(--c-mute-2);font-size:.82em;margin-right:.6rem;font-family:var(--font-head)}
 .price-save{display:inline-block;margin-left:.7rem;font-size:.62em;color:var(--c-primary);background:rgba(0,255,102,.1);padding:.3rem .7rem;border-radius:999px;vertical-align:middle;font-family:var(--font-body);letter-spacing:.01em}
+.detail-gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem}
+.detail-gallery img{width:100%;height:230px;object-fit:cover;border-radius:var(--radius-m);border:1px solid var(--c-border);display:block}
+@media(max-width:640px){.detail-gallery{grid-template-columns:repeat(2,1fr)}.detail-gallery img{height:150px}}

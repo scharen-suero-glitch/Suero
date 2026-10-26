@@ -281,7 +281,7 @@ PAGE_TMPL = """<!doctype html>
 <link rel="preload" href="../../assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../../assets/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="../../assets/fonts/fonts.css?v=20260808">
-<link rel="stylesheet" href="../../styles.css?v=20261027">
+<link rel="stylesheet" href="../../styles.css?v=20261028">
 <script type="application/ld+json">
 {jsonld}
 </script>
@@ -338,6 +338,8 @@ PAGE_TMPL = """<!doctype html>
 </section>
 
 {marketing_section}
+
+{gallery_section}
 
 <section class="section-tight">
   <div class="container">
@@ -583,6 +585,19 @@ def build_page(p, category, products):
             f'{disclaimer}'
             '</div></section>'
         )
+    gallery_section = ""
+    if p.get("gallery_imgs"):
+        thumbs = "".join(
+            f'<img src="{IMG_BASE}{fname}?v=20261026" alt="E-Suero {esc(p["name"])} — {esc(alt)}" width="600" height="600" loading="lazy">'
+            for fname, alt in p["gallery_imgs"]
+        )
+        gallery_section = (
+            '<section class="section-tight"><div class="container">'
+            '<div class="section-head"><span class="eyebrow">Galerie</span>'
+            '<h2>Innenraum &amp; Details.</h2></div>'
+            f'<div class="detail-gallery reveal-stagger reveal">{thumbs}</div>'
+            '</div></section>'
+        )
     footnotes = ""
     if p.get("footnotes"):
         items = "".join(f'<p style="color:var(--c-mute-2);font-size:.78rem;margin-top:.4rem">{esc(f)}</p>' for f in p["footnotes"])
@@ -614,6 +629,7 @@ def build_page(p, category, products):
         benefits=benefits_html,
         buy_button=buy_button,
         marketing_section=marketing_section,
+        gallery_section=gallery_section,
         practical_rows=practical_rows,
         differences=differences_text(p, products),
         full_spec=spec_table_html(p),

@@ -72,6 +72,13 @@ PRODUCTS = [
             "Bis zu 140 km Reichweite laut Hersteller: abhängig von Ausführung, Temperatur, "
             "Fahrweise, Zuladung und Strecke."
         ),
+        "gallery_imgs": [
+            ("eminicar-detail-stauraum.jpg", "Stauraum unter dem Beifahrersitz"),
+            ("eminicar-detail-tuer.jpg", "Türverkleidung"),
+            ("eminicar-detail-cockpit.jpg", "Cockpit mit Digitalanzeige"),
+            ("eminicar-detail-heck-offen.jpg", "Heckansicht mit geöffneten Türen"),
+            ("eminicar-detail-ladeanschluss.jpg", "Ladeanschluss"),
+        ],
         "spec": [
             ("Garantie", "2 Jahre"),
             ("Reichweite (pro Akkuladung)", "bis 140 km"),
@@ -138,6 +145,13 @@ PRODUCTS = [
             "Bis zu 150 km Reichweite laut Hersteller: abhängig von Ausführung, Temperatur, "
             "Fahrweise, Zuladung und Strecke."
         ),
+        "gallery_imgs": [
+            ("eminicar-detail-stauraum.jpg", "Stauraum unter dem Beifahrersitz"),
+            ("eminicar-detail-tuer.jpg", "Türverkleidung"),
+            ("eminicar-detail-cockpit.jpg", "Cockpit mit Digitalanzeige"),
+            ("eminicar-detail-heck-offen.jpg", "Heckansicht mit geöffneten Türen"),
+            ("eminicar-detail-ladeanschluss.jpg", "Ladeanschluss"),
+        ],
         "spec": [
             ("Garantie", "2 Jahre"),
             ("Reichweite (pro Akkuladung)", "bis 150 km"),

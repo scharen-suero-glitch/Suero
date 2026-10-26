@@ -82,6 +82,23 @@ campo `spec` existente del mismo producto.
   `stripe/create-checkout-session.php`, ya que ambos modelos de Minicar ahora tienen botón de
   compra real con Stripe (antes mostraban "Preis auf Anfrage" y no lo necesitaban).
 
+## Actualización 2026-10-26 (sesión posterior 2): Antrazit, Schwarz Glanz y galería de detalle
+
+- Antrazit y Schwarz Glanz llegaron como archivos adjuntos reales esta vez (los anteriores
+  intentos habían sido pegados en el chat y no quedaron guardados) — ya publicados en ambos
+  modelos de E-Minicar. Solo falta Weiss, nunca enviada.
+- Una tercera foto enviada en el mismo mensaje resultó ser, al comparar el archivo byte a byte,
+  idéntica a la foto de Hellblau ya publicada — no se duplicó ni se contó como color nuevo.
+- Nueva sección "Galerie" (Innenraum & Details) añadida a ambas fichas de E-Minicar: 5 fotos
+  reales de interior/detalle (Stauraum, Türverkleidung, Cockpit, Heckansicht mit geöffneten
+  Türen, Ladeanschluss), recibidas como archivos adjuntos reales. Dos fotos más (detalle de
+  limpiaparabrisas y de spoiler trasero) se pegaron directamente en el chat en el mismo turno y,
+  igual que antes, no quedaron guardadas como archivo — no publicadas, pendientes de reenvío
+  como adjunto.
+- Nuevo campo de catálogo `gallery_imgs` y sección correspondiente en
+  `tools/model_page_lib.py` — reutilizable para cualquier producto futuro que tenga fotos de
+  detalle, no solo E-Minicar.
+
 ## Siguiente paso recomendado
 
 Cuando `thescootercompany.ch` vuelva a ser accesible (desde este entorno o

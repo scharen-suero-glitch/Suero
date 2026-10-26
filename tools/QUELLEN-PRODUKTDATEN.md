@@ -105,6 +105,28 @@ campo `spec` existente del mismo producto.
   `tools/model_page_lib.py` — reutilizable para cualquier producto futuro que tenga fotos de
   detalle, no solo E-Minicar.
 
+## Actualización 2026-10-26 (sesión posterior 4): E-Minicar en la página principal + bug real encontrado
+
+El usuario avisó de dos cosas que vio en su sitio ya desplegado:
+
+1. **E-Minicar no aparecía en el carrusel de categorías de la página principal (index.html)** — un
+   gap real de código, no un problema de despliegue: ese carrusel es independiente de la sección
+   `/verkauf/` y nunca se actualizó para incluir la categoría nueva. Corregido: nueva pestaña
+   "E-Minicar", nueva miniatura en el carrusel superior, y un panel nuevo con las 2 fichas reales
+   (con compra funcional, verificado con Playwright). También añadido `minicar` al mapa
+   `ESUERO_CAT_URLS` de `main.js` (redirección en móvil).
+2. **La tarjeta de E-Minicar en `/verkauf/index.html` (sección "Kategorien") seguía mostrando
+   "Foto folgt in Kürze"** — bug real confirmado: nunca se actualizó esa tarjeta concreta cuando
+   llegó la foto real, aunque sí se había actualizado la ficha de categoría
+   (`fahrzeuge/e-minicar.html`). Corregido con la foto real (Rot Burgund).
+
+Revisado todo el sitio (`grep -rl "photo-pending"`) para confirmar que no quedan más tarjetas con
+el placeholder pendientes de actualizar — ninguna encontrada.
+
+`tools/model_page_lib.py`: `card_html()` ahora acepta `img_base`/`link_dir` opcionales para poder
+generarse también desde páginas fuera de `fahrzeuge/` (como la portada, que está en la raíz del
+sitio) sin romper las rutas relativas.
+
 ## Siguiente paso recomendado
 
 Cuando `thescootercompany.ch` vuelva a ser accesible (desde este entorno o

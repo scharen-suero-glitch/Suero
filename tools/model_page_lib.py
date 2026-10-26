@@ -213,7 +213,10 @@ def faq_items(p, category):
     return items
 
 
-def card_html(p, category):
+def card_html(p, category, img_base=None, link_dir=None):
+    """img_base/link_dir let this be reused from pages outside fahrzeuge/
+    (e.g. the homepage, which sits at the site root) — both default to the
+    paths that work from a one-level-deep fahrzeuge/<category>.html page."""
     sd = spec_dict(p)
     badges_html = "".join(f'<span class="badge{" ok" if not is_a1(p) else ""}">{esc(b)}</span>' for b in p["badges"])
     variants_html = ""
@@ -227,26 +230,27 @@ def card_html(p, category):
         variants_html = f'<div class="variant-select" role="radiogroup" aria-label="Variante wählen">{chips}</div>'
     has_price = bool(p.get("price_rappen"))
     colors_line = f' · Farben: {esc(", ".join(p["colors"]))}' if p.get("colors") else ""
-    card_img_base = "../assets/images/products/"
+    card_img_base = img_base if img_base is not None else "../assets/images/products/"
+    link_base = link_dir if link_dir is not None else category["dir"]
     media = media_html(p, category, "product-media", f'{category["name"]} kaufen Freienbach SZ', img_base=card_img_base)
     if has_price:
         buy_attrs = f'data-buy-name="{esc(p["name"])}" data-buy-price="{p["price_rappen"]}" data-buy-img="{SITE}/assets/images/products/{p["color_imgs"][p["colors"][0]]}" data-buy-slug="{p["slug"]}" '
         buy_btn = '<button type="button" class="btn btn-primary btn-sm magnetic" data-buy-btn>Jetzt kaufen</button>'
     else:
         buy_attrs = ""
-        buy_btn = f'<a href="{category["dir"]}/{p["slug"]}.html#modell-kontakt" class="btn btn-primary btn-sm magnetic">Angebot anfragen</a>'
+        buy_btn = f'<a href="{link_base}/{p["slug"]}.html#modell-kontakt" class="btn btn-primary btn-sm magnetic">Angebot anfragen</a>'
     return (
         f'<div class="tilt-card"><div class="tilt-card-inner" id="p-{p["id"][2:]}" {buy_attrs}>'
         f'{media}'
         f'<div class="color-swatches">{color_swatches_html(p, img_base=card_img_base)}</div>'
         f'<div class="catalog-badges" style="margin-bottom:.9rem">{badges_html}</div>'
-        f'<h3><a href="{category["dir"]}/{p["slug"]}.html">{esc(p["name"])}</a></h3>'
+        f'<h3><a href="{link_base}/{p["slug"]}.html">{esc(p["name"])}</a></h3>'
         f'<p class="model-desc">{esc(p["voltage"])}{colors_line}</p>'
         f'{variants_html}'
         f'{price_block_html(p)}'
         f'<div style="display:flex;gap:.6rem;margin-top:1.1rem;flex-wrap:wrap">'
         f'{buy_btn}'
-        f'<a href="{category["dir"]}/{p["slug"]}.html" class="btn btn-ghost btn-sm magnetic">Modell ansehen</a>'
+        f'<a href="{link_base}/{p["slug"]}.html" class="btn btn-ghost btn-sm magnetic">Modell ansehen</a>'
         f'</div></div></div>'
     )
 

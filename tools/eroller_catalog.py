@@ -121,7 +121,7 @@ PRODUCTS = [
         "slug": "next-nx1",
         "name": "Next NX1",
         "badges": ["25 km/h", "Führerschein: Nicht erforderlich"],
-        "voltage": "48 Volt",
+        "voltage": "60 Volt",
         "colors": ["Schwarz", "Silber", "Blau", "Weiss"],
         "color_imgs": {
             "Schwarz": "eroller-next-nx1-schwarz.jpg",
@@ -133,16 +133,17 @@ PRODUCTS = [
         "price_rappen": 299900,
         "variants": [],
         "seo_title": "Next NX1 kaufen – 25 km/h führerscheinfrei | E-Suero Freienbach",
-        "meta_description": "Next NX1 bei E-Suero Freienbach: 25 km/h ohne Führerausweis-Pflicht ab 16, 48-Volt-Akku, bis 60 km Reichweite, 3 Jahre Garantie, 4 Farben. Jetzt beraten lassen oder Probefahrt anfragen.",
-        "lead_text": "Der Next NX1 bringt dieselbe führerscheinfreie Alltagstauglichkeit wie der TSC Next One NX1 7i mit, ausgestattet mit einem 48-Volt-Akku.",
-        "marketing_intro": "Die unkomplizierte Alternative für den täglichen Weg.",
+        "meta_description": "Next NX1 bei E-Suero Freienbach: 25 km/h ohne Führerausweis-Pflicht ab 16, 60-Volt-Akku mit Samsung-Zellen, bis 60 km Reichweite, 3 Jahre Garantie, 4 Farben. Jetzt beraten lassen oder Probefahrt anfragen.",
+        "lead_text": "Der Next NX1 teilt sich die technischen Daten mit dem TSC Next One NX1 7i — gleicher 60-Volt-Akku, gleiche Reichweite, unter eigenem Modellnamen.",
+        "marketing_intro": "Gleiche Technik, eigener Modellname.",
         "marketing_body": (
-            "Der Next NX1 ist baugleich zum TSC Next One NX1 7i, setzt jedoch auf einen 48-Volt-Akku. Mit 25 km/h "
+            "Der Next NX1 ist technisch baugleich zum TSC Next One NX1 7i: gleicher 60-Volt-Akku mit Samsung-Zellen, "
+            "gleiche Reichweite von bis zu 60 km pro Akkuladung und dieselbe Ladezeit von rund 5 Stunden. Mit 25 km/h "
             "bleibt er in der Schweiz ab 16 Jahren führerscheinfrei und eignet sich damit für den Weg zur Arbeit, "
-            "zum Bahnhof oder für Besorgungen in und um Freienbach. Die Reichweite liegt bei bis zu 60 km pro "
-            "Akkuladung, die Ladezeit bei rund 5 Stunden. Keyless-Fernbedienung, Alarmanlage und USB-Schnittstelle "
-            "gehören serienmässig dazu. Erhältlich in Schwarz, Silber, Blau und Weiss — wir beraten Sie gerne "
-            "persönlich, welche der beiden NX1-Varianten besser zu Ihrem Budget passt."
+            "zum Bahnhof oder für Besorgungen in und um Freienbach. Keyless-Fernbedienung, Alarmanlage und USB-"
+            "Schnittstelle gehören serienmässig dazu. Erhältlich in Schwarz, Silber, Blau und Weiss — wir beraten "
+            "Sie gerne persönlich, falls Sie unsicher sind, welcher der beiden Modellnamen das richtige Fahrzeug "
+            "für Sie ist."
         ),
         "spec": [
             ("Höchstgeschwindigkeit", "25 km/h"),
@@ -150,7 +151,7 @@ PRODUCTS = [
             ("Garantie", "3 Jahre"),
             ("Reichweite (pro Akkuladung)", "bis 60 km"),
             ("Akkukapazität / Typ", "20 Ah / Lithium (Samsung-Zellen)"),
-            ("Akkuleistung", "48 Volt"),
+            ("Akkuleistung", "60 Volt"),
             ("Ladezeit", "5 Std."),
             ("Maximale Steigung", "19°"),
             ("Gewicht", "56 kg"),

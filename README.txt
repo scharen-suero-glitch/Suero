@@ -1,198 +1,232 @@
 ====================================================
-E-SUERO WEBSITE — DEPLOYMENT INSTRUCTIONS (HOSTINGER)
+E-SUERO — INSTRUCCIONES DE PUBLICACIÓN (HOSTINGER)
 ====================================================
 
-This package contains the complete, production-ready E-Suero website:
-the full catalog (E-Motorräder, E-Roller 20+45 km/h, E-Bike 20+45 km/h,
-E-Scooter), live Stripe checkout, search/filters/wishlist/comparison,
-and all SEO/structured data. Pure HTML/CSS/JavaScript with a small PHP
-backend for payments — no build step, no npm, no database.
+Este paquete contiene la web completa de E-Suero, lista para publicar:
+sitio institucional, taller (Werkstatt), y la sección comercial de venta
+de vehículos (E-Roller, E-Motorräder, E-Scooter, E-Bike, E-Minicar) con
+pago real por Stripe y formulario de solicitud de venta/prueba. HTML,
+CSS y JavaScript puro, con un pequeño backend en PHP para pagos y
+correos — sin paso de compilación, sin npm, sin base de datos.
 
 ----------------------------------------------------
-HOW TO DEPLOY
+CÓMO PUBLICAR
 ----------------------------------------------------
 
-1. Log into Hostinger (hpanel.hostinger.com).
+1. Entra en Hostinger (hpanel.hostinger.com).
 
-2. Open File Manager (under "Files" in the left menu).
+2. Abre "Administrador de archivos" (File Manager) en el menú "Archivos".
 
-3. Open the "public_html" folder. This is the web root for e-suero.ch.
+3. Abre la carpeta "public_html". Es la raíz web de e-suero.ch.
 
-4. Delete the default files if any exist (e.g. Hostinger's placeholder
-   index.html, "default.php", or a sample index page). Do NOT delete
-   public_html itself — only its contents.
+4. Si hay archivos por defecto de Hostinger (un index.html de muestra,
+   "default.php", etc.), bórralos. NO borres la carpeta public_html en
+   sí — solo su contenido.
 
-5. Upload the ZIP into public_html, then right-click it in File
-   Manager and choose "Extract". Extract it directly into public_html
-   (not into a new subfolder).
+5. Sube el ZIP dentro de public_html, haz clic derecho sobre él en el
+   Administrador de archivos y elige "Extraer". Extráelo directamente
+   dentro de public_html (no dentro de una subcarpeta nueva).
 
-6. Verify that index.html is located directly inside public_html —
-   i.e. the path is public_html/index.html, NOT
-   public_html/e-suero/index.html. If the ZIP extracted into its own
-   subfolder, move all files and folders up one level into
-   public_html, then delete the now-empty subfolder.
+6. Comprueba que index.html queda directamente dentro de public_html
+   — es decir, la ruta debe ser public_html/index.html, NO
+   public_html/e-suero/index.html. Si el ZIP se extrajo en su propia
+   subcarpeta, mueve todos los archivos y carpetas un nivel hacia
+   arriba, dentro de public_html, y borra la subcarpeta vacía que quede.
 
-7. Open stripe/config.php in File Manager's code editor. Find this
-   line near the top:
+7. Abre stripe/config.php con el editor de código del Administrador de
+   archivos. Busca esta línea cerca del principio:
 
      define('STRIPE_SECRET_KEY', 'sk_live_REPLACE_WITH_YOUR_STRIPE_SECRET_KEY');
 
-   Replace the placeholder with your real Stripe LIVE secret key
-   (starts with sk_live_...), from https://dashboard.stripe.com/apikeys.
-   Save the file. This is the only manual step required — every other
-   Stripe file reads its configuration from this one file, and the
-   entire checkout flow (order metadata, success page, error handling)
-   is already built and wired up.
+   Sustituye el texto de ejemplo por tu clave SECRETA real de Stripe
+   (empieza por sk_live_...), que encuentras en
+   https://dashboard.stripe.com/apikeys. Guarda el archivo. Este es el
+   único paso manual obligatorio — el resto del checkout (metadatos del
+   pedido, página de éxito, manejo de errores) ya está implementado y
+   conectado.
 
-8. Visit https://e-suero.ch to confirm the website is live, and place
-   a small real test purchase to confirm Stripe is working end to end.
+   (Opcional) Si quieres activar el webhook de Stripe, sigue las
+   instrucciones dentro del propio archivo stripe/config.php, en el
+   bloque "WEBHOOK SETUP" — no es obligatorio para que la tienda
+   funcione, solo añade una confirmación adicional del lado del servidor.
 
-That's it — no environment variables, no build command. Every asset
-(fonts, scripts, images, icons) is self-contained inside this package
-and loads via relative paths.
+8. Visita https://e-suero.ch para confirmar que el sitio está en línea.
+   Haz una compra de prueba real pequeña para confirmar que Stripe
+   funciona de principio a fin, y envía una solicitud de prueba desde
+   el formulario de /verkauf/index.html para confirmar que el correo de
+   solicitudes de venta llega a info@e-suero.ch.
+
+Eso es todo — no hace falta configurar variables de entorno ni ningún
+comando de compilación. Cada recurso (fuentes, scripts, imágenes,
+iconos) está autocontenido dentro de este paquete y se carga con rutas
+relativas.
 
 ----------------------------------------------------
-WHAT'S INSIDE
+QUÉ CONTIENE EL PAQUETE
 ----------------------------------------------------
 
-index.html            Homepage (hero, about, products catalog with
-                       tabs, workshop, battery lab, gallery, reviews,
-                       FAQ, contact)
-styles.css             All styles
-main.js                Core site interactivity (GSAP animations, menu,
-                       language switcher, forms, tabs, carousels, etc.)
-i18n.js                German/English/Italian/Spanish translations
-manifest.json          PWA manifest (home-screen icon support on mobile)
-robots.txt              Search engine crawl rules
-sitemap.xml             Sitemap for search engines
-.htaccess               Apache config: HTTPS redirect, clean URLs,
-                       caching, compression
-favicon.ico             Browser tab icon (legacy format)
+index.html              Página de inicio (sitio institucional, taller,
+                         laboratorio de baterías, galería, reseñas, FAQ,
+                         contacto del taller).
+styles.css               Todos los estilos del sitio.
+main.js                  Interactividad del sitio (animaciones, menú,
+                         selector de idioma, formularios, carruseles...).
+i18n.js                  Traducciones alemán/inglés/italiano/español.
+manifest.json             Manifiesto PWA (icono de pantalla de inicio).
+robots.txt / sitemap.xml  Reglas e indexación para buscadores.
+.htaccess                 Configuración de Apache: HTTPS, caché,
+                         compresión, bloqueo de archivos .log.
+favicon.ico               Icono de pestaña del navegador.
 
-fahrzeuge/              Dedicated sales pages per category:
-                       e-motorraeder.html, e-roller.html, e-bike.html,
-                       e-scooter.html — each with its own SEO
-                       title/description, Open Graph, Twitter Card,
-                       and Product/ItemList structured data (JSON-LD).
+verkauf/                  SECCIÓN DE VENTA (hub comercial):
+    index.html                 Página principal "Fahrzeuge kaufen" —
+                               portada, categorías, E-Roller destacados,
+                               proceso de compra, FAQ y formulario de
+                               contacto comercial.
+    inquiry.php                Backend real del formulario de venta/
+                               prueba: valida, envía el correo a
+                               info@e-suero.ch y solo informa éxito
+                               cuando realmente se envió.
+    gebraucht-geprueft.html    Catálogo de vehículos de ocasión
+                               revisados (Gebraucht & Geprüft).
+    bestell-lieferprozess.html Explicación del proceso de pedido y
+                               entrega.
+    .htaccess                  Bloquea el acceso directo a los .log de
+                               solicitudes (contienen datos de clientes).
 
-leistungen/              Service pages (diagnostics, battery repair,
-                       controller repair, fleet maintenance, workshop,
-                       premium care).
+fahrzeuge/                 Páginas de cada categoría de vehículo, con
+                           navegación y pie de página propios de venta
+                           (sin referencias al taller):
+    e-roller.html / e-roller/<modelo>.html    11 modelos, cada uno con
+                               su propia ficha individual, SEO propio,
+                               compra directa con Stripe.
+    e-minicar.html / e-minicar/<modelo>.html  Categoría E-Minicar.
+    e-motorraeder.html, e-scooter.html, e-bike.html   Categorías
+                               pendientes de fichas individuales
+                               (ver nota más abajo).
 
-verkauf/                 Gebraucht & Geprüft (used-vehicle) catalog —
-                       driven entirely by assets/js/gebraucht-katalog.js.
+leistungen/                Páginas de servicios del taller (diagnóstico,
+                           reparación de batería, controlador,
+                           mantenimiento de flotas, taller, premium care).
 
-legal/                   Datenschutz (privacy), Impressum, AGB (terms).
+legal/                     Datenschutz (privacidad), Impressum, AGB.
 
-lib/                     Third-party JS used by the site (GSAP +
-                       ScrollTrigger — self-hosted, no external CDN).
+lib/                       GSAP + ScrollTrigger (alojados en el propio
+                           sitio, sin CDN externo).
 
-stripe/                  Payment backend:
-    config.php                    Stripe secret key + shared settings.
-                                  The ONLY file you edit (step 7 above).
-    create-checkout-session.php   Creates a Stripe Embedded Checkout
-                                  session for whichever product the
-                                  visitor clicks "Jetzt kaufen" on.
-    success.php                  Post-payment confirmation page.
-                                  Verifies payment status directly with
-                                  Stripe, logs the order to orders.log,
-                                  and emails info@e-suero.ch.
-    .htaccess                    Blocks direct web access to *.log
-                                  files (they contain customer emails).
-    orders.log / error.log       Created automatically at runtime —
-                                  do not create these manually.
+stripe/                    Backend de pagos:
+    config.php                 Clave secreta de Stripe + ajustes
+                               compartidos (incluye ADMIN_EMAIL). ÚNICO
+                               archivo que debes editar (paso 7 arriba).
+    create-checkout-session.php Crea la sesión de pago de Stripe,
+                               validando el precio contra una lista
+                               blanca en catalog-eroller.php — nunca
+                               confía en el precio que envía el navegador.
+    catalog-eroller.php        Lista blanca de productos/precios reales
+                               de E-Roller, generada a partir de
+                               tools/eroller_catalog.py.
+    success.php / cancel.php   Confirmación o cancelación del pago.
+    webhook.php                 Confirmación adicional opcional vía
+                               Stripe (ver paso 7).
+    .htaccess                   Bloquea el acceso directo a los .log.
+    orders.log / error.log     Se crean solos al usarse — no los crees
+                               a mano.
 
 assets/
-  fonts/                Self-hosted Inter + Space Grotesk webfonts
-  icons/                Favicon, apple-touch-icon, and PWA icons
-  images/                Logo mark images (PNG + WebP)
-  images/products/       Product photos for every vehicle in the
-                       catalog (studio white-background treatment)
+  fonts/                   Fuentes Inter + Space Grotesk (alojadas aquí).
+  icons/                   Favicon, apple-touch-icon, iconos PWA.
+  images/                  Logo e imágenes generales del sitio.
+  images/products/         Fotos de producto de todo el catálogo.
   js/
-    catalog-tools.js     Search, filters, wishlist, and comparison —
-                       auto-applies to every product card site-wide.
-    stripe-checkout.js   Opens the embedded Stripe checkout modal.
-    gebraucht-katalog.js Drives the used-vehicle catalog (see below).
+    catalog-tools.js        Buscador/filtros del catálogo del taller.
+    stripe-checkout.js       Abre el pago de Stripe desde "Jetzt kaufen".
+    sales-form.js             Envía el formulario de venta/prueba real.
+    gebraucht-katalog.js      Catálogo de vehículos de ocasión.
 
 ----------------------------------------------------
-UPDATING PRODUCTS / PRICES / SPECS
+CARPETA tools/ — NO ES PARTE DEL SITIO PÚBLICO
 ----------------------------------------------------
 
-Every product card lives directly inside its category's HTML (index.html
-for the homepage carousels, and the matching file in fahrzeuge/ for the
-dedicated sales page). Each card is a self-contained block starting with
-<div class="tilt-card">. To change a price, spec, or description, edit
-the visible text inside that block — no other file needs touching.
-Cards with more than one photographed color show clickable color dots
-(<button class="color-dot" data-img="...">); add or remove a dot to
-add/remove a color, pointing data-img at a photo already inside
-assets/images/products/.
-
-To add a brand-new product, copy an existing <div class="tilt-card">...
-</div></div> block as a template, change its id, images, text and
-data-buy-* attributes, and paste it into both index.html and the
-matching fahrzeuge/ page (and JSON-LD block if you want it in search
-results).
+tools/ contiene los scripts en Python que generan las fichas de
+producto (eroller_catalog.py, minicar_catalog.py, model_page_lib.py...)
+y un registro interno de fuentes de datos (QUELLEN-PRODUKTDATEN.md). No
+hace falta subirlos a Hostinger para que el sitio funcione — están
+excluidos del ZIP de publicación. Consérvalos solo si en algún momento
+quieres volver a generar o actualizar las fichas de producto desde el
+repositorio de GitHub.
 
 ----------------------------------------------------
-MANAGING THE "GEBRAUCHT & GEPRÜFT" CATALOG
+PENDIENTE — LO QUE TODAVÍA NO ESTÁ TERMINADO
 ----------------------------------------------------
 
-Clicking the "Gebraucht geprüft" tab or visiting
-verkauf/gebraucht-geprueft.html opens a dedicated browsing page:
-Kategorie → Marke → Modell → Detailseite (Zustand + Werkstatt-Badges).
+- E-Motorräder y E-Bike: las categorías existen, pero aún no tienen
+  fichas individuales por modelo como E-Roller — están pendientes de
+  que me confirmes o yo extraiga los datos reales de cada modelo.
 
-Everything is driven by ONE plain-text file — no database, no CMS:
+- E-Scooter: la página actual (fahrzeuge/e-scooter.html) todavía
+  muestra 3 productos de ejemplo con precios inventados (Urban Pro X,
+  City Cruiser, Offroad Force) — NO son datos reales, hace falta que me
+  proporciones el catálogo real antes de publicarlos como venta.
 
-  assets/js/gebraucht-katalog.js
+- E-Minicar: falta la foto real del producto y el precio real (ahora
+  mismo muestra "Preis auf Anfrage").
 
-To add a brand, a model, set a vehicle's condition, or turn the
-"Kontrolliert" / "Geprüft" badges on or off, open that file in any text
-editor and follow the instructions in its header comment.
-
-----------------------------------------------------
-BEFORE YOU GO LIVE — THINGS TO DOUBLE-CHECK
-----------------------------------------------------
-
-- Stripe secret key: see step 7 above — required for checkout to work.
-
-- Stripe Dashboard payment methods: card is enabled by default. To
-  offer TWINT, Apple Pay, Google Pay, Klarna or PayPal, enable them in
-  Stripe Dashboard → Settings → Payment methods. No code changes
-  needed — the checkout automatically offers whatever is enabled.
-
-- Domain: the site expects to be served at https://e-suero.ch (set in
-  canonical URLs, sitemap.xml, robots.txt, structured data, and the
-  Stripe return URL in create-checkout-session.php). If the domain
-  differs, update these references accordingly.
-
-- Google Maps: the contact section embeds a Google Maps iframe for
-  Schwerzistrasse 34, 8807 Freienbach SZ. Works automatically once the
-  site is live on a public domain.
-
-- WhatsApp / phone / email: all point to +41 79 668 90 88 and
-  info@e-suero.ch. Update these in index.html (and the legal pages) if
-  they ever change.
-
-- Contact form: validates input in the browser and opens the visitor's
-  email client with a pre-filled message (mailto:) — no server-side
-  form handler.
-
-- SSL: Hostinger issues a free SSL certificate per domain. Make sure
-  it's active (hPanel → SSL) — .htaccess already forces HTTPS.
-
-- PHP: stripe/ requires PHP with cURL enabled, which is standard on
-  Hostinger shared hosting by default — no extra setup needed.
+- Portada de la sección de venta (verkauf/index.html): ya usa tu imagen
+  real, pero si cambias esa imagen más adelante, solo hace falta
+  reemplazar assets/images/products/e-suero-produkte-hero.(jpg/webp/png).
 
 ----------------------------------------------------
-SUPPORT
+ANTES DE PUBLICAR — REVISA ESTO
 ----------------------------------------------------
 
-If a page looks unstyled or a section is missing after upload, the
-most common cause is the ZIP having extracted one folder too deep
-(see step 6 above) — double check that index.html, styles.css, and
-the assets/lib/legal/stripe folders sit directly inside public_html.
+- Clave secreta de Stripe: ver paso 7 — imprescindible para que el
+  pago funcione.
 
-If checkout shows "Zahlung ist noch nicht konfiguriert", the Stripe
-secret key placeholder in stripe/create-checkout-session.php and/or
-stripe/success.php hasn't been replaced yet (step 7 above).
+- Métodos de pago en Stripe: la tarjeta está activada por defecto. Para
+  ofrecer TWINT, Apple Pay, Google Pay, Klarna o PayPal, actívalos en
+  el Dashboard de Stripe → Settings → Payment methods. No hace falta
+  tocar ningún código — el pago ofrece automáticamente lo que actives.
+
+- Dominio: el sitio espera estar publicado en https://e-suero.ch (así
+  están configuradas las URLs canónicas, el sitemap, robots.txt, los
+  datos estructurados y la URL de retorno de Stripe). Si el dominio
+  fuera otro, habría que actualizar esas referencias.
+
+- Google Maps: la sección de contacto usa un iframe de Google Maps para
+  Schwerzistrasse 34, 8807 Freienbach SZ. Funciona automáticamente en
+  cuanto el sitio esté público.
+
+- WhatsApp / teléfono / correo: todo apunta a +41 79 668 90 88 y a
+  info@e-suero.ch. Si cambian, hay que actualizarlo en varios archivos.
+
+- Formulario de contacto del taller (index.html): valida en el
+  navegador y abre el cliente de correo del visitante (mailto:) — no
+  tiene backend propio. El formulario de venta/prueba en verkauf/
+  (inquiry.php) sí es un envío real desde el servidor.
+
+- SSL: Hostinger emite un certificado SSL gratuito por dominio.
+  Comprueba que esté activo (hPanel → SSL) — el .htaccess ya fuerza
+  HTTPS.
+
+- PHP: stripe/ e inquiry.php necesitan PHP con cURL activado, lo cual
+  es estándar en el hosting compartido de Hostinger — no requiere
+  configuración adicional.
+
+----------------------------------------------------
+SI ALGO NO FUNCIONA
+----------------------------------------------------
+
+Si una página se ve sin estilos o falta alguna sección después de
+subirla, la causa más común es que el ZIP se extrajo una carpeta de más
+(ver paso 6) — comprueba que index.html, styles.css y las carpetas
+assets/lib/legal/stripe/verkauf/fahrzeuge estén directamente dentro de
+public_html.
+
+Si el pago muestra "Zahlung ist noch nicht konfiguriert", significa que
+la clave secreta de Stripe todavía no se ha sustituido en
+stripe/config.php (paso 7 arriba).
+
+Si el formulario de venta/prueba en verkauf/index.html no envía correo,
+comprueba que tu plan de Hostinger tenga la función mail() de PHP
+habilitada (viene activada por defecto en el hosting compartido) y
+revisa la carpeta de spam de info@e-suero.ch.

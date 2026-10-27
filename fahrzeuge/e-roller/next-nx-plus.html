@@ -39,20 +39,34 @@
     "category": "E-Roller",
     "sku": "next-nx-plus",
     "image": "https://e-suero.ch/assets/images/products/eroller-next-nxplus-schwarz.jpg",
-    "offers": {
-      "@type": "AggregateOffer",
-      "priceCurrency": "CHF",
-      "lowPrice": "3250.00",
-      "highPrice": "3950.00",
-      "offerCount": 2,
-      "availability": "https://schema.org/InStock",
-      "url": "https://e-suero.ch/fahrzeuge/e-roller/next-nx-plus.html",
-      "seller": {
-        "@type": "Organization",
-        "name": "E-Suero",
-        "url": "https://e-suero.ch/index.html"
+    "offers": [
+      {
+        "@type": "Offer",
+        "priceCurrency": "CHF",
+        "name": "25 Ah · ca. 125 km",
+        "price": "3250.00",
+        "availability": "https://schema.org/InStock",
+        "url": "https://e-suero.ch/fahrzeuge/e-roller/next-nx-plus.html#akku-25ah",
+        "seller": {
+          "@type": "Organization",
+          "name": "E-Suero",
+          "url": "https://e-suero.ch/index.html"
+        }
+      },
+      {
+        "@type": "Offer",
+        "priceCurrency": "CHF",
+        "name": "50 Ah · ca. 250 km",
+        "price": "3950.00",
+        "availability": "https://schema.org/InStock",
+        "url": "https://e-suero.ch/fahrzeuge/e-roller/next-nx-plus.html#akku-50ah",
+        "seller": {
+          "@type": "Organization",
+          "name": "E-Suero",
+          "url": "https://e-suero.ch/index.html"
+        }
       }
-    }
+    ]
   },
   {
     "@context": "https://schema.org",
@@ -203,7 +217,7 @@
         <span class="eyebrow">E-Roller · 25 km/h</span>
         <h1>Next NX Plus</h1>
         <p class="model-desc" style="font-size:1rem">72 Volt · Farben: Schwarz, Weiss</p>
-        <div class="variant-select" role="radiogroup" aria-label="Variante wählen"><button type="button" class="variant-chip is-active" data-price-rappen="325000" data-price-label="CHF 3&#x27;250.00" data-variant-label="25 Ah · ca. 125 km">25 Ah · ca. 125 km</button><button type="button" class="variant-chip" data-price-rappen="395000" data-price-label="CHF 3&#x27;950.00" data-variant-label="50 Ah · ca. 250 km">50 Ah · ca. 250 km</button></div>
+        <div class="variant-select" role="radiogroup" aria-label="Variante wählen"><button type="button" class="variant-chip is-active" data-price-rappen="325000" data-price-label="CHF 3&#x27;250.00" data-variant-label="25 Ah · ca. 125 km" data-variant-slug="akku-25ah">25 Ah · ca. 125 km</button><button type="button" class="variant-chip" data-price-rappen="395000" data-price-label="CHF 3&#x27;950.00" data-variant-label="50 Ah · ca. 250 km" data-variant-slug="akku-50ah">50 Ah · ca. 250 km</button></div>
         <span class="price" style="font-size:2rem;display:block;margin:.6rem 0 1rem">CHF 3&#x27;250.00</span>
         <p style="color:var(--c-mute);max-width:56ch" data-i18n="product_next-nx-plus_lead">Mit 72 Volt und bis zu zwei Akkupaketen ist der Next NX Plus auf Reichweite ausgelegt — wahlweise bis 125 km oder bis 250 km, bei 2 Sitzplätzen.</p>
         <div style="margin:1.2rem 0">
@@ -416,7 +430,7 @@
 <script src="../../lib/gsap.min.js" defer></script>
 <script src="../../lib/ScrollTrigger.min.js" defer></script>
 <script src="../../i18n.js?v=20261101" defer></script>
-<script src="../../main.js?v=20261101" defer></script>
+<script src="../../main.js?v=20261102" defer></script>
 <script src="../../assets/js/stripe-checkout.js?v=20260815" defer></script>
 <script src="../../assets/js/sales-form.js?v=20261029" defer></script>
 </body>

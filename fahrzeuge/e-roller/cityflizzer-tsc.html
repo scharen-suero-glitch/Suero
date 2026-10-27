@@ -38,25 +38,35 @@
     "description": "CityFlizzer TSC bei E-Suero Freienbach: 25 km/h führerscheinfrei, wählbar mit 75 km oder 150 km Reichweite, Carplay-Display, ab CHF 2'190.00. Beratung & Probefahrt in Freienbach SZ.",
     "category": "E-Roller",
     "sku": "cityflizzer-tsc",
-    "brand": {
-      "@type": "Brand",
-      "name": "TSC"
-    },
     "image": "https://e-suero.ch/assets/images/products/eroller-cityflizzer-tsc-schwarz.jpg",
-    "offers": {
-      "@type": "AggregateOffer",
-      "priceCurrency": "CHF",
-      "lowPrice": "2190.00",
-      "highPrice": "2990.00",
-      "offerCount": 2,
-      "availability": "https://schema.org/InStock",
-      "url": "https://e-suero.ch/fahrzeuge/e-roller/cityflizzer-tsc.html",
-      "seller": {
-        "@type": "Organization",
-        "name": "E-Suero",
-        "url": "https://e-suero.ch/index.html"
+    "offers": [
+      {
+        "@type": "Offer",
+        "priceCurrency": "CHF",
+        "name": "30 Ah · ca. 75 km",
+        "price": "2190.00",
+        "availability": "https://schema.org/InStock",
+        "url": "https://e-suero.ch/fahrzeuge/e-roller/cityflizzer-tsc.html#akku-30ah",
+        "seller": {
+          "@type": "Organization",
+          "name": "E-Suero",
+          "url": "https://e-suero.ch/index.html"
+        }
+      },
+      {
+        "@type": "Offer",
+        "priceCurrency": "CHF",
+        "name": "60 Ah · ca. 150 km",
+        "price": "2990.00",
+        "availability": "https://schema.org/InStock",
+        "url": "https://e-suero.ch/fahrzeuge/e-roller/cityflizzer-tsc.html#akku-60ah",
+        "seller": {
+          "@type": "Organization",
+          "name": "E-Suero",
+          "url": "https://e-suero.ch/index.html"
+        }
       }
-    }
+    ]
   },
   {
     "@context": "https://schema.org",
@@ -207,7 +217,7 @@
         <span class="eyebrow">E-Roller · 25 km/h</span>
         <h1>CityFlizzer TSC</h1>
         <p class="model-desc" style="font-size:1rem">48 Volt · Farben: Schwarz, Weiss</p>
-        <div class="variant-select" role="radiogroup" aria-label="Variante wählen"><button type="button" class="variant-chip is-active" data-price-rappen="219000" data-price-label="CHF 2&#x27;190.00" data-variant-label="30 Ah · ca. 75 km">30 Ah · ca. 75 km</button><button type="button" class="variant-chip" data-price-rappen="299000" data-price-label="CHF 2&#x27;990.00" data-variant-label="60 Ah · ca. 150 km">60 Ah · ca. 150 km</button></div>
+        <div class="variant-select" role="radiogroup" aria-label="Variante wählen"><button type="button" class="variant-chip is-active" data-price-rappen="219000" data-price-label="CHF 2&#x27;190.00" data-variant-label="30 Ah · ca. 75 km" data-variant-slug="akku-30ah">30 Ah · ca. 75 km</button><button type="button" class="variant-chip" data-price-rappen="299000" data-price-label="CHF 2&#x27;990.00" data-variant-label="60 Ah · ca. 150 km" data-variant-slug="akku-60ah">60 Ah · ca. 150 km</button></div>
         <span class="price" style="font-size:2rem;display:block;margin:.6rem 0 1rem">CHF 2&#x27;190.00</span>
         <p style="color:var(--c-mute);max-width:56ch" data-i18n="product_cityflizzer-tsc_lead">Der CityFlizzer TSC ist mit zwei Akku-Grössen erhältlich und bringt als einziges Modell im Sortiment ein Carplay-Display für Apple und Android mit.</p>
         <div style="margin:1.2rem 0">
@@ -420,7 +430,7 @@
 <script src="../../lib/gsap.min.js" defer></script>
 <script src="../../lib/ScrollTrigger.min.js" defer></script>
 <script src="../../i18n.js?v=20261101" defer></script>
-<script src="../../main.js?v=20261101" defer></script>
+<script src="../../main.js?v=20261102" defer></script>
 <script src="../../assets/js/stripe-checkout.js?v=20260815" defer></script>
 <script src="../../assets/js/sales-form.js?v=20261029" defer></script>
 </body>

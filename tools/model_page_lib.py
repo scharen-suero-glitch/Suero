@@ -32,6 +32,16 @@ NAME_I18N_KEY = {
 }
 
 
+def variant_slug(label):
+    """Stable, URL-safe id for a battery/variant option, e.g. '30 Ah · ca. 75 km' ->
+    'akku-30ah'. Used both as the chip's data attribute (so a page can read
+    location.hash on load and pre-select that exact configuration) and as the
+    #fragment on that variant's Offer.url in JSON-LD — so the URL actually
+    identifies/selects the configuration it prices, not just a cosmetic string."""
+    m = re.search(r"(\d+)\s*Ah", label, re.I)
+    return f"akku-{m.group(1)}ah" if m else re.sub(r"[^a-z0-9]+", "-", label.lower()).strip("-")
+
+
 def is_a1(p):
     return "Kat. A1" in p["badges"]
 
@@ -348,7 +358,7 @@ def card_html(p, category, img_base=None, link_dir=None):
         chips = "".join(
             f'<button type="button" class="variant-chip{" is-active" if i==0 else ""}" '
             f'data-price-rappen="{v["price_rappen"]}" data-price-label="{esc(v["price_label"])}" '
-            f'data-variant-label="{esc(v["label"])}">{esc(v["label"])}</button>'
+            f'data-variant-label="{esc(v["label"])}" data-variant-slug="{variant_slug(v["label"])}">{esc(v["label"])}</button>'
             for i, v in enumerate(p["variants"])
         )
         variants_html = f'<div class="variant-select" role="radiogroup" aria-label="Variante wählen">{chips}</div>'
@@ -595,7 +605,7 @@ PAGE_TMPL = """<!doctype html>
 <script src="../../lib/gsap.min.js" defer></script>
 <script src="../../lib/ScrollTrigger.min.js" defer></script>
 <script src="../../i18n.js?v=20261101" defer></script>
-<script src="../../main.js?v=20261101" defer></script>
+<script src="../../main.js?v=20261102" defer></script>
 <script src="../../assets/js/stripe-checkout.js?v=20260815" defer></script>
 <script src="../../assets/js/sales-form.js?v=20261029" defer></script>
 </body>
@@ -608,14 +618,12 @@ PAGE_TMPL = """<!doctype html>
 # against the supplier). Never guessed — a slug missing here means the
 # brand is unconfirmed and `brand` is omitted from that product's
 # Product/Offer JSON-LD rather than invented.
-BRAND_MAP = {
-    "tsc-next-one-nx1-7i": "TSC",
-    "tsc-next-one-nx1-7i-45": "TSC",
-    "cityflizzer-tsc": "TSC",
-    "fantic-issimo-city-escooter-l1": "Fantic",
-    "next-one-tsc-e-minicar": "TSC",
-    "next-one-tsc-e-minicar-10-20": "TSC",
-}
+# Real manufacturer brand, only once confirmed against actual manufacturer
+# or supplier documentation — never inferred from a product's own marketing
+# name (e.g. "TSC" or "Fantic" appearing in the title is NOT, by itself,
+# sufficient confirmation). Empty until the owner can confirm each model
+# against real documentation; see tools/QUELLEN-PRODUKTDATEN.md.
+BRAND_MAP = {}
 
 
 def build_page(p, category, products):
@@ -666,7 +674,7 @@ def build_page(p, category, products):
         chips = "".join(
             f'<button type="button" class="variant-chip{" is-active" if i==0 else ""}" '
             f'data-price-rappen="{v["price_rappen"]}" data-price-label="{esc(v["price_label"])}" '
-            f'data-variant-label="{esc(v["label"])}">{esc(v["label"])}</button>'
+            f'data-variant-label="{esc(v["label"])}" data-variant-slug="{variant_slug(v["label"])}">{esc(v["label"])}</button>'
             for i, v in enumerate(p["variants"])
         )
         variant_select = f'<div class="variant-select" role="radiogroup" aria-label="Variante wählen">{chips}</div>'
@@ -719,16 +727,24 @@ def build_page(p, category, products):
     seller = {"@type": "Organization", "name": "E-Suero", "url": f"{SITE}/index.html"}
     if has_price:
         if p.get("variants"):
-            variant_prices = [v["price_rappen"] / 100 for v in p["variants"]]
-            product_jsonld["offers"] = {
-                "@type": "AggregateOffer", "priceCurrency": "CHF",
-                "lowPrice": "{:.2f}".format(min(variant_prices)),
-                "highPrice": "{:.2f}".format(max(variant_prices)),
-                "offerCount": len(p["variants"]),
-                "availability": "https://schema.org/InStock",
-                "url": canonical,
-                "seller": seller,
-            }
+            # Each battery/variant option is a real, separately priced
+            # configuration of the same product — represented as its own
+            # Offer (not AggregateOffer, which Google Merchant listings
+            # doesn't accept as a stand-in for per-variant pricing) with a
+            # URL that actually selects that configuration on the page
+            # (see variant_slug() + the matching JS in main.js that reads
+            # location.hash on load and pre-selects the matching chip).
+            product_jsonld["offers"] = [
+                {
+                    "@type": "Offer", "priceCurrency": "CHF",
+                    "name": v["label"],
+                    "price": "{:.2f}".format(v["price_rappen"] / 100),
+                    "availability": "https://schema.org/InStock",
+                    "url": f"{canonical}#{variant_slug(v['label'])}",
+                    "seller": seller,
+                }
+                for v in p["variants"]
+            ]
         else:
             product_jsonld["offers"] = {
                 "@type": "Offer", "priceCurrency": "CHF",

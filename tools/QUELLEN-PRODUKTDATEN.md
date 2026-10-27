@@ -275,6 +275,47 @@ válido (parseado con `json.loads` sin errores) y ningún `Product` quedó sin `
 comprobación real en https://search.google.com/test/rich-results una vez subido — ver URLs
 abajo.
 
+## Actualización 2026-10-27 (revisión): correcciones a la propuesta de datos estructurados
+
+El dueño aprobó la propuesta de JSON-LD con 5 ajustes antes de publicar. Aplicados:
+
+1. **AggregateOffer retirado.** CityFlizzer TSC y Next NX Plus (los únicos con variantes de
+   batería) ahora declaran un array `offers` con un `Offer` real por variante — cada uno con
+   su propio `price` exacto y una URL con ancla (`#akku-30ah`, `#akku-60ah`, etc.) que
+   selecciona esa configuración de verdad en la página, no solo un texto distinto. Se añadió
+   `data-variant-slug` a cada botón de variante y lógica nueva en `main.js` que lee
+   `location.hash` al cargar la página y preselecciona el botón correspondiente — mismo
+   diseño visual, solo cambia cuál variante queda activada por defecto según el enlace usado.
+   **Verificado con Playwright, no solo revisado visualmente**: visitar
+   `cityflizzer-tsc.html#akku-60ah` muestra "CHF 2'990.00" y activa el chip de 60 Ah (antes
+   mostraba 2'190.00 con el ancla ignorada); lo mismo confirmado para los 4 combos de ambos
+   productos, incluida la carga sin ancla (debe mostrar la primera variante, confirmado).
+2. **Marca retirada de las 13 fichas.** El dueño señaló correctamente que deducir "TSC" o
+   "Fantic" solo porque aparecen en el nombre comercial no es verificación real contra
+   documentación del fabricante o proveedor — y este entorno no tiene acceso a internet para
+   consultar esa documentación. Se quitó `BRAND_MAP` (queda vacío con un comentario
+   explicando por qué) — **ninguna de las 13 fichas declara `brand` por ahora.** `seller`
+   (E-Suero) se mantiene en todas, eso sí está confirmado y no depende de verificación externa.
+   **Pendiente**: si el dueño tiene una ficha técnica, factura o catálogo del proveedor que
+   confirme la marca de fabricante de cada modelo, se puede añadir en una línea por producto
+   en `BRAND_MAP` dentro de `tools/model_page_lib.py`.
+3. **E-Bike / E-Motorräder**: confirmado con Playwright que las 4 secciones ancladas de cada
+   página (`#p-fantic-issimo-fun`, `#p-molenstraat-dapper`, etc.) existen y muestran un
+   producto real con nombre, specs y precio — no están vacías ni rotas. Se mantienen como
+   navegación provisional dentro de la misma página de categoría (no como fichas
+   independientes), tal como se aprobó.
+4. **E-Scooter — confirmado, no corregido todavía**: las 3 tarjetas con datos ficticios
+   (Urban Pro X CHF 890, City Cruiser CHF 1'190, Offroad Force CHF 1'690) **siguen visibles,
+   sin cambios**, en `fahrzeuge/e-scooter.html`. Quitarlas del JSON-LD (ronda anterior) no las
+   quitó de la página — siguen siendo visibles para cualquier visitante real con precios
+   inventados. No se tocó el contenido visible en esta ronda porque el dueño pidió
+   explícitamente no cambiar productos/precios visibles sin confirmar antes. **Esto sigue
+   pendiente de decisión** (ver tarea #13): ¿se sustituyen por datos reales de E-Scooter que
+   el dueño proporcione, se quitan las tarjetas, o se deja así temporalmente marcado como
+   "próximamente"?
+5. **Sin envíos, devoluciones ni valoraciones** — sin cambios, se mantiene igual que la
+   ronda anterior.
+
 ## Siguiente paso recomendado
 
 Cuando `thescootercompany.ch` vuelva a ser accesible (desde este entorno o

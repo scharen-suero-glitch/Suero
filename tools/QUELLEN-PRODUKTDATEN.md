@@ -214,6 +214,67 @@ en esta ronda. Las fichas fictícias de E-Scooter (Urban Pro X, City Cruiser, Of
 pendientes de confirmación de datos reales) también se tradujeron en el texto corto, por
 consistencia, pero siguen siendo datos ficticios.
 
+## Actualización 2026-10-27: datos estructurados (JSON-LD) corregidos tras aviso de Search Console
+
+El dueño reportó 11 "Product" inválidos para Merchant listings en `/fahrzeuge/e-roller.html`
+(error crítico: falta `image`) y el mismo problema en `/fahrzeuge/e-bike.html` y
+`/fahrzeuge/e-motorraeder.html`. Diagnóstico confirmado en el código:
+
+- Cada página de categoría incrustaba un `ItemList` con hasta 11 objetos `Product` completos
+  (con `offers`) directamente en la página de catálogo — y ninguno tenía `image`. Además sus
+  URL (`offers.url`) apuntaban a anclas obsoletas de la propia página de categoría
+  (`#p-slug`), ni siquiera a las fichas de producto reales que ya existen.
+- El campo `brand` de cada ficha individual estaba fijado siempre a `"E-Suero"` — ese es el
+  vendedor, no el fabricante. Mezclar vendedor y marca es justo el tipo de dato inconsistente
+  que Google penaliza.
+- Existía código (nunca activado con los 13 productos reales, pero sí un riesgo latente) que
+  usaba el logo del sitio como `image` cuando un producto no tenía foto — exactamente lo que
+  se pidió evitar.
+
+**Qué se corrigió:**
+1. Las 5 páginas de categoría (E-Roller, E-Bike, E-Motorräder, E-Scooter, E-Minicar) ya no
+   llevan `Product`/`Offer` incrustados. Ahora son `CollectionPage` + `ItemList` que solo
+   enlazan a la URL real de cada ficha — sin datos de producto duplicados o inválidos en la
+   página de catálogo. Para E-Roller y E-Minicar, el enlace va a la ficha individual real
+   (`fahrzeuge/e-roller/<slug>.html`). Para E-Bike y E-Motorräder (que aún no tienen ficha
+   propia, ver tarea pendiente #12) el enlace va a la sección correspondiente dentro de la
+   misma página de categoría. E-Scooter (datos ficticios, ver tarea pendiente #13) se quedó
+   sin lista de productos — no hay nada real que anunciar como producto comprable todavía.
+2. Las 13 fichas individuales reales (`tools/model_page_lib.py`) ahora llevan:
+   - `image`: la foto real del color/variante que se muestra por defecto en la página —
+     nunca el logo. Si algún producto futuro no tuviera foto real, el campo se omite en vez
+     de sustituirlo por el logo.
+   - `brand`: solo cuando el fabricante aparece explícitamente en el propio nombre ya
+     publicado del producto — `TSC` (TSC Next One NX1 7i, TSC Next One NX1 7i 45 km/h,
+     CityFlizzer TSC, ambos NEXT ONE TSC e-Minicar) y `Fantic` (Fantic Issimo City E-Scooter
+     L1). **Para Next NX1, Next NX1 45 km/h, Next NX Plus, Next NX Plus 45 km/h, Chopper 6.0
+     Pro, Chopper 6.0 Pro 45 km/h y Fatbob Pro no hay marca de fabricante confirmada en los
+     datos — el campo se omitió en vez de inventarla.** Si el dueño confirma estas marcas,
+     se pueden añadir en `tools/model_page_lib.py` (`BRAND_MAP`).
+   - `offers.seller`: ahora sí identifica a E-Suero como vendedor (antes esto no existía).
+   - `sku`: el slug interno del producto (ya usado en la tienda, no es un dato inventado).
+   - Para CityFlizzer TSC y Next NX Plus (los únicos con variantes de precio distinto por
+     batería) se usa `AggregateOffer` con `lowPrice`/`highPrice` reales de cada variante, en
+     vez de declarar un solo precio fijo que no reflejaba las dos opciones.
+   - `availability` se mantiene `InStock` para los 13 — es el estado real y uniforme del
+     negocio (pedido al proveedor, 0–3 días de tramitación), no una copia ciega sin revisar.
+3. **No se añadieron** `shippingDetails` ni `hasMerchantReturnPolicy`: revisadas las AGB y la
+   página de proceso de compra, no hay costo de envío publicado ni política de devolución con
+   plazo concreto — solo "la recogida en el showroom es gratuita". **Para poder añadir esto
+   de forma honesta, el dueño debe proporcionar**: costo de envío a domicilio (o si solo se
+   ofrece recogida), transportista, plazo de entrega exacto por zona, y la política de
+   devolución (días de plazo, quién paga el envío de vuelta, condiciones).
+4. **No se añadió** `review` ni `aggregateRating` a ningún producto — las 13 reseñas de Google
+   del negocio son generales, no por modelo, y no corresponde usarlas como si fueran
+   reseñas de ese producto específico.
+
+**No validado con Rich Results Test de Google**: este entorno no tiene acceso a internet
+(confirmado repetidamente durante todo el proyecto), así que no pude ejecutar la herramienta
+de Google. Validado localmente: las 18 páginas modificadas tienen JSON-LD sintácticamente
+válido (parseado con `json.loads` sin errores) y ningún `Product` quedó sin `image`. Falta la
+comprobación real en https://search.google.com/test/rich-results una vez subido — ver URLs
+abajo.
+
 ## Siguiente paso recomendado
 
 Cuando `thescootercompany.ch` vuelva a ser accesible (desde este entorno o

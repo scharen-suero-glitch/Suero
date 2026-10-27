@@ -603,15 +603,36 @@ PAGE_TMPL = """<!doctype html>
 """
 
 
+# Real manufacturer brand, only where it's explicitly confirmed (present
+# verbatim in the product's own published name, or previously confirmed
+# against the supplier). Never guessed — a slug missing here means the
+# brand is unconfirmed and `brand` is omitted from that product's
+# Product/Offer JSON-LD rather than invented.
+BRAND_MAP = {
+    "tsc-next-one-nx1-7i": "TSC",
+    "tsc-next-one-nx1-7i-45": "TSC",
+    "cityflizzer-tsc": "TSC",
+    "fantic-issimo-city-escooter-l1": "Fantic",
+    "next-one-tsc-e-minicar": "TSC",
+    "next-one-tsc-e-minicar-10-20": "TSC",
+}
+
+
 def build_page(p, category, products):
     sd = spec_dict(p)
     canonical = f"{SITE}/fahrzeuge/{category['dir']}/{p['slug']}.html"
     has_price = bool(p.get("price_rappen"))
-    if p.get("colors"):
+    if p.get("colors") and not p.get("no_photo"):
         main_img = p["color_imgs"][p["colors"][0]]
-        og_image = f"{SITE}/assets/images/products/{main_img}"
+        product_image = f"{SITE}/assets/images/products/{main_img}"
+        og_image = product_image
     else:
         main_img = None
+        # No real photo yet: fine to fall back to the logo for social-share
+        # previews (og:image/twitter:image), but never for Product JSON-LD
+        # — Google explicitly disallows a logo/banner standing in for the
+        # product photo, so product_image stays None (field omitted) there.
+        product_image = None
         og_image = f"{SITE}/assets/images/logo-mark-320.png"
     a1 = is_a1(p)
     speed = sd.get("Höchstgeschwindigkeit", "")
@@ -684,16 +705,43 @@ def build_page(p, category, products):
         "name": f"E-Suero {p['name']}",
         "description": description,
         "category": category["name"],
-        "image": og_image,
-        "brand": {"@type": "Brand", "name": "E-Suero"},
+        "sku": p["slug"],
     }
+    # Only a confirmed real manufacturer brand — never E-Suero itself
+    # (that belongs in offers.seller, not Product.brand) and never guessed.
+    brand_name = BRAND_MAP.get(p["slug"])
+    if brand_name:
+        product_jsonld["brand"] = {"@type": "Brand", "name": brand_name}
+    # Only a real photo of this exact model/colour — never the site logo
+    # or a generic banner standing in for the product.
+    if product_image:
+        product_jsonld["image"] = product_image
+    seller = {"@type": "Organization", "name": "E-Suero", "url": f"{SITE}/index.html"}
     if has_price:
-        product_jsonld["offers"] = {
-            "@type": "Offer", "priceCurrency": "CHF",
-            "price": "{:.2f}".format(p["price_rappen"] / 100),
-            "availability": "https://schema.org/InStock",
-            "url": canonical,
-        }
+        if p.get("variants"):
+            variant_prices = [v["price_rappen"] / 100 for v in p["variants"]]
+            product_jsonld["offers"] = {
+                "@type": "AggregateOffer", "priceCurrency": "CHF",
+                "lowPrice": "{:.2f}".format(min(variant_prices)),
+                "highPrice": "{:.2f}".format(max(variant_prices)),
+                "offerCount": len(p["variants"]),
+                "availability": "https://schema.org/InStock",
+                "url": canonical,
+                "seller": seller,
+            }
+        else:
+            product_jsonld["offers"] = {
+                "@type": "Offer", "priceCurrency": "CHF",
+                "price": "{:.2f}".format(p["price_rappen"] / 100),
+                "availability": "https://schema.org/InStock",
+                "url": canonical,
+                "seller": seller,
+            }
+    # Deliberately no shippingDetails / hasMerchantReturnPolicy: no real,
+    # published per-item shipping cost or return-window terms exist on the
+    # site to back them — see tools/QUELLEN-PRODUKTDATEN.md.
+    # Deliberately no review / aggregateRating: not derived from the
+    # business's general Google review count, which is not product-specific.
     jsonld = json.dumps([product_jsonld, breadcrumb_jsonld, faq_jsonld], ensure_ascii=False, indent=2)
 
     header = sales_chrome.header_html("../../", "#modell-kontakt", category["landing"])

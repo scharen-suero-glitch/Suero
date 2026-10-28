@@ -42,7 +42,14 @@
   }
 
   function m(name, opts) {
-    return Object.assign({ name: name, condition: "", controlled: false, approved: false }, opts || {});
+    // href (optional): when a model has its own real published page (own
+    // canonical/meta/JSON-LD — needed for SEO-eligible listings), link
+    // straight to it instead of the internal hash-routed detail view.
+    // price/badges (optional): shown on the model card when set.
+    // available (optional, default true): set to false the moment a unit
+    // sells — it's then skipped from the listing instead of staying
+    // announced as buyable.
+    return Object.assign({ name: name, condition: "", controlled: false, approved: false, available: true }, opts || {});
   }
   function brand(name, models) {
     return { name: name, models: models || [] };
@@ -103,8 +110,34 @@
       /* Weitere Marken: hier eine neue brand("Name", [ m("Modell") ]) Zeile einfügen. */
     ]),
     "e-bike": category("E-Bike", []),
-    "e-roller": category("E-Roller", []),
+    "e-roller": category("E-Roller", [
+      brand("Vespino", [
+        m("Vespino 7i Occasion – Schwarz", {
+          href: "gebraucht/vespino-7i-schwarz.html",
+          image: "../assets/images/products/vespino-7i-schwarz.jpg",
+          price: "CHF 1'500.–",
+          badges: ["Occasion", "Service durchgeführt", "6 Monate Garantie"]
+        }),
+        m("Vespino 7i Occasion – Weiss / roter Sitz", {
+          href: "gebraucht/vespino-7i-weiss.html",
+          image: "../assets/images/products/vespino-7i-weiss.jpg",
+          price: "CHF 1'500.–",
+          badges: ["Occasion", "Service durchgeführt", "6 Monate Garantie"]
+        })
+      ])
+    ]),
     "e-motorraeder": category("E-Motorräder", [])
+  };
+
+  // Custom header text for a given category/brand drill-down level —
+  // falls back to the generic "Marke wählen."/"Modell wählen." text when
+  // no override is set for that combination.
+  var BRAND_HEADLINES = {
+    "e-roller/vespino": {
+      eyebrow: "E-Roller Occasion",
+      title: "E-Roller Occasion in Freienbach",
+      sub: "Entdecken Sie unsere gebrauchten Vespino 7i: Beide Fahrzeuge haben einen vollständigen mechanischen und elektronischen Service erhalten. Für CHF 1'500 pro Fahrzeug und mit 6 Monaten Garantie – persönlich beraten bei E-Suero in Freienbach SZ."
+    }
   };
 
   var CATEGORY_ORDER = ["e-scooter", "e-bike", "e-roller", "e-motorraeder"];
@@ -119,7 +152,7 @@
   var CATEGORY_DESC = {
     "e-scooter": "Geprüfte Elektro-Scooter namhafter Marken.",
     "e-bike": "Geprüfte E-Bikes — Marken und Modelle folgen in Kürze.",
-    "e-roller": "Geprüfte E-Roller — Marken und Modelle folgen in Kürze.",
+    "e-roller": "Geprüfte E-Roller Occasion — Vespino 7i verfügbar, weitere Marken folgen in Kürze.",
     "e-motorraeder": "Geprüfte Elektromotorräder — Marken und Modelle folgen in Kürze."
   };
 
@@ -284,20 +317,40 @@
       { label: catLabel, href: "#/" + catSlug },
       { label: b.name, href: "#/" + catSlug + "/" + brandSlug }
     ]);
-    setHead(catLabel, b.name, t("used_pick_model", "Modell wählen."),
-      b.name + " " + cat.name + " gebraucht kaufen | E-Suero Freienbach SZ",
-      "Geprüfte gebrauchte " + b.name + " " + cat.name + " bei E-Suero in Freienbach SZ — alle verfügbaren Modelle im Überblick.");
+    var headline = BRAND_HEADLINES[catSlug + "/" + brandSlug];
+    if (headline) {
+      setHead(headline.eyebrow, headline.title, headline.sub,
+        headline.title + " | E-Suero", headline.sub);
+    } else {
+      setHead(catLabel, b.name, t("used_pick_model", "Modell wählen."),
+        b.name + " " + cat.name + " gebraucht kaufen | E-Suero Freienbach SZ",
+        "Geprüfte gebrauchte " + b.name + " " + cat.name + " bei E-Suero in Freienbach SZ — alle verfügbaren Modelle im Überblick.");
+    }
+
+    var availableModels = b.models.filter(function (mo) { return mo.available !== false; });
+    if (!availableModels.length) {
+      root.innerHTML = '<div class="catalog-empty"><p>' + esc(t("used_cond_inquiry", "Zustand auf Anfrage")) + '</p>' +
+        '<a href="../index.html#contact" class="btn btn-ghost btn-sm">' + esc(t("used_contact_cta", "Kontakt aufnehmen")) + '</a></div>';
+      return;
+    }
 
     var html = '<div class="model-grid is-visible">';
-    b.models.forEach(function (mo) {
+    availableModels.forEach(function (mo) {
       var mSlug = slugify(mo.name);
       var condLabel = condLabelFor(mo.condition);
       var desc = mo.desc ? t("xiaomi_desc_" + mo.name, mo.desc) : "";
-      html += '<a class="model-card" href="#/' + catSlug + "/" + brandSlug + "/" + mSlug + '">' +
+      var href = mo.href ? mo.href : "#/" + catSlug + "/" + brandSlug + "/" + mSlug;
+      var badgesHtml = (mo.badges || []).map(function (bd, i) {
+        return '<span class="badge' + (i === 0 ? "" : " ok") + '">' + esc(bd) + "</span>";
+      }).join("");
+      html += '<a class="model-card" href="' + esc(href) + '">' +
         (mo.image ? '<div class="product-media"><img src="' + esc(mo.image) + '" alt="' + esc(mo.name) + '" width="960" height="640" loading="lazy"></div>' : "") +
         "<h3>" + esc(mo.name) + "</h3>" +
         (desc ? '<p class="model-desc">' + esc(desc) + "</p>" : "") +
-        (condLabel ? '<span class="badge ok">' + esc(condLabel) + "</span>" : '<span class="badge">' + esc(t("used_cond_inquiry", "Zustand auf Anfrage")) + "</span>") +
+        (badgesHtml ? '<div class="catalog-badges" style="margin:.6rem 0">' + badgesHtml + "</div>" :
+          (condLabel ? '<span class="badge ok">' + esc(condLabel) + "</span>" : '<span class="badge">' + esc(t("used_cond_inquiry", "Zustand auf Anfrage")) + "</span>")) +
+        (mo.price ? '<span class="price" style="display:block;margin-top:.6rem">' + esc(mo.price) + "</span>" : "") +
+        (mo.href ? '<div style="margin-top:1rem"><span class="btn btn-ghost btn-sm magnetic">Fahrzeug ansehen</span></div>' : "") +
         "</a>";
     });
     html += "</div>";

@@ -346,6 +346,67 @@ los 3 iconos se ven correctamente alineados en el pie de página. Por favor, ant
 cerrado, abre tú mismo los dos enlaces desde el sitio publicado para confirmar que llevan al
 perfil correcto.
 
+## Actualización 2026-10-28: 2 Vespino 7i Occasion (E-Roller) añadidos
+
+El dueño pidió integrar dos unidades físicas reales de ocasión — Vespino 7i, una negra y una
+blanca con asiento rojo — en el apartado "Gebraucht & Geprüft" existente, con datos muy
+concretos y varias prohibiciones explícitas (no llamarlas "7i S" ni "Next NX1", no sustituir
+los 23 Ah confirmados, no afirmar que el Topcase visible en la foto blanca está incluido en
+el precio, no inventar kilometraje/año/defectos/condiciones de garantía).
+
+**Qué se hizo:**
+- Nuevo archivo de datos `tools/gebraucht_vespino.py` — única fuente de verdad para las 2
+  unidades (marca, modelo, color, batería, autonomía anunciada, garantía, precio, textos SEO
+  exactos del dueño).
+- Nuevo generador `tools/gen_gebraucht_pages.py` → crea páginas HTML reales y propias (no
+  rutas internas por hash) en `verkauf/gebraucht/vespino-7i-schwarz.html` y
+  `verkauf/gebraucht/vespino-7i-weiss.html`, cada una con su propio canonical, H1, meta
+  título/descripción y JSON-LD `Product`+`Offer` (marca Vespino, modelo 7i,
+  `itemCondition: UsedCondition`, precio 1500 CHF, vendedor E-Suero) + `BreadcrumbList`. Se
+  generaron rutas propias (en vez de usar el catálogo interno por hash de
+  `gebraucht-katalog.js`) porque una URL con `#fragmento` no es indexable/rastreable por
+  separado por Google — necesario para que cada ficha tenga su propio SEO real, tal como pedía
+  la tarea.
+- `assets/js/gebraucht-katalog.js`: añadida la marca "Vespino" dentro de la categoría
+  "E-Roller" ya existente (sin crear ningún apartado duplicado), con 2 modelos que enlazan
+  directamente a esas páginas reales (`href`) en vez de a la vista de detalle interna. Se
+  añadió también un encabezado personalizado ("E-Roller Occasion in Freienbach" + texto) solo
+  para esta marca, y una opción `available` por modelo para poder quitar una unidad de la
+  lista en cuanto se venda (nunca debe quedar anunciada como disponible si ya no lo está).
+- `verkauf/gebraucht-geprueft.html`: añadido un bloque `CollectionPage`/`ItemList` en el
+  `<head>` enlazando a las 2 fichas reales (la página en sí sigue siendo el mismo catálogo
+  dinámico de siempre — no se tocó su diseño ni su funcionamiento).
+- `sitemap.xml`: añadidas las 2 URL nuevas.
+- **Fotos reales**: el dueño adjuntó las 2 fotos reales (unidad negra y unidad blanca con
+  asiento rojo y Topcase visible) directamente en el chat durante esta misma ronda. Se
+  guardaron en `assets/images/products/vespino-7i-schwarz.jpg` y `-weiss.jpg`
+  (redimensionadas a 1199×675 para peso razonable, sin recortar el vehículo, mismo criterio
+  que el resto del catálogo). **No se usó ninguna imagen de referencia o genérica** — son las
+  fotos reales de estas dos unidades.
+- **Topcase (unidad blanca)**: el Topcase es visible en la foto real, pero el dueño no
+  confirmó si está incluido en el precio. En ningún texto (ficha, tarjeta, JSON-LD, alt de
+  imagen) se afirma que el Topcase esté incluido — se dejó fuera de toda descripción, tal
+  como se pidió. **Pendiente de confirmación del dueño.**
+- **Asunto del formulario de contacto**: la tarea pedía que el sistema "identifique
+  automáticamente la unidad" en el asunto del correo. Se revisó `verkauf/inquiry.php` (ya
+  existente, sin tocar) — genera el asunto `"Verkaufsanfrage – <Modelo>"` a partir del campo
+  `model` enviado por el formulario, que en estas 2 fichas nuevas es exactamente
+  "Vespino 7i Occasion – Schwarz" / "– Weiss / roter Sitz" (vía `data-model` en el
+  `<form>`). Esto ya cumple la identificación automática pedida; no se modificó el backend
+  porque ya funciona correctamente con el mecanismo existente.
+- Verificado con Playwright (desktop y móvil): ambas fotos reales cargan correctamente,
+  precio CHF 1'500.– y garantía de 6 meses visibles en tarjeta y ficha de ambas unidades, el
+  botón "Besichtigung & Probefahrt anfragen" preselecciona correctamente "Probefahrt" en el
+  formulario (y muestra el campo de fecha deseada), y cada formulario identifica la unidad
+  correcta vía `data-model`. HTML y JSON-LD de las 3 páginas tocadas validados sin errores.
+
+**Datos que siguen pendientes (no publicados, según pidió el dueño — sección 13 de la
+tarea)**: kilometraje, año (si se conoce), defectos o daños conocidos por unidad, si se
+incluye cargador/accesorios, si el Topcase de la unidad blanca está incluido en el precio, y
+las condiciones detalladas de la garantía de 6 meses. Ninguno de estos campos se inventó ni
+se copió de otro vehículo — simplemente no aparecen en ninguna ficha hasta que el dueño los
+confirme.
+
 ## Siguiente paso recomendado
 
 Cuando `thescootercompany.ch` vuelva a ser accesible (desde este entorno o

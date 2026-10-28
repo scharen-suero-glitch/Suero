@@ -1,0 +1,6 @@
+# Runtime-generated files — never commit real order/customer data or logs.
+stripe/*.log
+.DS_Store
+__MACOSX/
+verkauf/*.log
+__pycache__/

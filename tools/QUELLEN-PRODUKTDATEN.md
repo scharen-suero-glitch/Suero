@@ -316,6 +316,36 @@ El dueño aprobó la propuesta de JSON-LD con 5 ajustes antes de publicar. Aplic
 5. **Sin envíos, devoluciones ni valoraciones** — sin cambios, se mantiene igual que la
    ronda anterior.
 
+## Actualización 2026-10-28: Instagram y TikTok vinculados
+
+El dueño pidió vincular los perfiles oficiales de Instagram y TikTok. No había ningún icono
+de estas redes en el sitio todavía (solo WhatsApp) y el mensaje inicial no incluía las URL —
+se pidieron explícitamente antes de tocar nada, y el dueño las proporcionó:
+
+- Instagram: `https://www.instagram.com/e_suero.ch/`
+- TikTok: `https://www.tiktok.com/@e_suero.ch`
+
+**Qué se hizo:**
+- Añadido `"sameAs": ["https://www.instagram.com/e_suero.ch/", "https://www.tiktok.com/@e_suero.ch"]`
+  al único bloque `AutomotiveBusiness` del sitio (en `index.html` — es la única página con los
+  datos completos del negocio; las 13 fichas de producto solo referencian una `Organization`
+  mínima como `seller`, no el perfil completo, así que no se tocó ahí para no duplicar).
+- Añadidos los iconos de Instagram y TikTok al pie de página (`.footer-social`), junto al de
+  WhatsApp que ya existía, en las 28 páginas del sitio que tienen pie de página (y en
+  `tools/sales_chrome.py`, la plantilla que genera el pie de las 13 fichas de producto, para
+  que no se pierdan la próxima vez que se regeneren). Mismo estilo visual que el icono de
+  WhatsApp ya existente — círculo con borde, mismo tamaño — sin tocar el CSS.
+- Verificado mecánicamente: exactamente 1 icono de Instagram y 1 de TikTok por página (ninguno
+  duplicado), y `sameAs` aparece una sola vez en todo el sitio.
+
+**No pude verificar que los perfiles existan o carguen de verdad**: este entorno sigue sin
+acceso a internet (confirmado de nuevo al intentarlo). Lo que sí verifiqué: el `href` de cada
+icono es exactamente la URL que diste, con `target="_blank"` y `rel="noopener"` (se abren en
+pestaña nueva, sin dar acceso a la página anterior), y una captura de pantalla confirmó que
+los 3 iconos se ven correctamente alineados en el pie de página. Por favor, antes de darlo por
+cerrado, abre tú mismo los dos enlaces desde el sitio publicado para confirmar que llevan al
+perfil correcto.
+
 ## Siguiente paso recomendado
 
 Cuando `thescootercompany.ch` vuelva a ser accesible (desde este entorno o

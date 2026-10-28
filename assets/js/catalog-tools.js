@@ -6,10 +6,22 @@
   var COMPARE_MAX = 3;
 
   function readStore(key) {
-    try { return JSON.parse(localStorage.getItem(key)) || {}; } catch (e) { return {}; }
+    try {
+      var parsed = JSON.parse(localStorage.getItem(key));
+      // Must be a plain object of {slug: entry} — reject anything else
+      // (corrupted value, an array, a stray primitive) instead of letting
+      // it reach Object.keys()/rendering downstream.
+      return parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : {};
+    } catch (e) { return {}; }
   }
   function writeStore(key, obj) {
     try { localStorage.setItem(key, JSON.stringify(obj)); } catch (e) {}
+  }
+
+  function escHtml(str) {
+    return String(str == null ? "" : str).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
   }
 
   function slugify(str) {
@@ -22,6 +34,17 @@
     if (!text) return null;
     var digits = text.replace(/[^0-9]/g, "");
     return digits ? parseInt(digits, 10) : null;
+  }
+
+  function cardLink(card) {
+    // Prefer a real deep link to this exact product's own page over the
+    // current page's URL — a wishlist/compare entry saved from a teaser
+    // carousel (e.g. the homepage) must still point at the actual ficha,
+    // not just wherever it happened to be favorited from.
+    var link = card.querySelector("h3 a")
+      || card.querySelector('a[data-i18n="view_model"]')
+      || card.querySelector('a[data-i18n="view_models"]');
+    return link && link.getAttribute("href") ? link.href : window.location.href;
   }
 
   function cardData(card) {
@@ -40,12 +63,27 @@
       name: name,
       price: priceEl ? priceEl.textContent.trim() : "",
       priceValue: priceEl ? parsePrice(priceEl.textContent) : null,
-      img: img ? img.getAttribute("src") : "",
+      // .src (not getAttribute) resolves to an absolute URL, so it still
+      // points at the right file when rendered from a different page
+      // (e.g. the wishlist panel opened elsewhere on the site).
+      img: img ? img.src : "",
       badges: badges,
       specs: specs,
-      url: window.location.pathname,
+      url: cardLink(card),
     };
   }
+
+  // Keeps a card's cached _data (used by the wishlist heart and the
+  // compare toggle) in sync after the shopper changes its color or
+  // battery/variant — otherwise favoriting or comparing after switching
+  // color/variant would silently save the original price/image instead
+  // of the one actually on screen.
+  document.addEventListener("esuero:cardvariantchange", function (ev) {
+    var card = ev.target;
+    if (card && card.classList && card.classList.contains("tilt-card-inner") && card._data) {
+      card._data = cardData(card);
+    }
+  });
 
   function speedOf(card) {
     for (var i = 0; i < card._data.badges.length; i++) {
@@ -95,6 +133,33 @@
     btn.addEventListener("click", openWishlistPanel);
   }
 
+  // Shared modal plumbing for the wishlist panel and the compare table:
+  // appends the overlay, locks body scroll, moves focus into the modal,
+  // closes on Escape or an outside click, and restores focus to whatever
+  // triggered the modal when it closes.
+  function openModal(overlay) {
+    var opener = document.activeElement;
+    document.body.appendChild(overlay);
+    document.body.classList.add("checkout-open");
+    var closeBtn = overlay.querySelector(".checkout-close");
+    closeBtn && closeBtn.focus();
+
+    function onKeydown(ev) {
+      if (ev.key === "Escape") close();
+    }
+    document.addEventListener("keydown", onKeydown);
+
+    function close() {
+      overlay.remove();
+      document.body.classList.remove("checkout-open");
+      document.removeEventListener("keydown", onKeydown);
+      if (opener && typeof opener.focus === "function") opener.focus();
+    }
+    closeBtn && closeBtn.addEventListener("click", close);
+    overlay.addEventListener("click", function (ev) { if (ev.target === overlay) close(); });
+    return close;
+  }
+
   function openWishlistPanel() {
     var store = readStore(WISHLIST_KEY);
     var items = Object.keys(store).map(function (k) { return store[k]; });
@@ -102,9 +167,9 @@
     overlay.className = "checkout-overlay";
     var rows = items.length
       ? items.map(function (it) {
-          return '<div class="wishlist-row" data-slug="' + it.slug + '">' +
-            (it.img ? '<img src="' + it.img + '" alt="" loading="lazy">' : '<div class="wishlist-row-noimg"></div>') +
-            '<div class="wishlist-row-info"><strong>' + it.name + '</strong><span>' + it.price + '</span></div>' +
+          return '<div class="wishlist-row" data-slug="' + escHtml(it.slug) + '">' +
+            (it.img ? '<img src="' + escHtml(it.img) + '" alt="" loading="lazy">' : '<div class="wishlist-row-noimg"></div>') +
+            '<div class="wishlist-row-info"><strong>' + escHtml(it.name) + '</strong><span>' + escHtml(it.price) + '</span></div>' +
             '<button type="button" class="wishlist-remove" aria-label="Entfernen">&times;</button>' +
             "</div>";
         }).join("")
@@ -115,11 +180,7 @@
         '<div class="checkout-modal-head"><span class="eyebrow">E-Suero</span><h3 class="checkout-product-name">Wunschliste</h3></div>' +
         '<div class="wishlist-list">' + rows + "</div>" +
       "</div>";
-    document.body.appendChild(overlay);
-    document.body.classList.add("checkout-open");
-    function close() { overlay.remove(); document.body.classList.remove("checkout-open"); }
-    overlay.querySelector(".checkout-close").addEventListener("click", close);
-    overlay.addEventListener("click", function (ev) { if (ev.target === overlay) close(); });
+    var close = openModal(overlay);
     overlay.querySelectorAll(".wishlist-remove").forEach(function (btn) {
       btn.addEventListener("click", function () {
         var slug = btn.closest(".wishlist-row").getAttribute("data-slug");
@@ -131,6 +192,7 @@
         document.querySelectorAll('.wishlist-heart[data-slug="' + slug + '"]').forEach(function (h) { h.classList.remove("is-active"); });
       });
     });
+    return close;
   }
 
   /* ---------------- Compare ---------------- */
@@ -182,12 +244,12 @@
     items.forEach(function (it) {
       it.specs.forEach(function (pair) { if (labels.indexOf(pair[0]) === -1) labels.push(pair[0]); });
     });
-    var head = '<tr><th>Modell</th>' + items.map(function (it) { return "<th>" + it.name + "</th>"; }).join("") + "</tr>";
-    var priceRow = '<tr><td>Preis</td>' + items.map(function (it) { return "<td>" + it.price + "</td>"; }).join("") + "</tr>";
+    var head = '<tr><th>Modell</th>' + items.map(function (it) { return "<th>" + escHtml(it.name) + "</th>"; }).join("") + "</tr>";
+    var priceRow = '<tr><td>Preis</td>' + items.map(function (it) { return "<td>" + escHtml(it.price) + "</td>"; }).join("") + "</tr>";
     var rows = labels.map(function (label) {
-      return "<tr><td>" + label + "</td>" + items.map(function (it) {
+      return "<tr><td>" + escHtml(label) + "</td>" + items.map(function (it) {
         var pair = it.specs.filter(function (p) { return p[0] === label; })[0];
-        return "<td>" + (pair ? pair[1] : "—") + "</td>";
+        return "<td>" + (pair ? escHtml(pair[1]) : "—") + "</td>";
       }).join("") + "</tr>";
     }).join("");
 
@@ -199,11 +261,7 @@
         '<div class="checkout-modal-head"><span class="eyebrow">E-Suero</span><h3 class="checkout-product-name">Fahrzeugvergleich</h3></div>' +
         '<div class="compare-table-wrap"><table class="compare-table"><thead>' + head + "</thead><tbody>" + priceRow + rows + "</tbody></table></div>" +
       "</div>";
-    document.body.appendChild(overlay);
-    document.body.classList.add("checkout-open");
-    function close() { overlay.remove(); document.body.classList.remove("checkout-open"); }
-    overlay.querySelector(".checkout-close").addEventListener("click", close);
-    overlay.addEventListener("click", function (ev) { if (ev.target === overlay) close(); });
+    openModal(overlay);
   }
 
   /* ---------------- Card tools injection ---------------- */
@@ -296,6 +354,12 @@
       });
 
       emptyMsg.hidden = visibleCount !== 0;
+
+      // Coordinate with the product carousel (main.js) through its explicit
+      // API instead of letting it keep stale slide counts/positions computed
+      // before this filter pass hid or re-showed cards.
+      var carEl = container.closest("[data-carousel]");
+      if (carEl && carEl.__esuero) carEl.__esuero.reset();
     }
 
     search.addEventListener("input", applyFilters);

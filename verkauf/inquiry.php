@@ -1,17 +1,22 @@
 <?php
 /**
- * E-Suero — commercial (sales) inquiry endpoint.
+ * E-Suero — commercial (sales) and workshop inquiry endpoint.
  *
- * Deliberately separate from the repair contact form (index.html's
- * #contact-form, still a plain mailto: link — untouched) and from
- * everything under stripe/ (payments). This is a real server-side
- * endpoint: it validates, actually sends mail via PHP's mail() (the
- * same mechanism already proven to work for every Stripe notification
- * on this hosting), and only ever reports success once that has
- * actually happened — never simulated.
+ * Handles two request types via the `type` field, kept deliberately
+ * separate in validation and email formatting so neither can leak
+ * into the other's rules:
+ *   - "sales" (default, backward-compatible): verkauf/* pages via
+ *     assets/js/sales-form.js. Subject "Verkaufsanfrage – <Modell>".
+ *   - "workshop": index.html's #contact-form (main.js). Subject
+ *     "Werkstattanfrage – <Service>". Previously this form only
+ *     opened a mailto: link client-side; it now submits here like
+ *     every other form on the site.
  *
- * Subject line is always "Verkaufsanfrage – <Modell>" so these are
- * instantly distinguishable from repair/workshop mail in the inbox.
+ * Still separate from everything under stripe/ (payments). This is a
+ * real server-side endpoint: it validates, actually sends mail via
+ * PHP's mail() (the same mechanism already proven to work for every
+ * Stripe notification on this hosting), and only ever reports success
+ * once that has actually happened — never simulated.
  */
 require __DIR__ . '/../stripe/config.php'; // only reads ADMIN_EMAIL — never touches the Stripe secret
 
@@ -38,10 +43,12 @@ if (!empty($input['website'])) {
     exit;
 }
 
+$type = isset($input['type']) && $input['type'] === 'workshop' ? 'workshop' : 'sales';
 $name = isset($input['name']) ? trim((string) $input['name']) : '';
 $phone = isset($input['phone']) ? trim((string) $input['phone']) : '';
 $email = isset($input['email']) ? trim((string) $input['email']) : '';
 $model = isset($input['model']) ? trim((string) $input['model']) : '';
+$service = isset($input['service']) ? trim((string) $input['service']) : '';
 $reasonRaw = isset($input['reason']) ? (string) $input['reason'] : '';
 $message = isset($input['message']) ? trim((string) $input['message']) : '';
 $preferredDate = isset($input['preferred_date']) ? trim((string) $input['preferred_date']) : '';
@@ -54,20 +61,31 @@ $reasons = [
 ];
 $reasonLabel = isset($reasons[$reasonRaw]) ? $reasons[$reasonRaw] : 'Allgemeine Anfrage';
 
-$errors = [];
-if ($name === '' || mb_strlen($name) > 120) {
-    $errors[] = 'name';
-}
 $emailValid = $email !== '' && filter_var($email, FILTER_VALIDATE_EMAIL) !== false;
 // A Swiss/international phone number: digits, spaces, +, -, (), at least 7 digits total.
 $phoneDigits = preg_replace('/[^0-9]/', '', $phone);
 $phoneValid = $phone !== '' && strlen($phoneDigits) >= 7 && strlen($phoneDigits) <= 15;
-if (!$emailValid && !$phoneValid) {
-    // Brief requirement: exactly one contact channel is mandatory (phone OR email), not both.
-    $errors[] = 'contact';
+
+$errors = [];
+if ($name === '' || mb_strlen($name) > 120) {
+    $errors[] = 'name';
 }
-if ($message !== '' && mb_strlen($message) > 2000) {
-    $errors[] = 'message';
+if ($type === 'workshop') {
+    // The workshop form requires a real email (no phone-only option), matching its HTML.
+    if (!$emailValid) {
+        $errors[] = 'email';
+    }
+    if ($message === '' || mb_strlen($message) > 2000) {
+        $errors[] = 'message';
+    }
+} else {
+    // Brief requirement: exactly one contact channel is mandatory (phone OR email), not both.
+    if (!$emailValid && !$phoneValid) {
+        $errors[] = 'contact';
+    }
+    if ($message !== '' && mb_strlen($message) > 2000) {
+        $errors[] = 'message';
+    }
 }
 
 if (!empty($errors)) {
@@ -76,20 +94,32 @@ if (!empty($errors)) {
     exit;
 }
 
-$subjectModel = $model !== '' ? $model : 'Allgemein';
-$subject = "Verkaufsanfrage – {$subjectModel}";
+if ($type === 'workshop') {
+    $subject = 'Werkstattanfrage' . ($service !== '' ? " – {$service}" : '');
+    $bodyLines = [
+        "Neue Werkstattanfrage über e-suero.ch",
+        "",
+        "Gewünschter Service: " . ($service !== '' ? $service : '(nicht angegeben)'),
+        "Name: {$name}",
+        "Telefon: " . ($phone !== '' ? $phone : '(nicht angegeben)'),
+        "E-Mail: {$email}",
+    ];
+} else {
+    $subjectModel = $model !== '' ? $model : 'Allgemein';
+    $subject = "Verkaufsanfrage – {$subjectModel}";
 
-$bodyLines = [
-    "Neue Verkaufsanfrage über e-suero.ch",
-    "",
-    "Grund: {$reasonLabel}",
-    "Modell: " . ($model !== '' ? $model : '(kein Modell ausgewählt)'),
-    "Name: {$name}",
-    "Telefon: " . ($phone !== '' ? $phone : '(nicht angegeben)'),
-    "E-Mail: " . ($email !== '' ? $email : '(nicht angegeben)'),
-];
-if ($reasonRaw === 'probefahrt') {
-    $bodyLines[] = "Wunschtermin: " . ($preferredDate !== '' ? $preferredDate : '(kein Wunschtermin angegeben)');
+    $bodyLines = [
+        "Neue Verkaufsanfrage über e-suero.ch",
+        "",
+        "Grund: {$reasonLabel}",
+        "Modell: " . ($model !== '' ? $model : '(kein Modell ausgewählt)'),
+        "Name: {$name}",
+        "Telefon: " . ($phone !== '' ? $phone : '(nicht angegeben)'),
+        "E-Mail: " . ($email !== '' ? $email : '(nicht angegeben)'),
+    ];
+    if ($reasonRaw === 'probefahrt') {
+        $bodyLines[] = "Wunschtermin: " . ($preferredDate !== '' ? $preferredDate : '(kein Wunschtermin angegeben)');
+    }
 }
 if ($message !== '') {
     $bodyLines[] = "";
@@ -122,7 +152,8 @@ if (!$sent) {
 }
 
 logInquiry([
-    'reason' => $reasonRaw,
+    'type' => $type,
+    'reason' => $type === 'workshop' ? $service : $reasonRaw,
     'model' => $model,
     'name' => $name,
     'phone' => $phone,
@@ -140,8 +171,9 @@ exit;
 
 function logInquiry($data) {
     $line = sprintf(
-        "[%s] %s | Modell: %s | %s <%s / %s>\n",
+        "[%s] %s | %s | Modell: %s | %s <%s / %s>\n",
         date('Y-m-d H:i:s'),
+        strtoupper($data['type']),
         $data['reason'] ?: 'unbekannt',
         $data['model'] !== '' ? $data['model'] : '(keines)',
         $data['name'],

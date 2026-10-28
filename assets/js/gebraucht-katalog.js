@@ -51,8 +51,10 @@
     // announced as buyable.
     return Object.assign({ name: name, condition: "", controlled: false, approved: false, available: true }, opts || {});
   }
-  function brand(name, models) {
-    return { name: name, models: models || [] };
+  function brand(name, models, opts) {
+    // opts.image (optional): shown on the brand-selection card so a buyer
+    // recognizes the vehicle at a glance instead of skipping a text-only tile.
+    return Object.assign({ name: name, models: models || [] }, opts || {});
   }
   function category(name, brands) {
     return { name: name, brands: brands || [] };
@@ -124,7 +126,7 @@
           price: "CHF 1'500.–",
           badges: ["Occasion", "Service durchgeführt", "6 Monate Garantie"]
         })
-      ])
+      ], { image: "../assets/images/products/vespino-7i-schwarz.jpg" })
     ]),
     "e-motorraeder": category("E-Motorräder", [])
   };
@@ -298,6 +300,7 @@
       var bSlug = slugify(b.name);
       var count = b.models.length;
       html += '<a class="brand-card" href="#/' + catSlug + "/" + bSlug + '">' +
+        (b.image ? '<div class="product-media"><img src="' + esc(b.image) + '" alt="' + esc(b.name) + '" width="960" height="640" loading="lazy"></div>' : "") +
         "<h3>" + esc(b.name) + "</h3>" +
         '<span class="brand-card-count">' + count + " " + esc(count === 1 ? t("used_model_singular", "Modell") : t("used_model_plural", "Modelle")) + "</span>" +
         "</a>";

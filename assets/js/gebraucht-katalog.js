@@ -145,7 +145,7 @@
   var CATEGORY_IMAGES = {
     "e-scooter": "../assets/images/products/scooter-category.jpg?v=20260801",
     "e-bike": "../assets/images/products/ebike-category.jpg?v=20260801",
-    "e-roller": "../assets/images/products/eroller-category.jpg?v=20260801",
+    "e-roller": "../assets/images/products/eroller-next-nx1-schwarz.jpg?v=20260812",
     "e-motorraeder": "../assets/images/products/moto-category.jpg?v=20260801"
   };
 

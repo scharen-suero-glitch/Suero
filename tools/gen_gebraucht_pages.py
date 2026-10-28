@@ -282,7 +282,7 @@ PAGE_TMPL = """<!doctype html>
 
 <script src="../../lib/gsap.min.js" defer></script>
 <script src="../../lib/ScrollTrigger.min.js" defer></script>
-<script src="../../i18n.js?v=20261101" defer></script>
+<script src="../../i18n.js?v=20261103" defer></script>
 <script src="../../main.js?v=20261102" defer></script>
 <script src="../../assets/js/sales-form.js?v=20261029" defer></script>
 </body>
